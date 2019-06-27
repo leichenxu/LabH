@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BEBC06EB-2572-4D47-BC5A-E34A4E6FD321}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Practice7</RootNamespace>
+    <AssemblyName>Practice7</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CircularProgressBar, Version=2.7.0.7, Culture=neutral, PublicKeyToken=310fd07b25df79b3, processorArchitecture=MSIL">
+      <HintPath>..\packages\CircularProgressBar.2.7.0.7\lib\net40\CircularProgressBar.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WinFormAnimation, Version=1.6.0.4, Culture=neutral, PublicKeyToken=310fd07b25df79b3, processorArchitecture=MSIL">
+      <HintPath>..\packages\WinFormAnimation.1.6.0.4\lib\net40\WinFormAnimation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ButtonWithRounedCorner.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CircularArrowDraw.cs" />
+    <Compile Include="Components\ColorPanel.cs" />
+    <Compile Include="Components\Clip.cs" />
+    <Compile Include="Components\ExtensionMethods.cs" />
+    <Compile Include="Components\RoundPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Components\PanelTag.cs" />
+    <Compile Include="Components\TagMode.cs" />
+    <Compile Include="Components\Setting.cs" />
+    <Compile Include="WinForms\WinFormAnalysis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\WinFormAnalysis.Designer.cs">
+      <DependentUpon>WinFormAnalysis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\WinFormSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\WinFormSetting.Designer.cs">
+      <DependentUpon>WinFormSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\FileExplorer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\FileExplorer.Designer.cs">
+      <DependentUpon>FileExplorer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\ImageSet.cs" />
+    <Compile Include="Components\Tag.cs" />
+    <Compile Include="WinForms\PanelTagForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\PanelTagForm.Designer.cs">
+      <DependentUpon>PanelTagForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\WinFormLoading.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\WinFormLoading.Designer.cs">
+      <DependentUpon>WinFormLoading.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\MPV\MpvPersonalized.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Components\MPV\KeysUsed.cs" />
+    <Compile Include="WinForms\MainWinForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\MainWinForm.Designer.cs">
+      <DependentUpon>MainWinForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\WinFormSync.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\WinFormSync.Designer.cs">
+      <DependentUpon>WinFormSync.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\WinFormWithVideoPlayer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\WinFormWithVideoPlayer.Designer.cs">
+      <DependentUpon>WinFormWithVideoPlayer.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Components\PanelTag.resx">
+      <DependentUpon>PanelTag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\WinFormAnalysis.resx">
+      <DependentUpon>WinFormAnalysis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\WinFormSetting.resx">
+      <DependentUpon>WinFormSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\FileExplorer.resx">
+      <DependentUpon>FileExplorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\PanelTagForm.resx">
+      <DependentUpon>PanelTagForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\WinFormLoading.resx">
+      <DependentUpon>WinFormLoading.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="WinForms\MainWinForm.resx">
+      <DependentUpon>MainWinForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\WinFormSync.resx">
+      <DependentUpon>WinFormSync.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\WinFormWithVideoPlayer.resx">
+      <DependentUpon>WinFormWithVideoPlayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="lib\ytdl_hook.lua" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BackGroundControl.png" />
+    <None Include="Resources\BackGroundMultiviewer.png" />
+    <None Include="Resources\BackGroundSettings.png" />
+    <None Include="Resources\backwardButton.png" />
+    <None Include="Resources\closeButton.png" />
+    <None Include="Resources\fastBackwardButton.png" />
+    <None Include="Resources\fastForwardButton.png" />
+    <None Include="Resources\forwardButton.png" />
+    <None Include="Resources\Help.png" />
+    <None Include="Resources\liveButton.png" />
+    <None Include="Resources\LiveMultiviewer.png" />
+    <None Include="Resources\LogoIntro.png" />
+    <None Include="Resources\markIn.png" />
+    <None Include="Resources\markOut.png" />
+    <None Include="Resources\NewProject.png" />
+    <None Include="Resources\OpenPanel.png" />
+    <None Include="Resources\OpenProject.png" />
+    <None Include="Resources\pauseButton.png" />
+    <None Include="Resources\playButton.png" />
+    <None Include="Resources\recordButton.png" />
+    <None Include="Resources\replayButton.png" />
+    <None Include="Resources\stopButton.png" />
+    <None Include="Resources\stopButtonAnimate.gif" />
+    <None Include="Resources\Sync.png" />
+    <None Include="Resources\trimClip.png" />
+    <None Include="Resources\BackgroundTags.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="lib\mpv-1.dll" />
+    <Content Include="lib\youtube-dl.exe" />
+    <Content Include="netstandard.dll" />
+    <None Include="Resources\Análisis_View4-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\librerias\Mpv.NET-master\src\Mpv.NET\Mpv.NET.csproj">
+      <Project>{4e30aad2-9642-44b7-8ebd-0d4b9fad3173}</Project>
+      <Name>Mpv.NET</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <NativeReference Include="mpv, Version=0.0.9.0, ProcessorArchitecture=%2a, Type=win32">
+      <Name>mpv-1.dll</Name>
+      <HintPath>..\..\librerias\mpv-dev-20181002\i686\mpv-1.dll</HintPath>
+    </NativeReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

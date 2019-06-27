@@ -1,0 +1,273 @@
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Practice7.exe.config
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Practice7.exe
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Practice7.pdb
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.csprojAssemblyReference.cache
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.Properties.Resources.resources
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.csproj.GenerateResource.cache
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.csproj.CoreCompileInputs.cache
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.exe
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.pdb
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\Practice7.exe.config
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\Practice7.exe
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\Practice7.pdb
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\Practice7.csprojAssemblyReference.cache
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\Practice7.inicio.resources
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\Practice7.Properties.Resources.resources
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\Practice7.csproj.GenerateResource.cache
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\Practice7.csproj.CoreCompileInputs.cache
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\Practice7.exe
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\Practice7.pdb
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\Practice7.VentanaInicial.resources
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\Practice7.FileExplorer.resources
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\Microsoft.Win32.Primitives.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\netstandard.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.AppContext.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Collections.Concurrent.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Collections.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Collections.NonGeneric.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Collections.Specialized.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.ComponentModel.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.ComponentModel.EventBasedAsync.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.ComponentModel.Primitives.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.ComponentModel.TypeConverter.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Console.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Data.Common.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Diagnostics.Contracts.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Diagnostics.Debug.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Diagnostics.FileVersionInfo.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Diagnostics.Process.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Diagnostics.StackTrace.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Diagnostics.TextWriterTraceListener.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Diagnostics.Tools.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Diagnostics.TraceSource.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Diagnostics.Tracing.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Drawing.Primitives.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Dynamic.Runtime.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Globalization.Calendars.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Globalization.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Globalization.Extensions.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.IO.Compression.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.IO.Compression.ZipFile.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.IO.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.IO.FileSystem.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.IO.FileSystem.DriveInfo.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.IO.FileSystem.Primitives.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.IO.FileSystem.Watcher.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.IO.IsolatedStorage.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.IO.MemoryMappedFiles.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.IO.Pipes.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.IO.UnmanagedMemoryStream.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Linq.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Linq.Expressions.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Linq.Parallel.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Linq.Queryable.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Net.Http.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Net.NameResolution.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Net.NetworkInformation.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Net.Ping.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Net.Primitives.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Net.Requests.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Net.Security.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Net.Sockets.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Net.WebHeaderCollection.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Net.WebSockets.Client.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Net.WebSockets.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.ObjectModel.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Reflection.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Reflection.Extensions.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Reflection.Primitives.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Resources.Reader.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Resources.ResourceManager.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Resources.Writer.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Runtime.CompilerServices.VisualC.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Runtime.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Runtime.Extensions.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Runtime.Handles.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Runtime.InteropServices.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Runtime.Numerics.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Runtime.Serialization.Formatters.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Runtime.Serialization.Json.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Runtime.Serialization.Primitives.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Runtime.Serialization.Xml.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Security.Claims.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Security.Cryptography.Algorithms.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Security.Cryptography.Csp.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Security.Cryptography.Encoding.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Security.Cryptography.Primitives.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Security.Cryptography.X509Certificates.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Security.Principal.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Security.SecureString.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Text.Encoding.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Text.Encoding.Extensions.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Text.RegularExpressions.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Threading.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Threading.Overlapped.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Threading.Tasks.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Threading.Tasks.Parallel.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Threading.Thread.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Threading.ThreadPool.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Threading.Timer.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.ValueTuple.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Xml.ReaderWriter.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Xml.XDocument.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Xml.XmlDocument.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Xml.XmlSerializer.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Xml.XPath.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\System.Xml.XPath.XDocument.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\Mpv.NET.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\Mpv.NET.pdb
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\Practice7.exe.config
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\Practice7.ventanaNuevaConReproductor.resources
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\Practice7.csproj.CopyComplete
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\Practice7.exe.manifest
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\mpv-1.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\Practice7.exe.manifest
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\Interop.WMPLib.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\AxInterop.WMPLib.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\Interop.WMPLib.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\AxInterop.WMPLib.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\Practice7.csproj.ResolveComReference.cache
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\Interop.AXVLC.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\AxInterop.AXVLC.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\Interop.AXVLC.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\obj\Debug\AxInterop.AXVLC.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\FFmpeg.NET.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\Newtonsoft.Json.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\Xabe.FFmpeg.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\Newtonsoft.Json.xml
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\Xabe.FFmpeg.xml
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\LibImages.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\LibMplayerCommon.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\LibMPlayerWinform.dll
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\LibMplayerCommon.xml
+C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\LibMPlayerWinform.xml
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.exe.config
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.FileExplorer.resources
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Microsoft.Win32.Primitives.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\netstandard.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.AppContext.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Collections.Concurrent.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Collections.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Collections.NonGeneric.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Collections.Specialized.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.ComponentModel.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.ComponentModel.EventBasedAsync.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.ComponentModel.Primitives.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.ComponentModel.TypeConverter.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Console.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Data.Common.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Diagnostics.Contracts.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Diagnostics.Debug.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Diagnostics.FileVersionInfo.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Diagnostics.Process.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Diagnostics.StackTrace.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Diagnostics.TextWriterTraceListener.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Diagnostics.Tools.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Diagnostics.TraceSource.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Diagnostics.Tracing.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Drawing.Primitives.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Dynamic.Runtime.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Globalization.Calendars.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Globalization.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Globalization.Extensions.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.IO.Compression.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.IO.Compression.ZipFile.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.IO.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.IO.FileSystem.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.IO.FileSystem.DriveInfo.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.IO.FileSystem.Primitives.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.IO.FileSystem.Watcher.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.IO.IsolatedStorage.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.IO.MemoryMappedFiles.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.IO.Pipes.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.IO.UnmanagedMemoryStream.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Linq.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Linq.Expressions.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Linq.Parallel.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Linq.Queryable.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Net.Http.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Net.NameResolution.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Net.NetworkInformation.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Net.Ping.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Net.Primitives.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Net.Requests.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Net.Security.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Net.Sockets.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Net.WebHeaderCollection.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Net.WebSockets.Client.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Net.WebSockets.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.ObjectModel.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Reflection.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Reflection.Extensions.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Reflection.Primitives.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Resources.Reader.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Resources.ResourceManager.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Resources.Writer.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Runtime.CompilerServices.VisualC.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Runtime.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Runtime.Extensions.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Runtime.Handles.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Runtime.InteropServices.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Runtime.Numerics.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Runtime.Serialization.Formatters.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Runtime.Serialization.Json.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Runtime.Serialization.Primitives.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Runtime.Serialization.Xml.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Security.Claims.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Security.Cryptography.Algorithms.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Security.Cryptography.Csp.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Security.Cryptography.Encoding.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Security.Cryptography.Primitives.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Security.Cryptography.X509Certificates.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Security.Principal.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Security.SecureString.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Text.Encoding.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Text.Encoding.Extensions.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Text.RegularExpressions.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Threading.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Threading.Overlapped.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Threading.Tasks.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Threading.Tasks.Parallel.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Threading.Thread.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Threading.ThreadPool.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Threading.Timer.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.ValueTuple.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Xml.ReaderWriter.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Xml.XDocument.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Xml.XmlDocument.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Xml.XmlSerializer.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Xml.XPath.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Xml.XPath.XDocument.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Mpv.NET.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Mpv.NET.pdb
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.csproj.CopyComplete
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.WinFormWithVideoPlayer.resources
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.WinFormLoading.resources
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.MainWinForm.resources
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.csprojAssemblyReference.cache
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.exe.config
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.Form1.resources
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.PanelTag.resources
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.FileExplorer.resources
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.WinFormLoading.resources
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.Properties.Resources.resources
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.MainWinForm.resources
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.WinFormWithVideoPlayer.resources
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.csproj.GenerateResource.cache
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.csproj.CoreCompileInputs.cache
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.exe
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.pdb
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.PanelTag.resources
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\CircularProgressBar.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\WinFormAnimation.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.PanelTagForm.resources
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.WinFormSetting.resources
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Practice7.exe.manifest
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\mpv-1.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.exe.manifest
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.WinFormAnalysis.resources
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.WinFormSync.resources
