@@ -18,6 +18,14 @@ namespace Practice7
     public partial class MainWinForm : Form
     {
         /// <summary>
+        /// Save the path of the new project.
+        /// </summary>
+        private string newProjectPath;
+        /// <summary>
+        /// New project extention.
+        /// </summary>
+        private string extension = ".xxx";
+        /// <summary>
         /// Can open new win form or not boolean.
         /// </summary>
         private bool openWinForm = false;
@@ -29,10 +37,10 @@ namespace Practice7
         /// Store the project start string.
         /// </summary>
         private string projectStartPath;
-        /// <summary>
-        /// FileExplorer for create projects.
-        /// </summary>
-        private Form createProjectsFileExplorer;
+        ///// <summary>
+        ///// FileExplorer for create projects.
+        ///// </summary>
+        //private Form createProjectsFileExplorer;
         /// <summary>
         /// The extention to create.
         /// </summary>
@@ -83,7 +91,7 @@ namespace Practice7
                 Thread th = new Thread(openCreatedProject);
                 th.SetApartmentState(ApartmentState.STA);
                 settingForm.CanShow = false;
-                th.Start();                
+                th.Start();
             }
         }
         /// <summary>
@@ -123,7 +131,7 @@ namespace Practice7
                 tip = new System.Windows.Forms.ToolTip();
                 tip.SetToolTip(label, bufferString[i]);
                 label.AccessibleDefaultActionDescription = bufferString[i];
-            
+
             }
         }
 
@@ -158,11 +166,38 @@ namespace Practice7
         /// <param name="e"></param>
         private void newProject_Click(object sender, EventArgs e)
         {
-            createProjectsFileExplorer = new FileExplorer(this, extention,settingForm);
-            //show it
-            createProjectsFileExplorer.ShowDialog();
-        }
+            //createProjectsFileExplorer = new FileExplorer(this, extention,settingForm);
+            ////show it
+            //createProjectsFileExplorer.ShowDialog();
 
+            //SHOW IT
+            if (createNewProjectFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                //get the path
+                newProjectPath = createNewProjectFileDialog.FileName;
+                //files and directories for crete
+                Directory.CreateDirectory(newProjectPath);
+                Directory.CreateDirectory(newProjectPath + "\\Sources");
+                Directory.CreateDirectory(newProjectPath + "\\Sources\\temp");
+                Directory.CreateDirectory(newProjectPath + "\\Sources\\videos");
+                Directory.CreateDirectory(newProjectPath + "\\Sources\\exported");
+                File.Create(newProjectPath + "\\azor" + extension);
+
+                //close the mainform
+                this.Close();
+                //start new thread
+                Thread th = new Thread(opennewform);
+                th.SetApartmentState(ApartmentState.STA);
+                th.Start();
+            }
+        }
+        /// <summary>
+        /// Open new form, run it.
+        /// </summary>
+        private void opennewform()
+        {
+            Application.Run(new WinFormWithVideoPlayer(newProjectPath, settingForm));
+        }
         /// <summary>
         /// Open the project with the extension.
         /// </summary>
@@ -193,7 +228,7 @@ namespace Practice7
                 //string[] aux = File.ReadAllLines(recentlyOpenedProjectFilePath);
 
                 //get the file name
-                string[] fileToAdd = {this.fileExplorer.FileName };
+                string[] fileToAdd = { this.fileExplorer.FileName };
                 fileToAdd = fileToAdd.Union(File.ReadAllLines(recentlyOpenedProjectFilePath)).ToArray();
 
                 //string aniadir = this.exploradorArchivo.FileName+"\n"+File.ReadAllText(recentlyOpenedProjectFilePath);   
@@ -241,7 +276,7 @@ namespace Practice7
         private void settings_Click(object sender, EventArgs e)
         {
             this.settingForm.ShowDialog();
-            
+
         }
 
         /// <summary>

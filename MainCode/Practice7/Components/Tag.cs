@@ -40,7 +40,7 @@ namespace Practice7
         /// <param name="tagCount"></param>
         /// <param name="previousTime"></param>
         /// <param name="laterTimer"></param>
-        public Tag(string tagName, TimeSpan previousTime, TimeSpan laterTimer,TagMode tagMode,Color tagColor)
+        public Tag(string tagName, TimeSpan previousTime, TimeSpan laterTimer, TagMode tagMode, Color tagColor)
         {
             this.tagName = tagName;
             this.previousTime = previousTime;
@@ -54,8 +54,11 @@ namespace Practice7
         public Tag()
         {
 
-        }        
-
+        }
+        public bool CheckTag()
+        {
+            return this.tagName != null && this.previousTime != null && this.laterTimer != null && this.tagMode != null && this.TagColor != null;
+        }
         /// <summary>
         /// Getters and setters.
         /// </summary>

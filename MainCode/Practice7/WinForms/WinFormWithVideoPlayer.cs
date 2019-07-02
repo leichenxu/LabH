@@ -17,6 +17,27 @@ namespace Practice7
     public partial class WinFormWithVideoPlayer : Form
     {
         #region Variables 
+        private ManualResetEvent manualResetEventMpvUnlock = new ManualResetEvent(false);
+        /// <summary>
+        /// Set to true when is closed, and need to wait convert video.
+        /// </summary>
+        private bool WasClosed = false;
+        /// <summary>
+        /// Default clip name when press i.
+        /// </summary>
+        private string defaultClipName = "DefaultClip ";
+        /// <summary>
+        /// Save all clips here as value.
+        /// </summary>
+        Dictionary<CheckBox, Clip> mapAllClip = new Dictionary<CheckBox, Clip>();
+        /// <summary>
+        /// String store close program message.
+        /// </summary>
+        private string CloseProgramMessage = "¿Estas seguro de cerrar el programa?";
+        /// <summary>
+        /// String close program dialog name.
+        /// </summary>
+        private string CloseProgramDialogName = "Cerrar programa";
         /// <summary>
         /// Save the playing signal.
         /// </summary>
@@ -37,10 +58,6 @@ namespace Practice7
         /// Sync winform.
         /// </summary>
         private WinFormSync WinFormSync;
-        /// <summary>
-        /// Lock if necesary.
-        /// </summary>
-        private object LockClass = new object();
         /// <summary>
         /// Analysys window.
         /// </summary>
@@ -183,9 +200,9 @@ namespace Practice7
         /// </summary>
         private ArrayList arrayListProcessForDownloadVideo = new ArrayList();
         /// <summary>
-        /// Directory for store path.
+        /// Directory for store tag.
         /// </summary>
-        private String pathStoreTag;
+        private String pathStoreTagAndClips;
         /// <summary>
         /// Setting form.
         /// </summary>
@@ -193,9 +210,9 @@ namespace Practice7
 
         public ArrayList ChangeCameraUrl { get => changeCameraUrl; set => changeCameraUrl = value; }
         public TimeSpan CurrentTimeSpan { get => currentTimeSpan; set => currentTimeSpan = value; }
-        public object LockClass1 { get => LockClass; set => LockClass = value; }
         public bool InZero { get => inZero; set => inZero = value; }
         public MpvPersonalized MpvPersonalized { get => mpvPersonalized; set => mpvPersonalized = value; }
+        public ManualResetEvent ManualResetEventMpvUnlock { get => manualResetEventMpvUnlock; set => manualResetEventMpvUnlock = value; }
         #endregion
 
         /// <summary>
@@ -208,7 +225,7 @@ namespace Practice7
             //store the path
             this.path = path;
             pathStoreVideo = path + "\\Sources\\temp";
-            pathStoreTag = path + "\\Sources\\tags.json";
+            pathStoreTagAndClips = path + "\\Sources";
             myOwnInitializeComponent();
             //save settings
             this.settingForm = settingForm;
@@ -325,6 +342,11 @@ namespace Practice7
 
             //create sync view
             WinFormSync = new WinFormSync(this);
+
+            //Load tags when openned
+            LoadTagFromDefaultPath();
+            //load clips when openned
+            LoadClipsInDefaultPath();
         }
         /// <summary>
         /// Set the state for analysis video.
@@ -444,28 +466,84 @@ namespace Practice7
         /// <param name="e"></param>
         private void closingEvent(object sender, EventArgs e)
         {
-
-            //after kill all convert video
-            if (convertVideo)
+            DialogResult dialog = MessageBox.Show(CloseProgramMessage, CloseProgramDialogName,
+                MessageBoxButtons.YesNoCancel);
+            if (dialog == DialogResult.Yes)
             {
-                //same things
-                this.stopButtonPressedEvent(null, null);
-                //send to back
-                mpvPictureBox.SendToBack();
+                //set to true
+                WasClosed = true;
+                //save tag in default path
+                this.SaveTagInDefaultPath();
+                //save all the clips
+                SaveClipsInDefaultPath();
+                //after kill all convert video
+                if (convertVideo)
+                {
+                    //same things
+                    this.stopButtonPressedEvent(null, null);
+                    //send to back
+                    mpvPictureBox.SendToBack();
+                }
+                this.FormClosing -= closingEvent;
+                lock (convertProcessMap)
+                    //if have process
+                    if (convertProcessMap.Count > 0)
+                        //dont close, wait complete                    
+                        (e as FormClosingEventArgs).Cancel = true;
             }
-            //if all process convert finished, leave
-            lock (convertProcessMap)
-                if (convertProcessMap.Count == 0)
-                {
-                    Application.Exit();
-                }
-                else
-                {
-                    //if some video is converting, not close, and show message
-                    (e as FormClosingEventArgs).Cancel = true;
-                    MessageBox.Show("Convirtiendo videos.");
-                }
+            else
+            {
+                //Do nothing
+                (e as FormClosingEventArgs).Cancel = true;
+            }
+            //save json
+            settingForm.SaveJsonWithTheLastIndexFirst();
+            //no invoke more
+            CanInvoke = false;
 
+        }
+        /// <summary>
+        /// Save all clips in default path.
+        /// </summary>
+        private void SaveClipsInDefaultPath()
+        {
+            //save it
+            StreamWriter sw = File.CreateText(pathStoreTagAndClips + "\\clips.json");
+            sw.Write(JsonConvert.SerializeObject(mapAllClip.Values));
+            //close it
+            sw.Close();
+            //save default clip count
+            sw = File.CreateText(pathStoreTagAndClips + "\\DefaultClipCount.txt");
+            sw.Write(clipCount);
+            //close it
+            sw.Close();
+        }
+        /// <summary>
+        /// Load clips from default path.
+        /// </summary>
+        private void LoadClipsInDefaultPath()
+        {
+            //if exist clips load it
+            if (File.Exists(pathStoreTagAndClips + "\\clips.json"))
+            {
+                List<Clip> listClips = JsonConvert.DeserializeObject<List<Clip>>
+                    (File.ReadAllText(pathStoreTagAndClips + "\\clips.json"));
+                foreach (Clip clip in listClips)
+                {
+                    storeInTableLayoutPanelClips(clip);
+                }
+            }
+            //load default clip count
+            //if exist clips load it
+            if (File.Exists(pathStoreTagAndClips + "\\DefaultClipCount.txt"))
+            {
+                //open it
+                TextReader reader = File.OpenText(pathStoreTagAndClips + "\\DefaultClipCount.txt");
+                //read it
+                clipCount = int.Parse(reader.ReadLine());
+                //close it
+                reader.Close();
+            }
         }
         /// <summary>
         /// Create the mpv and ajust.
@@ -503,11 +581,15 @@ namespace Practice7
                 if (keyEventArgs.KeyCode == storeCurrentTime)
                 {
                     //create new clip
-                    Clip clip = new Clip(createTimeLabel(), createTimeLabel(), "Clip " + clipCount);
+                    Clip clip = new Clip(mpvPersonalized.MpvPlayer.Position.ToString(@"hh\:mm\:ss\.ff"),
+                        mpvPersonalized.MpvPlayer.Position.ToString(@"hh\:mm\:ss\.ff"), defaultClipName + clipCount);
                     //count plus one
                     clipCount++;
+
+                    //save color
+                    clip.MyColor = Color.Black;
                     //store it
-                    storeInTableLayoutPanelClips(clip, Color.Black);
+                    storeInTableLayoutPanelClips(clip);
                 }
             }
         }
@@ -515,7 +597,7 @@ namespace Practice7
         /// Create the time label with the time span, hh:mm:ss ms.
         /// </summary>
         /// <returns>Return the label created.</returns>
-        private Label createTimeLabel()
+        private Label createTimeLabel(string time)
         {
             Label newLabelTime = new Label();
             //cannot autosize, for make same size in all
@@ -526,6 +608,8 @@ namespace Practice7
             newLabelTime.Text = mpvPersonalized.MpvPlayer.Position.ToString(@"hh\:mm\:ss\.ff");
             //add the right click function
             newLabelTime.Click += clickOnTimeLabel;
+            //set time
+            newLabelTime.Text = time;
             return newLabelTime;
         }
         /// <summary>
@@ -552,7 +636,7 @@ namespace Practice7
         private void reloadVideo(object sender, EventArgs eventArgs)
         {
             //lock the mpv
-            lock (mpvPersonalized.MpvPlayer)
+            lock (mpvPersonalized.MpvPlayer.MpvLock)
             {
                 //this two lines for now set text when video is reloading
                 this.mpvPersonalized.MpvPlayer.MediaPaused -= videoPaused;
@@ -560,6 +644,8 @@ namespace Practice7
                 //add the new video
                 this.addVideo();
             }
+            //mpv unlock
+            manualResetEventMpvUnlock.Set();
         }
         /// <summary>
         /// Set the image for playorpause button when paused
@@ -622,28 +708,34 @@ namespace Practice7
         /// </summary>
         private void LoadNewVideo(MpvPersonalized mpv)
         {
-            lock (mpv)
+            //enter zone
+            Monitor.Enter(mpv.MpvPlayer.MpvLock);
+            //wait event
+            loaded = false;
+            if (mpv.MpvPlayer.IsMediaLoaded || mpv != this.MpvPersonalized)
+                loaded = true;
+            mpv.PlayingMedia = pathVideoPlaying;
+            //add the path again
+            mpv.MpvPlayer.Load(pathVideoPlaying, currentTimeSpan.ToString());
+            //check if loaded or not, is yes "unlock"
+            if (!loaded)
             {
-                //wait event
-                loaded = false;
-                if (mpv.MpvPlayer.IsMediaLoaded)
-                    loaded = true;
-                mpv.PlayingMedia = pathVideoPlaying;
-                //add the path again
-                mpv.MpvPlayer.Load(pathVideoPlaying, currentTimeSpan.ToString());
-                //check if loaded or not, is yes "unlock"
-                if (!loaded)
-                    ManualResetEventMedia.WaitOne();
-                
+                //leave it
+                Monitor.Exit(mpv.MpvPlayer.MpvLock);
+                //wait signal
+                ManualResetEventMedia.WaitOne();
+                //enter
+                Monitor.Enter(mpv.MpvPlayer.MpvLock);
             }
-
+            //leave it
+            Monitor.Exit(mpv.MpvPlayer.MpvLock);
         }
         /// <summary>
         /// Load the new video in analysis.
         /// </summary>
         private void LoadNewVideoAnalysis(MpvPersonalized mpv, string videoPath, int i)
         {
-            lock (mpv)
+            lock (mpv.MpvPlayer.MpvLock)
             {
                 //set false for wait event
                 winFormAnalysis.MapLoaded[mpv.MpvPlayer] = false;
@@ -761,7 +853,7 @@ namespace Practice7
         private void changeCamera()
         {
             //lock it
-            lock (mpvPersonalized.MpvPlayer)
+            lock (mpvPersonalized.MpvPlayer.MpvLock)
             {
                 changeCameraBool = true;
                 //set autoplay
@@ -780,6 +872,8 @@ namespace Practice7
                 //set time
                 SetAnalysisTime();
             }
+            //mpv unlock
+            manualResetEventMpvUnlock.Set();
         }
         /// <summary>
         /// Set play or pause when the video is reload.
@@ -849,7 +943,7 @@ namespace Practice7
             ManualResetEventMedia.Set();
             //if media is loaded then set time span
             //lock it for not use for other threads or process
-            lock (mpvPersonalized.MpvPlayer)
+            lock (mpvPersonalized.MpvPlayer.MpvLock)
                 //check it
                 if (!InZero && mpvPersonalized.MpvPlayer.IsMediaLoaded && CurrentTimeSpan > TimeSpan.Zero)
                 {
@@ -869,6 +963,8 @@ namespace Practice7
                     else
                         (sender as Mpv.NET.Player.MpvPlayer).Resume();
                 }
+            //mpv unlock
+            manualResetEventMpvUnlock.Set();
         }
         /// <summary>
         /// Set analysis winform time, after load, will automatically move to the time.
@@ -907,7 +1003,7 @@ namespace Practice7
         private void SetPlayerTime(MpvPersonalized mpvPersonalized)
         {
             //lock it
-            lock (LockClass1)
+            lock (mpvPersonalized.MpvPlayer.MpvLock)
             {
                 //check if media is loaded, if yes set time.
                 if (mpvPersonalized.MpvPlayer.IsMediaLoaded && CurrentTimeSpan >= TimeSpan.Zero && CurrentTimeSpan < mpvPersonalized.MpvPlayer.Duration)
@@ -920,9 +1016,9 @@ namespace Practice7
                     mpvPersonalized.MpvPlayer.KeepOpen = Mpv.NET.Player.KeepOpen.Yes;
                     mpvPersonalized.MpvPlayer.Position = mpvPersonalized.MpvPlayer.Duration.Subtract(mpvPersonalized.TimeSpanForAddOrSubstract);
                 }
-
             }
-
+            //mpv unlock
+            manualResetEventMpvUnlock.Set();
         }
         /// <summary>
         /// Save all timespan when position changes.
@@ -931,13 +1027,14 @@ namespace Practice7
         /// <param name="e"></param>
         private void storeTimeChangeEvent(object sender, EventArgs e)
         {
-            lock (mpvPersonalized.MpvPlayer)
-                lock (LockClass1)
-                    //if is not zero then save
-                    if (mpvPersonalized.MpvPlayer.Position != TimeSpan.Zero)
-                    {
-                        CurrentTimeSpan = mpvPersonalized.MpvPlayer.Position;
-                    }
+            lock (mpvPersonalized.MpvPlayer.MpvLock)
+                //if is not zero then save
+                if (mpvPersonalized.MpvPlayer.Position != TimeSpan.Zero)
+                {
+                    CurrentTimeSpan = mpvPersonalized.MpvPlayer.Position;
+                }
+            //mpv unlock
+            manualResetEventMpvUnlock.Set();
         }
         /// <summary>
         /// Show the time when the position change.
@@ -1050,6 +1147,14 @@ namespace Practice7
         }
         private delegate void SetButtonRecord();
         /// <summary>
+        /// Call ProcessCmdKey in other class.
+        /// </summary>
+        /// <param name="keyData"></param>
+        public void ProcessCmdDelegate(Keys keyData)
+        {
+            ProcessCmdKey(ref GlobalMessage,keyData);
+        }
+        /// <summary>
         /// Override input received before do something in user interface, for not move in buttons.
         /// </summary>
         /// <param name="msg"></param>
@@ -1061,14 +1166,48 @@ namespace Practice7
             if ((mpvPersonalized.keysThatIHaveUse(keyData) || keyData == Keys.Tab || keyData == Keys.Up || keyData == Keys.Down || keyData == Keys.Enter)
                 && !panelTag.Visible && !changeCameraBool)
             {
-                //sent the event to the controller
-                mpvPersonalized.mpvController(new KeyEventArgs(keyData));
-                winFormAnalysis.CommandToMpv(keyData);
+                //check have video
+                if (pathVideoPlaying != null && !pathVideoPlaying.Equals(""))
+                {
+                    Monitor.Enter(MpvPersonalized.MpvPlayer.MpvLock);
+                    while (!loaded)
+                    {
+                        Monitor.Exit(MpvPersonalized.MpvPlayer.MpvLock);
+                        manualResetEventMpvUnlock.WaitOne();
+                        Monitor.Enter(MpvPersonalized.MpvPlayer.MpvLock);
+                    }
+                    //sent the event to the controller
+                    mpvPersonalized.mpvController(new KeyEventArgs(keyData));
+
+                    //kkk = keyData;
+                    //System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+                    //timer.Interval = 100;
+                    //timer.Tick += pruebaTick;
+                    //timer.Start();
+
+                    Monitor.Exit(MpvPersonalized.MpvPlayer.MpvLock);
+                    winFormAnalysis.CommandToMpv(keyData);
+                }
                 //interface cannot take the input key
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
+        //Keys kkk;
+        //private void pruebaTick(object sender, EventArgs e)
+        //{
+        //    Monitor.Enter(MpvPersonalized.MpvPlayer.MpvLock);
+        //    while (!loaded)
+        //    {
+        //        Monitor.Exit(MpvPersonalized.MpvPlayer.MpvLock);
+        //        manualResetEventMpvUnlock.WaitOne();
+        //        Monitor.Enter(MpvPersonalized.MpvPlayer.MpvLock);
+        //    }
+        //    //sent the event to the controller
+        //    mpvPersonalized.mpvController(new KeyEventArgs(kkk));
+        //    Monitor.Exit(MpvPersonalized.MpvPlayer.MpvLock);
+        //    //(sender as System.Windows.Forms.Timer).Stop();
+        //}
         /// <summary>
         /// Event when form is closed, kill all the downlaods started.
         /// </summary>
@@ -1153,14 +1292,6 @@ namespace Practice7
                 this.Controls.Remove(convertProcessMap[sender as Process]);
                 convertProcessMap.Remove(sender as Process);
             }
-            convertProcessMap.Remove(sender as Process);
-            if (convertProcessMap.Count == 0)
-            {
-                DelegateControl d = new DelegateControl(MainControl);
-                this.Invoke(d, new object[] { null, 2 });
-            }
-
-
         }
         /// <summary>
         /// Delegate delete control.
@@ -1182,14 +1313,23 @@ namespace Practice7
                 case 1:
                     //critical section
                     lock (convertProcessMap)
+                    {
                         //remove if from convert process map
                         convertProcessMap.Remove(obj as Process);
-                    break;
-                case 2:
-                    //show mpv, and play video
-                    //show it then play
-                    this.mpvPictureBox.Show();
-                    this.reloadVideo(null, null);
+                        //check count
+                        if (convertProcessMap.Count == 0)
+                        {
+                            //show mpv, and play video
+                            //show it then play
+                            this.mpvPictureBox.Visible = true;
+                            this.reloadVideo(null, null);
+                            //check if was closed or not
+                            if (WasClosed)
+                            {
+                                this.Close();
+                            }
+                        }
+                    }
                     break;
                 case 3:
                     //add to controls
@@ -1529,6 +1669,8 @@ namespace Practice7
             int row = tableLayoutPanelClips.Controls.IndexOf(control) / 5;
             //remove from arraylist
             mapFullClipName.Remove((tableLayoutPanelClips.Controls[row * 5 + 2]) as Label);
+            //remove from all clip
+            mapAllClip.Remove((tableLayoutPanelClips.Controls[row * 5]) as CheckBox);
             //remove it
             this.tableLayoutPanelClips.Controls.Remove(tableLayoutPanelClips.Controls[row * 5 + 4]);
             this.tableLayoutPanelClips.Controls.Remove(tableLayoutPanelClips.Controls[row * 5 + 3]);
@@ -1763,7 +1905,8 @@ namespace Practice7
                 {
                     //crate new clip
                     Clip clip = createManualClip(tag, mpvPersonalized.MpvPlayer.Position, b);
-                    storeInTableLayoutPanelClips(clip, b.FlatAppearance.BorderColor);
+                    clip.MyColor = b.FlatAppearance.BorderColor;
+                    storeInTableLayoutPanelClips(clip);
                     //clean it
                     manualTagMap.Remove(b);
                     //remove the animation
@@ -1851,18 +1994,11 @@ namespace Practice7
         /// <returns>Return the clip created.</returns>
         private Clip createManualClip(Tag tag, TimeSpan postTimeSpan, Button b)
         {
-            //create current time label
-            Label previous = createTimeLabel();
-            Label after = createTimeLabel();
-            after.Dock = DockStyle.Bottom;
-            previous.Dock = DockStyle.Bottom;
             //tagcount+1
             tag.TagCount++;
-            //set the new time
-            previous.Text = manualTagMap[b].ToString((@"hh\:mm\:ss\.ff"));
-            after.Text = postTimeSpan.ToString((@"hh\:mm\:ss\.ff"));
             //return the clip
-            return new Clip(previous, after, tag.TagName.ToString() + " " + tag.TagCount);
+            return new Clip(manualTagMap[b].ToString((@"hh\:mm\:ss\.ff")),
+                postTimeSpan.ToString((@"hh\:mm\:ss\.ff")), tag.TagName.ToString() + " " + tag.TagCount);
         }
         /// <summary>
         /// Tag button event, when the tag is pressed create clip.
@@ -1878,15 +2014,19 @@ namespace Practice7
                 Tag tag = tagMap[buttonTag];
                 //crate new clip
                 Clip clip = createAutomaticClip(tag);
-                storeInTableLayoutPanelClips(clip, buttonTag.FlatAppearance.BorderColor);
+                //save color
+                clip.MyColor = buttonTag.FlatAppearance.BorderColor;
+                //store it
+                storeInTableLayoutPanelClips(clip);
             }
         }
         /// <summary>
         /// Store the content in the table.
         /// </summary>
         /// <param name="clip"></param>
-        private void storeInTableLayoutPanelClips(Clip clip, Color color)
+        private void storeInTableLayoutPanelClips(Clip clip)
         {
+
             //create the content in the table
             CheckBox checkBoxClip = new CheckBox();
             checkBoxClip.AutoSize = false;
@@ -1894,32 +2034,41 @@ namespace Practice7
             checkBoxClip.Dock = DockStyle.Fill;
             Label clipName = createClipText(clip.TagName);
             //create and adjust round
-            RoundPictureBox round = new RoundPictureBox(color);
+            RoundPictureBox round = new RoundPictureBox(clip.MyColor);
             round.Size = roundSize;
             round.Dock = DockStyle.Bottom;
+
+            //create current time label
+            Label previous = createTimeLabel(clip.PreviousTime);
+            Label after = createTimeLabel(clip.LaterTime);
+            //set it
+            after.Dock = DockStyle.Bottom;
+            previous.Dock = DockStyle.Bottom;
 
             tableLayoutPanelClips.Controls.Add(checkBoxClip);
             tableLayoutPanelClips.Controls.Add(round);
             tableLayoutPanelClips.Controls.Add(clipName);
-            tableLayoutPanelClips.Controls.Add(clip.PreviousTime);
-            tableLayoutPanelClips.Controls.Add(clip.LaterTime);
+            tableLayoutPanelClips.Controls.Add(previous);
+            tableLayoutPanelClips.Controls.Add(after);
             tableLayoutPanelClips.RowCount++;
             this.tableLayoutPanelClips.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
             round.Location = new Point(tableLayoutPanelClips.Controls[1].Width, tableLayoutPanelClips.Controls[1].Height / 2);
             //scrol down
-            panelClipsSaved.ScrollControlIntoView(clip.LaterTime);
+            panelClipsSaved.ScrollControlIntoView(after);
 
             //add event
             tableLayoutPanelClips.Click += rightClickOnClipPanel;
             clipName.Click += clickInClipNameEvent;
             checkBoxClip.CheckedChanged += checkedBoxEvent;
             checkBoxClip.MouseDown += rightClickOnClipPanel;//use mouse down for check right click
-            clip.PreviousTime.Click += rightClickOnClipPanel;
+            previous.Click += rightClickOnClipPanel;
             clipName.Click += rightClickOnClipPanel;
             clipName.MouseEnter += mouseOnClipNameForShowFullNameEvent;
-            clip.LaterTime.Click += rightClickOnClipPanel;
+            after.Click += rightClickOnClipPanel;
             round.Click += rightClickOnClipPanel;
+            //store it
+            mapAllClip.Add(checkBoxClip, clip);
         }
         /// <summary>
         /// When clip name clicked, move to the previuous time.
@@ -1988,19 +2137,12 @@ namespace Practice7
         /// <returns></returns>
         private Clip createAutomaticClip(Tag tag)
         {
-            //create current time label
-            Label previous = createTimeLabel();
-            Label after = createTimeLabel();
-            after.Dock = DockStyle.Bottom;
-            previous.Dock = DockStyle.Bottom;
+            TimeSpan currentTime = mpvPersonalized.MpvPlayer.Position;
             //tagcount+1
             tag.TagCount++;
-
-            //set the new time
-            after.Text = TimeSpan.Parse(previous.Text).Add(tag.LaterTimer).ToString((@"hh\:mm\:ss\.ff"));
-            previous.Text = TimeSpan.Parse(previous.Text).Subtract(tag.PreviousTime).ToString((@"hh\:mm\:ss\.ff"));
             //return the clip
-            return new Clip(previous, after, tag.TagName.ToString() + " " + tag.TagCount);
+            return new Clip(currentTime.Subtract(tag.PreviousTime).ToString((@"hh\:mm\:ss\.ff")),
+                currentTime.Add(tag.LaterTimer).ToString((@"hh\:mm\:ss\.ff")), tag.TagName.ToString() + " " + tag.TagCount);
         }
         /// <summary>
         /// When checked set all checkbox to check,else to not check.
@@ -2134,15 +2276,19 @@ namespace Practice7
         /// <param name="e"></param>
         private void buttonSaveTags_Click(object sender, EventArgs e)
         {
+            //show it for set the path to store tag
+            this.saveFileDialogTag.ShowDialog();
+        }
+        private void SaveTagInDefaultPath()
+        {
             if (tagMap.Count != 0)
             {
                 //save only the tag, the button only have the event handler, tag have all the information
-                StreamWriter sw = File.CreateText(pathStoreTag);
+                StreamWriter sw = File.CreateText(pathStoreTagAndClips + "\\tag.json");
                 sw.Write(JsonConvert.SerializeObject(tagMap.Values));
                 //close it
                 sw.Close();
             }
-
         }
         /// <summary>
         /// Check if the file exist, then load.
@@ -2151,16 +2297,20 @@ namespace Practice7
         /// <param name="e"></param>
         private void buttonLoadTags_Click(object sender, EventArgs e)
         {
+            //show it
+            openFileDialogTagPath.ShowDialog();
+        }
+        private void LoadTagFromDefaultPath()
+        {
             //if exist tags load it
-            if (File.Exists(pathStoreTag))
+            if (File.Exists(pathStoreTagAndClips + "\\tag.json"))
             {
                 List<Tag> listTags = JsonConvert.DeserializeObject<List<Tag>>
-                    (File.ReadAllText(pathStoreTag));
+                    (File.ReadAllText(pathStoreTagAndClips + "\\tag.json"));
                 foreach (Tag tag in listTags)
                 {
                     createAutomaticOrManualTagButton(tag);
                 }
-
             }
         }
         /// <summary>
@@ -2323,12 +2473,18 @@ namespace Practice7
             //if have checked, delete it
             if (checkedClipListBox.Count != 0)
             {
-                foreach (CheckBox c in checkedClipListBox)
+                DialogResult dialog = MessageBox.Show("¿Estás seguro de eliminar lo/s "+
+                    checkedClipListBox.Count + " clip/s?", "Eliminar",
+                MessageBoxButtons.YesNoCancel);
+                if (DialogResult.Yes == dialog)
                 {
-                    deleteClipRowOnTable(c);
+                    foreach (CheckBox c in checkedClipListBox)
+                    {
+                        deleteClipRowOnTable(c);
+                    }
+                    checkedClipListBox.Clear();
+                    checkBoxAllClips.Checked = false;
                 }
-                checkedClipListBox.Clear();
-                checkBoxAllClips.Checked = false;
             }
         }
         /// <summary>
@@ -2380,6 +2536,56 @@ namespace Practice7
             else
             {
                 WinFormSync.Close();
+            }
+        }
+        /// <summary>
+        /// Load tags from the path selected.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void openFileDialogTagPath_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //try catch for check the information
+            try
+            {
+                List<Tag> listTags = JsonConvert.DeserializeObject<List<Tag>>
+                    (File.ReadAllText(openFileDialogTagPath.FileName));
+                foreach (Tag tag in listTags)
+                {
+                    //check it
+                    if (tag.CheckTag())
+                        createAutomaticOrManualTagButton(tag);
+                    else
+                        //throw exception
+                        throw new Exception();
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Not tag.json file");
+            }
+
+        }
+        /// <summary>
+        /// Save tag in the path selected.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void saveFileDialogTag_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //if have tag to save, save it
+            if (tagMap.Count != 0)
+            {
+                //save only the tag, the button only have the event handler, tag have all the information
+                StreamWriter sw = File.CreateText(saveFileDialogTag.FileName);
+                sw.Write(JsonConvert.SerializeObject(tagMap.Values));
+                //close it
+                sw.Close();
+            }
+            else
+            {
+                //else show message
+                MessageBox.Show("No hay tags");
             }
         }
 

@@ -62,6 +62,7 @@ namespace Practice7
             this.labelNameVideo = new System.Windows.Forms.Label();
             this.labelBitRate = new System.Windows.Forms.Label();
             this.labelFPS = new System.Windows.Forms.Label();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPrevisualize)).BeginInit();
             this.SuspendLayout();
             // 
@@ -313,6 +314,7 @@ namespace Practice7
             // 
             // comboBoxSetting
             // 
+            this.comboBoxSetting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSetting.FormattingEnabled = true;
             this.comboBoxSetting.Location = new System.Drawing.Point(275, 152);
             this.comboBoxSetting.Name = "comboBoxSetting";
@@ -449,5 +451,6 @@ namespace Practice7
         private System.Windows.Forms.Label labelNameVideo;
         private System.Windows.Forms.Label labelBitRate;
         private System.Windows.Forms.Label labelFPS;
+        private System.Windows.Forms.ColorDialog colorDialog1;
     }
 }

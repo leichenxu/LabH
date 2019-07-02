@@ -108,7 +108,7 @@ namespace Practice7
         /// <returns>Return the key pressed if need to use.</returns>
         public KeysUsed mpvController(KeyEventArgs keyEventArgs)
         {
-            lock (this)
+            lock (this.MpvPlayer.MpvLock)
                 //check if have media loaded, if not doesnt need to do something
                 if (this.MpvPlayer.IsMediaLoaded)
                 {
@@ -127,6 +127,7 @@ namespace Practice7
                     }
                     else if (keyEventArgs.KeyCode == MoveForward.KeyCode && keyEventArgs.Modifiers == MoveForward.Modifiers)
                     {
+
                         //go to timeSetWithKey for move forward and backward
                         MpvPlayer.Position = timeSetWithKey(keyEventArgs);
                         //if mpv is in the last second return 
@@ -135,6 +136,7 @@ namespace Practice7
                             return KeysUsed.VideoFinished;
                         }
                         return KeysUsed.MoveForward;
+
                     }
                     else if (keyEventArgs.KeyCode == MoveBackward.KeyCode && keyEventArgs.Modifiers == MoveBackward.Modifiers)
                     {

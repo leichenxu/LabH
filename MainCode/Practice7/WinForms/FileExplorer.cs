@@ -32,7 +32,7 @@ namespace Practice7
         /// </summary>
         /// <param name="mainForm"></param>
         /// <param name="extension"></param>
-        public FileExplorer(Form mainForm,string extension,WinFormSetting settingForm)
+        public FileExplorer(Form mainForm, string extension, WinFormSetting settingForm)
         {
             //activate key preview
             KeyPreview = true;
@@ -55,7 +55,7 @@ namespace Practice7
             {
                 if (textBoxNewFileName.Text != null)
                 {
-                    this.createProject_Click(sender,k);
+                    this.createProject_Click(sender, k);
                 }
             }
         }
@@ -141,20 +141,20 @@ namespace Practice7
 
                     //files and directories for crete
                     Directory.CreateDirectory(pathAux);
-                    Directory.CreateDirectory(pathAux+"\\Sources");
-                    File.Create(pathAux + "\\azor"+extension);
+                    Directory.CreateDirectory(pathAux + "\\Sources");
+                    File.Create(pathAux + "\\azor" + extension);
                     Directory.CreateDirectory(pathAux + "\\Sources\\temp");
                     Directory.CreateDirectory(pathAux + "\\Sources\\videos");
                     Directory.CreateDirectory(pathAux + "\\Sources\\exported");
                     this.projectStorePath = pathAux;
-                    
+
                     //close the mainform
                     this.mainForm.Close();
                     this.Close();
                     //start new thread
                     Thread th = new Thread(opennewform);
                     th.SetApartmentState(ApartmentState.STA);
-                    th.Start();                    
+                    th.Start();
                 }
                 else
                 {
@@ -169,7 +169,7 @@ namespace Practice7
         /// </summary>
         private void opennewform()
         {
-            Application.Run(new WinFormWithVideoPlayer(projectStorePath,settingForm));
+            Application.Run(new WinFormWithVideoPlayer(projectStorePath, settingForm));
         }
 
         /// <summary>

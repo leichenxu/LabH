@@ -42,6 +42,7 @@
             this.labelOpenProject = new System.Windows.Forms.Label();
             this.labelSetting = new System.Windows.Forms.Label();
             this.labelHelp = new System.Windows.Forms.Label();
+            this.createNewProjectFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.panelSetting.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,7 +63,7 @@
             this.buttonNewProject.BackColor = System.Drawing.Color.Transparent;
             this.buttonNewProject.BackgroundImage = global::Practice7.Properties.Resources.NewProject;
             this.buttonNewProject.FlatAppearance.BorderSize = 0;
-            this.buttonNewProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonNewProject.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonNewProject.Location = new System.Drawing.Point(449, 154);
             this.buttonNewProject.Margin = new System.Windows.Forms.Padding(2);
             this.buttonNewProject.Name = "buttonNewProject";
@@ -76,7 +77,7 @@
             this.buttonOpenProject.BackColor = System.Drawing.Color.Transparent;
             this.buttonOpenProject.BackgroundImage = global::Practice7.Properties.Resources.OpenProject;
             this.buttonOpenProject.FlatAppearance.BorderSize = 0;
-            this.buttonOpenProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonOpenProject.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonOpenProject.Location = new System.Drawing.Point(601, 154);
             this.buttonOpenProject.Margin = new System.Windows.Forms.Padding(2);
             this.buttonOpenProject.Name = "buttonOpenProject";
@@ -88,7 +89,7 @@
             // buttonSettings
             // 
             this.buttonSettings.BackColor = System.Drawing.Color.Transparent;
-            this.buttonSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonSettings.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonSettings.Location = new System.Drawing.Point(449, 268);
             this.buttonSettings.Margin = new System.Windows.Forms.Padding(2);
             this.buttonSettings.Name = "buttonSettings";
@@ -103,7 +104,7 @@
             this.buttonHelp.BackColor = System.Drawing.Color.Transparent;
             this.buttonHelp.BackgroundImage = global::Practice7.Properties.Resources.Help;
             this.buttonHelp.FlatAppearance.BorderSize = 0;
-            this.buttonHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonHelp.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonHelp.Location = new System.Drawing.Point(612, 268);
             this.buttonHelp.Margin = new System.Windows.Forms.Padding(2);
             this.buttonHelp.Name = "buttonHelp";
@@ -200,6 +201,10 @@
             this.labelHelp.TabIndex = 10;
             this.labelHelp.Text = "Help";
             // 
+            // createNewProjectFileDialog
+            // 
+            this.createNewProjectFileDialog.Filter = "AZOR | ";
+            // 
             // MainWinForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -244,5 +249,6 @@
         private System.Windows.Forms.Label labelOpenProject;
         private System.Windows.Forms.Label labelSetting;
         private System.Windows.Forms.Label labelHelp;
+        private System.Windows.Forms.SaveFileDialog createNewProjectFileDialog;
     }
 }

@@ -77,6 +77,8 @@
             this.buttonDelete = new System.Windows.Forms.Button();
             this.buttonAnalysis = new System.Windows.Forms.Button();
             this.buttonSync = new System.Windows.Forms.Button();
+            this.openFileDialogTagPath = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialogTag = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.mpvPictureBox)).BeginInit();
             this.contextMenuRightClickOnTime.SuspendLayout();
             this.panelClipsSaved.SuspendLayout();
@@ -506,11 +508,11 @@
             this.buttonNewTag.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonNewTag.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonNewTag.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.buttonNewTag.Image = global::Practice7.Properties.Resources.PlusButton;
             this.buttonNewTag.Location = new System.Drawing.Point(1458, 497);
             this.buttonNewTag.Name = "buttonNewTag";
             this.buttonNewTag.Size = new System.Drawing.Size(34, 36);
             this.buttonNewTag.TabIndex = 46;
-            this.buttonNewTag.Text = "+";
             this.buttonNewTag.UseVisualStyleBackColor = false;
             this.buttonNewTag.Click += new System.EventHandler(this.buttonNewTag_Click);
             // 
@@ -538,9 +540,9 @@
             // 
             // buttonSaveTags
             // 
-            this.buttonSaveTags.Location = new System.Drawing.Point(1525, 505);
+            this.buttonSaveTags.Location = new System.Drawing.Point(1498, 497);
             this.buttonSaveTags.Name = "buttonSaveTags";
-            this.buttonSaveTags.Size = new System.Drawing.Size(137, 52);
+            this.buttonSaveTags.Size = new System.Drawing.Size(137, 53);
             this.buttonSaveTags.TabIndex = 48;
             this.buttonSaveTags.Text = "saveTags";
             this.buttonSaveTags.UseVisualStyleBackColor = true;
@@ -548,9 +550,9 @@
             // 
             // buttonLoadTags
             // 
-            this.buttonLoadTags.Location = new System.Drawing.Point(1680, 508);
+            this.buttonLoadTags.Location = new System.Drawing.Point(1641, 497);
             this.buttonLoadTags.Name = "buttonLoadTags";
-            this.buttonLoadTags.Size = new System.Drawing.Size(104, 49);
+            this.buttonLoadTags.Size = new System.Drawing.Size(144, 53);
             this.buttonLoadTags.TabIndex = 49;
             this.buttonLoadTags.Text = "loadTags";
             this.buttonLoadTags.UseVisualStyleBackColor = true;
@@ -560,7 +562,7 @@
             // 
             this.buttonSetting.BackColor = System.Drawing.Color.Transparent;
             this.buttonSetting.FlatAppearance.BorderSize = 0;
-            this.buttonSetting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonSetting.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonSetting.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonSetting.ForeColor = System.Drawing.SystemColors.Control;
             this.buttonSetting.Location = new System.Drawing.Point(1109, 27);
@@ -595,22 +597,28 @@
             // 
             // buttonExport
             // 
-            this.buttonExport.Location = new System.Drawing.Point(1458, 923);
+            this.buttonExport.BackColor = System.Drawing.Color.Transparent;
+            this.buttonExport.FlatAppearance.BorderSize = 0;
+            this.buttonExport.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonExport.Image = global::Practice7.Properties.Resources.ExportButton;
+            this.buttonExport.Location = new System.Drawing.Point(1455, 923);
             this.buttonExport.Name = "buttonExport";
-            this.buttonExport.Size = new System.Drawing.Size(85, 26);
+            this.buttonExport.Size = new System.Drawing.Size(34, 26);
             this.buttonExport.TabIndex = 51;
-            this.buttonExport.Text = "buttonExport";
-            this.buttonExport.UseVisualStyleBackColor = true;
+            this.buttonExport.UseVisualStyleBackColor = false;
             this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
             // 
             // buttonDelete
             // 
-            this.buttonDelete.Location = new System.Drawing.Point(1723, 923);
+            this.buttonDelete.BackColor = System.Drawing.Color.Transparent;
+            this.buttonDelete.FlatAppearance.BorderSize = 0;
+            this.buttonDelete.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonDelete.Image = global::Practice7.Properties.Resources.TrashButton;
+            this.buttonDelete.Location = new System.Drawing.Point(1773, 923);
             this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(83, 26);
+            this.buttonDelete.Size = new System.Drawing.Size(33, 26);
             this.buttonDelete.TabIndex = 52;
-            this.buttonDelete.Text = "buttonDelete";
-            this.buttonDelete.UseVisualStyleBackColor = true;
+            this.buttonDelete.UseVisualStyleBackColor = false;
             this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
             // 
             // buttonAnalysis
@@ -618,7 +626,7 @@
             this.buttonAnalysis.BackColor = System.Drawing.Color.Transparent;
             this.buttonAnalysis.Enabled = false;
             this.buttonAnalysis.FlatAppearance.BorderSize = 0;
-            this.buttonAnalysis.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonAnalysis.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonAnalysis.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonAnalysis.ForeColor = System.Drawing.SystemColors.Control;
             this.buttonAnalysis.Location = new System.Drawing.Point(1215, 27);
@@ -634,7 +642,7 @@
             this.buttonSync.BackColor = System.Drawing.Color.Transparent;
             this.buttonSync.Enabled = false;
             this.buttonSync.FlatAppearance.BorderSize = 0;
-            this.buttonSync.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonSync.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonSync.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonSync.ForeColor = System.Drawing.SystemColors.Control;
             this.buttonSync.Location = new System.Drawing.Point(1038, 27);
@@ -644,6 +652,19 @@
             this.buttonSync.Text = "SYNC";
             this.buttonSync.UseVisualStyleBackColor = false;
             this.buttonSync.Click += new System.EventHandler(this.buttonSync_Click);
+            // 
+            // openFileDialogTagPath
+            // 
+            this.openFileDialogTagPath.DefaultExt = "json";
+            this.openFileDialogTagPath.FileName = "openFileDialog1";
+            this.openFileDialogTagPath.Filter = "Tag file (*.json)|*.json";
+            this.openFileDialogTagPath.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialogTagPath_FileOk);
+            // 
+            // saveFileDialogTag
+            // 
+            this.saveFileDialogTag.DefaultExt = "json";
+            this.saveFileDialogTag.Filter = "Tag file (*.json)|*.json";
+            this.saveFileDialogTag.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialogTag_FileOk);
             // 
             // WinFormWithVideoPlayer
             // 
@@ -755,5 +776,7 @@
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Button buttonAnalysis;
         private System.Windows.Forms.Button buttonSync;
+        private System.Windows.Forms.OpenFileDialog openFileDialogTagPath;
+        private System.Windows.Forms.SaveFileDialog saveFileDialogTag;
     }
 }

@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Mpv.NET.Player;
 using Newtonsoft.Json;
+using Microsoft.VisualBasic;
+
 namespace Practice7
 {
     public partial class WinFormSetting : Form
@@ -218,6 +220,7 @@ namespace Practice7
         /// <param name="e"></param>
         private void buttonMainClickEvent(object sender, EventArgs e)
         {
+            mpv.Stop();
             Button b = sender as Button;
             string url = null;
             //check all
@@ -273,7 +276,7 @@ namespace Practice7
             {
                 //play the video
                 this.mpv.AutoPlay = true;
-                this.mpv.Load(url,null);
+                this.mpv.Load(url, null);
                 //show the info, 0 widht X height, 2 name
                 string[] information = info.Split(';');
                 this.labelAvailable.Text = Available;
@@ -296,7 +299,7 @@ namespace Practice7
                             break;
                     }
                     //add the text
-                    if (information.Length - 1 >= i&&!information[i].Equals(""))
+                    if (information.Length - 1 >= i && !information[i].Equals(""))
                     {
                         (allInformation[i] as Label).Text += information[i];
                     }
@@ -335,10 +338,11 @@ namespace Practice7
             return null;
         }
         public string GetVideoInfo(string input)
-        {            
+        {
             string info = "";
             //  set up the parameters for video info.
-            string @params = string.Format("-i {0}", input);
+            string @params = "-stimeout -1 -rtsp_transport tcp " +
+                "-rtsp_flags prefer_tcp -i " + input;
             string output = Run(ffmpegtool, @params);
             string resolutionRegex = "(\\d+)x(\\d+)";
             string nameRegex = "(title\\s*:\\s*)(.+)";
@@ -356,9 +360,9 @@ namespace Practice7
                 int width = 0; int height = 0;
                 int.TryParse(reInfo.Groups[1].Value, out width);
                 int.TryParse(reInfo.Groups[2].Value, out height);
-                info += ";"+width + " x" + height;
+                info += ";" + width + " x" + height;
             }
-            
+
             //get bit rate
             string bitRateRegex = "(bitrate\\s*:\\s*)(.+)";
             Match bitRateInfo = getInfoFromOutput(output, bitRateRegex);
@@ -399,7 +403,9 @@ namespace Practice7
                 throw new Exception(string.Format("Cannot find {0}.", process));
 
             //  Create a process info.
-            ProcessStartInfo oInfo = new ProcessStartInfo(process, parameters);
+            ProcessStartInfo oInfo = new ProcessStartInfo();
+            oInfo.FileName = process;
+            oInfo.Arguments = parameters;
             oInfo.UseShellExecute = false;
             oInfo.CreateNoWindow = true;
             oInfo.RedirectStandardOutput = true;
@@ -413,8 +419,17 @@ namespace Practice7
             {
                 //  Run the process.
                 Process proc = System.Diagnostics.Process.Start(oInfo);
+                //Stopwatch stopwatch = new Stopwatch();
+                //stopwatch.Start();
+                //while (!proc.HasExited)
+                //{
+                //    if (stopwatch.ElapsedMilliseconds > 10000)
+                //    {
+                //        proc.Kill();
+                //        return "";
+                //    }
+                //}
 
-                proc.WaitForExit();
 
                 //read it
                 outputStream = proc.StandardError;
@@ -466,35 +481,31 @@ namespace Practice7
         /// <param name="e"></param>
         private void buttonSaveSetting_Click(object sender, EventArgs e)
         {
-            if (comboBoxSetting.Text.Equals(""))
+            //new string name
+            string newSettingName = Interaction.InputBox("Introduce el nombre del nuevo video", "Nuevo setting");
+
+            if (!mapSetting.ContainsKey(newSettingName))
             {
-                MessageBox.Show("No hay nombre");
+                //create
+                Setting s = new Setting(newSettingName, this.MainUrl, this.SecondaryUrl);
+                //add it
+                settings.Add(s);
+                mapSetting.Add(newSettingName, s);
+                //add to combobox
+                comboBoxSetting.Items.Add(s);
             }
             else
             {
-                if (!mapSetting.ContainsKey(comboBoxSetting.Text))
-                {
-                    //create
-                    Setting s = new Setting(comboBoxSetting.Text, this.MainUrl, this.SecondaryUrl);
-                    //add it
-                    settings.Add(s);
-                    mapSetting.Add(comboBoxSetting.Text, s);
-                    //add to combobox
-                    comboBoxSetting.Items.Add(s);
-                }
-                else
-                {
-                    Setting s = mapSetting[ComboBoxSetting.Text];
-                    s.MainUrl = (string[])this.mainUrl.Clone();
-                    s.SecondaryUrl = (string[])this.secondaryUrl.Clone();
-                }
-                //save list every time when save clicked
-                StreamWriter sw = File.CreateText(documentsPath);
-                sw.Write(JsonConvert.SerializeObject(settings));
-                sw.Close();
+                Setting s = mapSetting[newSettingName];
+                s.MainUrl = (string[])this.mainUrl.Clone();
+                s.SecondaryUrl = (string[])this.secondaryUrl.Clone();
             }
-        }
+            //save list every time when save clicked
+            StreamWriter sw = File.CreateText(documentsPath);
+            sw.Write(JsonConvert.SerializeObject(settings));
+            sw.Close();
 
+        }
         /// <summary>
         /// When text change store the url.
         /// </summary>
@@ -637,6 +648,32 @@ namespace Practice7
                     textBoxSecondary4.Text = text;
                     break;
             }
+        }
+        /// <summary>
+        /// Save the json file with the last index first
+        /// </summary>
+        public void SaveJsonWithTheLastIndexFirst()
+        {
+            //new streamwritter
+            StreamWriter sw = File.CreateText(documentsPath);
+            //new list for store
+            List<Setting> settings = new List<Setting>();
+            //check have index or not
+            if (LastIndex != -1)
+                //add the last first
+                settings.Add(mapSetting[(comboBoxSetting.Items[LastIndex] as Setting).Name]);
+            //add all, but last index not
+            for (int i = 0; i < ComboBoxSetting.Items.Count; i++)
+            {
+                if (i != LastIndex)
+                {
+                    settings.Add(mapSetting[(comboBoxSetting.Items[i] as Setting).Name]);
+                }
+            }
+            //store it
+            sw.Write(JsonConvert.SerializeObject(settings));
+            //close
+            sw.Close();
         }
     }
 }

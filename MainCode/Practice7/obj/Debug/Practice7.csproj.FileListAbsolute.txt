@@ -1,12 +1,3 @@
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Practice7.exe.config
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Practice7.exe
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Practice7.pdb
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.csprojAssemblyReference.cache
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.Properties.Resources.resources
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.csproj.GenerateResource.cache
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.csproj.CoreCompileInputs.cache
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.exe
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.pdb
 C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\Practice7.exe.config
 C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\Practice7.exe
 C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\Practice7.pdb
@@ -142,8 +133,24 @@ C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\LibMplayerCommon.
 C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\LibMPlayerWinform.dll
 C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\LibMplayerCommon.xml
 C:\Users\lei_1\Desktop\practicas\Practice7\Practice7\bin\Debug\LibMPlayerWinform.xml
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.exe.config
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.FileExplorer.resources
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.csprojAssemblyReference.cache
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.exe.config
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.Form1.resources
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.PanelTag.resources
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.FileExplorer.resources
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.WinFormLoading.resources
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.Properties.Resources.resources
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.MainWinForm.resources
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.WinFormWithVideoPlayer.resources
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.csproj.GenerateResource.cache
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.csproj.CoreCompileInputs.cache
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.exe
+C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.pdb
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Practice7.exe.config
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Practice7.exe.manifest
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Practice7.application
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Practice7.exe
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Practice7.pdb
 C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Microsoft.Win32.Primitives.dll
 C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\netstandard.dll
 C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.AppContext.dll
@@ -240,34 +247,29 @@ C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Xml.Xml
 C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Xml.XmlSerializer.dll
 C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Xml.XPath.dll
 C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\System.Xml.XPath.XDocument.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\CircularProgressBar.dll
 C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Mpv.NET.dll
 C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\WinFormAnimation.dll
 C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Mpv.NET.pdb
 C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Newtonsoft.Json.xml
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.csproj.CopyComplete
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.WinFormWithVideoPlayer.resources
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.WinFormLoading.resources
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.MainWinForm.resources
-C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.csprojAssemblyReference.cache
-C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.exe.config
-C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.Form1.resources
-C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.PanelTag.resources
-C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.FileExplorer.resources
-C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.WinFormLoading.resources
-C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.Properties.Resources.resources
-C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.MainWinForm.resources
-C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.WinFormWithVideoPlayer.resources
-C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.csproj.GenerateResource.cache
-C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.csproj.CoreCompileInputs.cache
-C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.exe
-C:\Users\lei_1\Desktop\Practice7\Practice7\obj\Debug\Practice7.pdb
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.PanelTag.resources
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\CircularProgressBar.dll
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\WinFormAnimation.dll
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.PanelTagForm.resources
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.WinFormSetting.resources
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\Practice7.exe.manifest
 C:\Users\Developer Lee\source\repos\Practice7\Practice7\bin\Debug\mpv-1.dll
-C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.exe.manifest
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.csprojAssemblyReference.cache
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.exe.config
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.PanelTag.resources
 C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.WinFormAnalysis.resources
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.WinFormSetting.resources
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.FileExplorer.resources
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.PanelTagForm.resources
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.WinFormLoading.resources
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.Properties.Resources.resources
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.MainWinForm.resources
 C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.WinFormSync.resources
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.WinFormWithVideoPlayer.resources
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.csproj.GenerateResource.cache
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.csproj.CoreCompileInputs.cache
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.exe.manifest
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.application
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.csproj.CopyComplete
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.exe
+C:\Users\Developer Lee\source\repos\Practice7\Practice7\obj\Debug\Practice7.pdb

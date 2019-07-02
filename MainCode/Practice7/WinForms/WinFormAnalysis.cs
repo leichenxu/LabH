@@ -179,26 +179,41 @@ namespace Practice7
             MapLoadedEvent[sender as MpvPlayer].Set();
             //get the player
             Mpv.NET.Player.MpvPlayer player = sender as MpvPlayer;
-            //locks for safe
-            lock (winForm.LockClass1)
-                lock (parentMpvPersonalized)
-                    lock (player)
-                        //check loaded or not the media
-                        if (player.Duration > TimeSpan.Zero && parentMpvPersonalized.MpvPlayer.Duration > TimeSpan.Zero && player.IsMediaLoaded && parentMpvPersonalized.MpvPlayer.IsMediaLoaded
-                            && player.Duration >= winForm.CurrentTimeSpan && !winForm.InZero)
-                        {
-                            ///ESTE SET POTITION PROVOCA ERROR, SE COMPROBA TODO, PERO SIGUE DANDO ERRORES
-                            ///MOTIVO DESCONOCIDO, Y PARECE SER QUE NO FUNCIONA EL LOCK
-                            ///COMO ALTERNATIVA, YA QUE SOLO INFLUYE SI SE PROVOCA MUCHAS VECES, HACER TRY
-                            ///CATCH, PERO POR DENTRO TAMBIEN LO HACE, PORQUE, ES EN EL CASO SEEK, SE PUEDE
-                            ///COMPROBAR EL ARGUMENTO PASADO Y SI ES SEEK, HACER OTRAS COSAS
-
-                            //set position
-                            player.Position = winForm.CurrentTimeSpan;
-                            //set position to father for sincronize
-                            if (parentMpvPersonalized.MpvPlayer.IsMediaLoaded && !winForm.InZero)
-                                parentMpvPersonalized.MpvPlayer.Position = winForm.CurrentTimeSpan;
-                        }
+            //enter parent mpv
+            Monitor.Enter(parentMpvPersonalized.MpvPlayer.MpvLock);
+            //try enter player
+            bool enter = Monitor.TryEnter(player.MpvLock, 1000);
+            //if not enter
+            if (!enter)
+            {
+                //leave father
+                Monitor.Exit(parentMpvPersonalized.MpvPlayer.MpvLock);
+                //wait player and enter
+                Monitor.Enter(player.MpvLock);
+                //try enter parent again
+                if (!Monitor.TryEnter(parentMpvPersonalized.MpvPlayer, 1000))
+                {
+                    //if fail wait senial
+                    winForm.ManualResetEventMpvUnlock.WaitOne();
+                    //then enter
+                    Monitor.Enter(parentMpvPersonalized.MpvPlayer.MpvLock);
+                }
+            }
+            //check loaded or not the media
+            if (player.Duration > TimeSpan.Zero && parentMpvPersonalized.MpvPlayer.Duration > TimeSpan.Zero && player.IsMediaLoaded && parentMpvPersonalized.MpvPlayer.IsMediaLoaded
+                && player.Duration >= winForm.CurrentTimeSpan && !winForm.InZero)
+            {
+                //set position
+                player.Position = winForm.CurrentTimeSpan;
+                //set position to father for sincronize
+                if (parentMpvPersonalized.MpvPlayer.IsMediaLoaded && !winForm.InZero)
+                    parentMpvPersonalized.MpvPlayer.Position = winForm.CurrentTimeSpan;
+            }
+            //leave
+            Monitor.Exit(player.MpvLock);
+            Monitor.Exit(parentMpvPersonalized.MpvPlayer.MpvLock);
+            //send senial
+            winForm.ManualResetEventMpvUnlock.Set();
         }
         /// <summary>
         /// Override input received before do something in user interface, for not move in buttons.
@@ -214,9 +229,8 @@ namespace Practice7
                 keyData == Keys.Down || keyData == Keys.Enter))
             {
 
-                //sent the event to the controller
-                parentMpvPersonalized.mpvController(new KeyEventArgs(keyData));
-                CommandToMpv(keyData);
+                //sent the event to parent
+                winForm.ProcessCmdDelegate(keyData);
                 //interface cannot take the input key
                 return true;
             }//change camera
@@ -329,7 +343,7 @@ namespace Practice7
         /// </summary>
         private void OneCommand(Keys keyData)
         {
-            lock (mpvPersonalized)
+            lock (mpvPersonalized.MpvPlayer.MpvLock)
                 MpvPersonalized.mpvController(new KeyEventArgs(keyData));
         }
         /// <summary>
@@ -343,7 +357,7 @@ namespace Practice7
                 //run 4 mpv, lock it, check it and send command it
                 foreach (MpvPersonalized mpv in FourMpv)
                 {
-                    lock (mpv)
+                    lock (mpv.MpvPlayer.MpvLock)
                         if (mpv.MpvPlayer.IsMediaLoaded && mpv.MpvPlayer.Duration > TimeSpan.Zero)
                             mpv.mpvController(new KeyEventArgs(keyData));
                 }
@@ -359,7 +373,7 @@ namespace Practice7
             {
                 foreach (MpvPersonalized mpv in twoMainMpv)
                 {
-                    lock (mpv)
+                    lock (mpv.MpvPlayer.MpvLock)
                         if (mpv.MpvPlayer.IsMediaLoaded)
                             mpv.mpvController(new KeyEventArgs(keyData));
                 }

@@ -118,85 +118,94 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="BackGroundControl" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BackGroundControl.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="pauseButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pauseButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="recordButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\recordButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="LiveMultiviewer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\LiveMultiviewer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="closeButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\closeButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="LogoIntro" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\LogoIntro.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="liveButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\liveButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="stopButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stopButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="forwardButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\forwardButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="backwardButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\backwardButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="BackGroundMultiviewer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BackGroundMultiviewer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="LiveMultiviewer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LiveMultiviewer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="BackGroundSettings" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BackGroundSettings.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="pauseButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\pauseButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="fastBackwardButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fastBackwardButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="markIn" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\markIn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Sync" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Sync.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="NewProject" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NewProject.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="PlusButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PlusButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Help" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Help.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="playButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\playButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="BackGroundMultiviewer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BackGroundMultiviewer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="markOut" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\markOut.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="markIn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\markIn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="fastForwardButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fastForwardButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="replayButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\replayButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="LogoIntro" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LogoIntro.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="forwardButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\forwardButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="stopButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stopButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BackGroundControl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BackGroundControl.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sync" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sync.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="OpenProject" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OpenProject.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="stopButtonAnimate" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\stopButtonAnimate.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="trimClip" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\trimClip.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="fastBackwardButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\fastBackwardButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="playButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\playButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="OpenPanel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OpenPanel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="NewProject" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewProject.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="BackgroundTags" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BackgroundTags.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="trimClip" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\trimClip.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="markOut" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\markOut.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="liveButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\liveButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="replayButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\replayButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ExportButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ExportButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stopButtonAnimate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stopButtonAnimate.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Análisis_View4_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Análisis_View4-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="closeButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\closeButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TrashButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TrashButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
