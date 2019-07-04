@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="AZOR.exe" version="1.0.0.5" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="AZOR.exe" version="0.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="AZOR" version="1.0.0.0" publicKeyToken="AA6947D02A6BEF62" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="AZOR" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
     <commandLine file="AZOR.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AZOR.exe" size="865808">
-      <assemblyIdentity name="AZOR" version="1.0.0.0" publicKeyToken="AA6947D02A6BEF62" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AZOR.exe" size="864256">
+      <assemblyIdentity name="AZOR" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>dZLVlmwfBphVOc/avYGvl19OFeXLMA+M79QN2RQbDZU=</dsig:DigestValue>
+        <dsig:DigestValue>AtBMILNGCVzkF1KaT6b/fTGd3zqYqSWN3k7+kXovU5c=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -1271,22 +1271,13 @@
       <dsig:DigestValue>uLPhb2Bfqzw5COXB/h+Ms7FZK0vItGHHJcQyRZTkF04=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="lib\mpv-1.dll" size="47593352">
+  <file name="mpv-1.dll" size="47593352">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
       <dsig:DigestValue>z/ILCWJVzy7lTZfpSFzGMBQvPCONV6ZT8o0AIZiKaOU=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="lib\youtube-dl.exe" size="7990856">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>kDNFi6qaFm/zDjaN9mstbnkGKzN+bwKlVZDAyWG1ql4=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

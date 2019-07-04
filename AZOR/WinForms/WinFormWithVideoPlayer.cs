@@ -458,7 +458,7 @@ namespace AZOR
             //create the button
             Button tagButton = createButtonTag(tag);
             //add to tag
-            addTag(tag, tagButton);
+            AddTag(tag, tagButton);
             //scroll it
             panelTags.ScrollControlIntoView(tagButton);
             //create=>information used=>not have information now
@@ -1880,7 +1880,7 @@ namespace AZOR
         /// </summary>
         /// <param name="tag"></param>
         /// <param name="button"></param>
-        private void addTag(Tag tag, Button button)
+        private void AddTag(Tag tag, Button button)
         {
             //save the tag
             tagMap.Add(button, tag);
