@@ -1,0 +1,36 @@
+C:\Users\lei_1\Desktop\practicas\librerias\Mpv.NET-master\src\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.deps.json
+C:\Users\lei_1\Desktop\practicas\librerias\Mpv.NET-master\src\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.dll
+C:\Users\lei_1\Desktop\practicas\librerias\Mpv.NET-master\src\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.pdb
+C:\Users\lei_1\Desktop\practicas\librerias\Mpv.NET-master\src\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.csprojAssemblyReference.cache
+C:\Users\lei_1\Desktop\practicas\librerias\Mpv.NET-master\src\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.csproj.CoreCompileInputs.cache
+C:\Users\lei_1\Desktop\practicas\librerias\Mpv.NET-master\src\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.AssemblyInfoInputs.cache
+C:\Users\lei_1\Desktop\practicas\librerias\Mpv.NET-master\src\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.AssemblyInfo.cs
+C:\Users\lei_1\Desktop\practicas\librerias\Mpv.NET-master\src\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.dll
+C:\Users\lei_1\Desktop\practicas\librerias\Mpv.NET-master\src\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.pdb
+C:\Users\Developer Lee\source\repos\librerias\Mpv.NET-master\src\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.deps.json
+C:\Users\Developer Lee\source\repos\librerias\Mpv.NET-master\src\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.dll
+C:\Users\Developer Lee\source\repos\librerias\Mpv.NET-master\src\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.pdb
+C:\Users\Developer Lee\source\repos\librerias\Mpv.NET-master\src\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.csproj.CoreCompileInputs.cache
+C:\Users\Developer Lee\source\repos\librerias\Mpv.NET-master\src\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.AssemblyInfoInputs.cache
+C:\Users\Developer Lee\source\repos\librerias\Mpv.NET-master\src\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.AssemblyInfo.cs
+C:\Users\Developer Lee\source\repos\librerias\Mpv.NET-master\src\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.dll
+C:\Users\Developer Lee\source\repos\librerias\Mpv.NET-master\src\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.pdb
+C:\Users\Developer Lee\source\repos\librerias\Mpv.NET-master\src\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.csprojAssemblyReference.cache
+C:\Users\Developer Lee\source\repos\Practice7\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.deps.json
+C:\Users\Developer Lee\source\repos\Practice7\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.dll
+C:\Users\Developer Lee\source\repos\Practice7\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.pdb
+C:\Users\Developer Lee\source\repos\Practice7\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.csprojAssemblyReference.cache
+C:\Users\Developer Lee\source\repos\Practice7\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.csproj.CoreCompileInputs.cache
+C:\Users\Developer Lee\source\repos\Practice7\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.AssemblyInfoInputs.cache
+C:\Users\Developer Lee\source\repos\Practice7\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.AssemblyInfo.cs
+C:\Users\Developer Lee\source\repos\Practice7\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.dll
+C:\Users\Developer Lee\source\repos\Practice7\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.pdb
+C:\Users\Developer Lee\source\repos\Azor\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.deps.json
+C:\Users\Developer Lee\source\repos\Azor\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.dll
+C:\Users\Developer Lee\source\repos\Azor\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.pdb
+C:\Users\Developer Lee\source\repos\Azor\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.csprojAssemblyReference.cache
+C:\Users\Developer Lee\source\repos\Azor\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.csproj.CoreCompileInputs.cache
+C:\Users\Developer Lee\source\repos\Azor\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.AssemblyInfoInputs.cache
+C:\Users\Developer Lee\source\repos\Azor\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.AssemblyInfo.cs
+C:\Users\Developer Lee\source\repos\Azor\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.dll
+C:\Users\Developer Lee\source\repos\Azor\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.pdb
