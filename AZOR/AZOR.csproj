@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>0.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -270,7 +270,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ffmpeg.exe" />
-    <Content Include="mpv-1.dll" />
+    <None Include="mpv-1.dll" />
     <None Include="Resources\TrashButton.png" />
     <None Include="Resources\ExportButton.png" />
     <None Include="Resources\PlusButton.png" />
