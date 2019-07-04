@@ -34,3 +34,12 @@ C:\Users\Developer Lee\source\repos\Azor\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NE
 C:\Users\Developer Lee\source\repos\Azor\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.AssemblyInfo.cs
 C:\Users\Developer Lee\source\repos\Azor\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.dll
 C:\Users\Developer Lee\source\repos\Azor\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.pdb
+C:\Users\Developer Lee\LabH\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.deps.json
+C:\Users\Developer Lee\LabH\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.dll
+C:\Users\Developer Lee\LabH\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.pdb
+C:\Users\Developer Lee\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.csprojAssemblyReference.cache
+C:\Users\Developer Lee\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.csproj.CoreCompileInputs.cache
+C:\Users\Developer Lee\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.AssemblyInfoInputs.cache
+C:\Users\Developer Lee\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.AssemblyInfo.cs
+C:\Users\Developer Lee\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.dll
+C:\Users\Developer Lee\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.pdb

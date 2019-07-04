@@ -71,10 +71,10 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>3A74CB53C864D1520E4F6E1E9989C132E8CA4992</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>BE0268733BEC728C68C5FE7BA20AB57F228CFA3C</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Practice7_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>AZOR_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -215,6 +215,7 @@
     <EmbeddedResource Include="WinForms\WinFormWithVideoPlayer.resx">
       <DependentUpon>WinFormWithVideoPlayer.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="AZOR_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
