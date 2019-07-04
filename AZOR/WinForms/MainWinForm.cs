@@ -214,12 +214,13 @@ namespace AZOR
                 File.WriteAllLines(recentlyOpenedProjectFilePath, fileToAdd);
 
 
-                //close the mainform
-                this.Close();
+                
                 //start new thread
                 Thread th = new Thread(opennewform);
                 th.SetApartmentState(ApartmentState.STA);
                 th.Start();
+                //close the mainform
+                this.Close();
             }
         }
         /// <summary>
@@ -327,8 +328,6 @@ namespace AZOR
                 this.panelHelp.Visible = true;
             }
         }
-
-
     }
 }
 

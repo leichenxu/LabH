@@ -26,7 +26,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -215,7 +215,7 @@
     <EmbeddedResource Include="WinForms\WinFormWithVideoPlayer.resx">
       <DependentUpon>WinFormWithVideoPlayer.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="AZOR_TemporaryKey.pfx" />
+    <None Include="lib\ytdl_hook.lua" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -260,6 +260,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ffmpeg.exe" />
+    <Content Include="lib\mpv-1.dll" />
+    <Content Include="lib\youtube-dl.exe" />
     <None Include="Resources\TrashButton.png" />
     <None Include="Resources\ExportButton.png" />
     <None Include="Resources\PlusButton.png" />
@@ -289,5 +291,6 @@
       <Name>Mpv.NET</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

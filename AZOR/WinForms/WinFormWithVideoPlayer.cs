@@ -1070,15 +1070,16 @@ namespace AZOR
                 {
                     setTextBotTime s = new setTextBotTime(showTimeChange);
                     //try it, cannot resolve it, because cant check form closing or not
-                    try
-                    {
+                    if(CanInvoke)
+                    //try
+                    //{
                         this.Invoke(s, new object[] { sender, e });
-                    }
-                    catch (System.ObjectDisposedException exc)
-                    {
-                        Debug.WriteLine("Closing winform");
-                        Debug.WriteLine(exc);
-                    }
+                    //}
+                    //catch (System.ObjectDisposedException exc)
+                    //{
+                    //    Debug.WriteLine("Closing winform");
+                    //    Debug.WriteLine(exc);
+                    //}
                 }
                 else
                 {
