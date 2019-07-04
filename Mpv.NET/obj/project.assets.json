@@ -185,11 +185,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Developer Lee\\source\\repos\\Azor\\Mpv.NET\\Mpv.NET.csproj",
+      "projectUniqueName": "C:\\Users\\Developer Lee\\LabH\\Mpv.NET\\Mpv.NET.csproj",
       "projectName": "Mpv.NET",
-      "projectPath": "C:\\Users\\Developer Lee\\source\\repos\\Azor\\Mpv.NET\\Mpv.NET.csproj",
+      "projectPath": "C:\\Users\\Developer Lee\\LabH\\Mpv.NET\\Mpv.NET.csproj",
       "packagesPath": "C:\\Users\\Developer Lee\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Developer Lee\\source\\repos\\Azor\\Mpv.NET\\obj\\",
+      "outputPath": "C:\\Users\\Developer Lee\\LabH\\Mpv.NET\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
