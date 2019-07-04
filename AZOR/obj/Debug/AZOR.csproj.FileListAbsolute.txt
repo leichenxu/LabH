@@ -251,3 +251,4 @@ C:\Users\Developer Lee\LabH\AZOR\obj\Debug\AZOR.application
 C:\Users\Developer Lee\LabH\AZOR\obj\Debug\AZOR.csproj.CopyComplete
 C:\Users\Developer Lee\LabH\AZOR\obj\Debug\AZOR.exe
 C:\Users\Developer Lee\LabH\AZOR\obj\Debug\AZOR.pdb
+C:\Users\Developer Lee\LabH\AZOR\bin\Debug\mpv-1.dll
