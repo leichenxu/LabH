@@ -15,11 +15,7 @@ using System.Text;
 namespace AZOR
 {
     public partial class WinFormSetting : Form
-    {
-        /// <summary>
-        /// Key for AES128.
-        /// </summary>
-        private static readonly string KEY = "FEP9DqbG7VTncqaS";
+    {      
         /// <summary>
         /// Azor setting file extension.
         /// </summary>
@@ -166,25 +162,9 @@ namespace AZOR
 
             //check document
             if (File.Exists(documentsPath) && !File.ReadAllText(documentsPath).Equals(""))
-            {
-                //value to encrypt
-                var valueToConvert = Convert.FromBase64String(File.ReadAllText(documentsPath));
-                //create aes
-                var aes = new RijndaelManaged();
-                //initialize
-                aes.IV = Encoding.UTF8.GetBytes(KEY);
-                //key
-                aes.Key = Encoding.UTF8.GetBytes(KEY);
-                //set mode
-                aes.Mode = CipherMode.CBC;
-                aes.Padding = PaddingMode.PKCS7;
-                //create decryptor
-                var cryptoTransform = aes.CreateDecryptor();
-                //result
-                var result = cryptoTransform.TransformFinalBlock(valueToConvert, 0, valueToConvert.Length);
-
+            {            
                 //save it
-                settings = JsonConvert.DeserializeObject<List<Setting>>(Encoding.UTF8.GetString(result));
+                settings = JsonConvert.DeserializeObject<List<Setting>>(AES128.Decrypt(File.ReadAllText(documentsPath)));
                 //if empty
                 if (settings == null)
                 {
@@ -744,25 +724,9 @@ namespace AZOR
         }
         private void encrypt(List<Setting> settings)
         {
-            //value to encrypt
-            var valueToEncrypt = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(settings));
-            //create aes
-            var aes = new RijndaelManaged();
-            //initialize
-            aes.IV = Encoding.UTF8.GetBytes(KEY);
-            //key
-            aes.Key = Encoding.UTF8.GetBytes(KEY);
-            //set mode
-            aes.Mode = CipherMode.CBC;
-            aes.Padding = PaddingMode.PKCS7;
-            //encryptor
-            var cryptoTransform = aes.CreateEncryptor();
-            //result
-            var result = cryptoTransform.TransformFinalBlock(valueToEncrypt, 0, valueToEncrypt.Length);
-
             //save list every time when save clicked
             StreamWriter sw = File.CreateText(documentsPath);
-            sw.Write(Convert.ToBase64String(result, 0, result.Length));
+            sw.Write(AES128.Encrypt(JsonConvert.SerializeObject(settings)));
             sw.Close();
         }
     }
