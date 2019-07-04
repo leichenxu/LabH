@@ -121,6 +121,7 @@ namespace Practice7
         /// </summary>
         private void StopIt(object sender, EventArgs e)
         {
+
             (e as FormClosingEventArgs).Cancel = true;
             this.Visible = false;
             //all reload to false
@@ -146,6 +147,7 @@ namespace Practice7
             this.BackColor = Color.Black;
             this.Refresh();
             this.Invalidate();
+
         }
         /// <summary>
         /// Show it in center.
@@ -177,6 +179,18 @@ namespace Practice7
         {
             mapLoaded[sender as MpvPlayer] = true;
             MapLoadedEvent[sender as MpvPlayer].Set();
+
+            foreach(MpvPersonalized m in TwoMainMpv)
+            {
+                if(m.MpvPlayer==(sender as MpvPlayer))
+                    Console.WriteLine("video " + m.PlayingMedia+"sania enviado");
+            }
+            foreach (MpvPersonalized m in fourMpv)
+            {
+                if (m.MpvPlayer == (sender as MpvPlayer))
+                    Console.WriteLine("video " + m.PlayingMedia + "sania enviado");
+            }
+            
             //get the player
             Mpv.NET.Player.MpvPlayer player = sender as MpvPlayer;
             //enter parent mpv
@@ -406,20 +420,20 @@ namespace Practice7
             //show mpv picturebox
             pictureBoxMainVideoOne.Visible = true;
             pictureBoxMainVideoTwo.Visible = true;
-
-            //load videos
-            for (int i = 0; i < twoMainMpv.Length; i++)
-            {
-                //when openned, same state
-                if (!parentMpvPersonalized.MpvPlayer.IsPlaying)
-                    twoMainMpv[i].MpvPlayer.AutoPlay = false;
-                else
-                    twoMainMpv[i].MpvPlayer.AutoPlay = true;
-                twoMainMpv[i].MpvPlayer.Load(winForm.ChangeCameraUrl[numberPressed[i]] as string, winForm.CurrentTimeSpan.ToString());
-                twoMainMpv[i].PlayingMedia = winForm.ChangeCameraUrl[numberPressed[i]] as string;
-                twoMainMpv[i].MpvPlayer.MediaLoaded += SetTime;
-                twoMainMpv[i].PlayingMedia = winForm.ChangeCameraUrl[numberPressed[i]] as string;
-            }
+            lock (TwoMainMpv)
+                //load videos
+                for (int i = 0; i < twoMainMpv.Length; i++)
+                {
+                    //when openned, same state
+                    if (!parentMpvPersonalized.MpvPlayer.IsPlaying)
+                        twoMainMpv[i].MpvPlayer.AutoPlay = false;
+                    else
+                        twoMainMpv[i].MpvPlayer.AutoPlay = true;
+                    twoMainMpv[i].MpvPlayer.Load(winForm.ChangeCameraUrl[numberPressed[i]] as string, winForm.CurrentTimeSpan.ToString());
+                    twoMainMpv[i].PlayingMedia = winForm.ChangeCameraUrl[numberPressed[i]] as string;
+                    twoMainMpv[i].MpvPlayer.MediaLoaded += SetTime;
+                    twoMainMpv[i].PlayingMedia = winForm.ChangeCameraUrl[numberPressed[i]] as string;
+                }
             //set name
             SetLabelText(labelMainVideoOne, twoMainMpv[0].PlayingMedia);
             SetLabelText(labelMainVideoTwo, twoMainMpv[1].PlayingMedia);
@@ -470,19 +484,19 @@ namespace Practice7
             pictureBoxVideoTwo.Show();
             pictureBoxVideoThree.Show();
             pictureBoxVideoFour.Show();
-
-            //load videos
-            for (int i = 0; i < fourMpv.Length; i++)
-            {
-                //when openned, same state
-                if (!parentMpvPersonalized.MpvPlayer.IsPlaying)
-                    fourMpv[i].MpvPlayer.AutoPlay = false;
-                else
-                    fourMpv[i].MpvPlayer.AutoPlay = true;
-                fourMpv[i].MpvPlayer.Load(winForm.ChangeCameraUrl[i] as string, winForm.CurrentTimeSpan.ToString());
-                fourMpv[i].PlayingMedia = winForm.ChangeCameraUrl[i] as string;
-                fourMpv[i].MpvPlayer.MediaLoaded += SetTime;
-            }
+            lock (FourMpv)
+                //load videos
+                for (int i = 0; i < fourMpv.Length; i++)
+                {
+                    //when openned, same state
+                    if (!parentMpvPersonalized.MpvPlayer.IsPlaying)
+                        fourMpv[i].MpvPlayer.AutoPlay = false;
+                    else
+                        fourMpv[i].MpvPlayer.AutoPlay = true;
+                    fourMpv[i].MpvPlayer.Load(winForm.ChangeCameraUrl[i] as string, winForm.CurrentTimeSpan.ToString());
+                    fourMpv[i].PlayingMedia = winForm.ChangeCameraUrl[i] as string;
+                    fourMpv[i].MpvPlayer.MediaLoaded += SetTime;
+                }
 
         }
 

@@ -36,13 +36,13 @@
             this.buttonHelp = new System.Windows.Forms.Button();
             this.fileExplorer = new System.Windows.Forms.OpenFileDialog();
             this.tableLayoutPanelRecentlyProjects = new System.Windows.Forms.TableLayoutPanel();
-            this.panelHelp = new System.Windows.Forms.Panel();
-            this.panelSetting = new System.Windows.Forms.Panel();
             this.labelNewProject = new System.Windows.Forms.Label();
             this.labelOpenProject = new System.Windows.Forms.Label();
             this.labelSetting = new System.Windows.Forms.Label();
             this.labelHelp = new System.Windows.Forms.Label();
             this.createNewProjectFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.panelHelp = new System.Windows.Forms.Panel();
+            this.panelSetting = new System.Windows.Forms.Panel();
             this.panelSetting.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -138,25 +138,6 @@
             this.tableLayoutPanelRecentlyProjects.Size = new System.Drawing.Size(377, 250);
             this.tableLayoutPanelRecentlyProjects.TabIndex = 6;
             // 
-            // panelHelp
-            // 
-            this.panelHelp.Location = new System.Drawing.Point(188, 25);
-            this.panelHelp.Margin = new System.Windows.Forms.Padding(2);
-            this.panelHelp.Name = "panelHelp";
-            this.panelHelp.Size = new System.Drawing.Size(203, 125);
-            this.panelHelp.TabIndex = 0;
-            this.panelHelp.Visible = false;
-            // 
-            // panelSetting
-            // 
-            this.panelSetting.Controls.Add(this.panelHelp);
-            this.panelSetting.Location = new System.Drawing.Point(72, 49);
-            this.panelSetting.Margin = new System.Windows.Forms.Padding(2);
-            this.panelSetting.Name = "panelSetting";
-            this.panelSetting.Size = new System.Drawing.Size(251, 191);
-            this.panelSetting.TabIndex = 5;
-            this.panelSetting.Visible = false;
-            // 
             // labelNewProject
             // 
             this.labelNewProject.AutoSize = true;
@@ -205,6 +186,25 @@
             // 
             this.createNewProjectFileDialog.Filter = "AZOR | ";
             // 
+            // panelHelp
+            // 
+            this.panelHelp.Location = new System.Drawing.Point(188, 25);
+            this.panelHelp.Margin = new System.Windows.Forms.Padding(2);
+            this.panelHelp.Name = "panelHelp";
+            this.panelHelp.Size = new System.Drawing.Size(203, 125);
+            this.panelHelp.TabIndex = 0;
+            this.panelHelp.Visible = false;
+            // 
+            // panelSetting
+            // 
+            this.panelSetting.Controls.Add(this.panelHelp);
+            this.panelSetting.Location = new System.Drawing.Point(72, 49);
+            this.panelSetting.Margin = new System.Windows.Forms.Padding(2);
+            this.panelSetting.Name = "panelSetting";
+            this.panelSetting.Size = new System.Drawing.Size(251, 191);
+            this.panelSetting.TabIndex = 5;
+            this.panelSetting.Visible = false;
+            // 
             // MainWinForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -243,12 +243,12 @@
         private System.Windows.Forms.Button buttonHelp;
         private System.Windows.Forms.OpenFileDialog fileExplorer;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelRecentlyProjects;
-        private System.Windows.Forms.Panel panelHelp;
-        private System.Windows.Forms.Panel panelSetting;
         private System.Windows.Forms.Label labelNewProject;
         private System.Windows.Forms.Label labelOpenProject;
         private System.Windows.Forms.Label labelSetting;
         private System.Windows.Forms.Label labelHelp;
         private System.Windows.Forms.SaveFileDialog createNewProjectFileDialog;
+        private System.Windows.Forms.Panel panelHelp;
+        private System.Windows.Forms.Panel panelSetting;
     }
 }

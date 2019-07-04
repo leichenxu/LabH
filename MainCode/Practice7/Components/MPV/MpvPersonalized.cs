@@ -197,7 +197,7 @@ namespace Practice7
                     }
                     else
                     {
-                        return this.MpvPlayer.Duration;
+                        return this.MpvPlayer.Position;
                     }
                 }
                 else if (keyEventArgs.KeyCode == MoveBackward.KeyCode)

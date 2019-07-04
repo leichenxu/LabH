@@ -1,25 +1,29 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Mpv.NET.Player;
 using Newtonsoft.Json;
 using Microsoft.VisualBasic;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Practice7
 {
     public partial class WinFormSetting : Form
     {
+        /// <summary>
+        /// Key for AES128.
+        /// </summary>
+        private static readonly string KEY = "FEP9DqbG7VTncqaS";
+        /// <summary>
+        /// Azor setting file extension.
+        /// </summary>
+        private static readonly string AZORSettingExtension = ".azorSetting";
         /// <summary>
         /// Add all the label, for easy run.
         /// </summary>
@@ -47,7 +51,7 @@ namespace Practice7
         /// <summary>
         /// Path json file.
         /// </summary>
-        private string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\AZOR\\setting.json";
+        private string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\AZOR\\setting" + AZORSettingExtension;
         /// <summary>
         /// Store 4 main url.
         /// </summary>
@@ -67,11 +71,30 @@ namespace Practice7
         /// <summary>
         /// FFMPEG location.
         /// </summary>
-        private static string ffmpegtool = @"C:\Users\Developer Lee\source\repos\librerias\ffmpeg-4.1.3-win64-static\bin\ffmpeg.exe";
+        private static string ffmpegtool;// = @"C:\Users\Developer Lee\source\repos\librerias\ffmpeg-4.1.3-win64-static\bin\ffmpeg.exe";
         public WinFormSetting()
         {
             InitializeComponent();
             myOwnInitialize();
+            //key input
+            textBoxNewSettingName.KeyPress += enterNewProjectName;
+
+            //find ffmpeg
+            ffmpegtool = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\ffmpeg.exe";
+        }
+        /// <summary>
+        /// Take the name and create the project.
+        /// </summary>
+        private void enterNewProjectName(object sender, KeyPressEventArgs k)
+        {
+            
+            if (k.KeyChar == (char)Keys.Return)
+            {
+                if (!textBoxNewSettingName.Text.Equals(""))
+                {
+                    this.buttonAccept_Click(sender, k);
+                }
+            }
         }
         /// <summary>
         /// Show it in center.
@@ -142,9 +165,26 @@ namespace Practice7
             this.FormClosed += storeIndexClean;
 
             //check document
-            if (File.Exists(documentsPath))
+            if (File.Exists(documentsPath) && !File.ReadAllText(documentsPath).Equals(""))
             {
-                settings = JsonConvert.DeserializeObject<List<Setting>>(File.ReadAllText(documentsPath));
+                //value to encrypt
+                var valueToConvert = Convert.FromBase64String(File.ReadAllText(documentsPath));
+                //create aes
+                var aes = new RijndaelManaged();
+                //initialize
+                aes.IV = Encoding.UTF8.GetBytes(KEY);
+                //key
+                aes.Key = Encoding.UTF8.GetBytes(KEY);
+                //set mode
+                aes.Mode = CipherMode.CBC;
+                aes.Padding = PaddingMode.PKCS7;
+                //create decryptor
+                var cryptoTransform = aes.CreateDecryptor();
+                //result
+                var result = cryptoTransform.TransformFinalBlock(valueToConvert, 0, valueToConvert.Length);
+
+                //save it
+                settings = JsonConvert.DeserializeObject<List<Setting>>(Encoding.UTF8.GetString(result));
                 //if empty
                 if (settings == null)
                 {
@@ -164,6 +204,7 @@ namespace Practice7
                     comboBoxSetting.SelectedIndex = 0;
                     lastIndex = 0;
                 }
+
             }
             else
             {
@@ -481,30 +522,12 @@ namespace Practice7
         /// <param name="e"></param>
         private void buttonSaveSetting_Click(object sender, EventArgs e)
         {
-            //new string name
-            string newSettingName = Interaction.InputBox("Introduce el nombre del nuevo video", "Nuevo setting");
-
-            if (!mapSetting.ContainsKey(newSettingName))
-            {
-                //create
-                Setting s = new Setting(newSettingName, this.MainUrl, this.SecondaryUrl);
-                //add it
-                settings.Add(s);
-                mapSetting.Add(newSettingName, s);
-                //add to combobox
-                comboBoxSetting.Items.Add(s);
-            }
-            else
-            {
-                Setting s = mapSetting[newSettingName];
-                s.MainUrl = (string[])this.mainUrl.Clone();
-                s.SecondaryUrl = (string[])this.secondaryUrl.Clone();
-            }
-            //save list every time when save clicked
-            StreamWriter sw = File.CreateText(documentsPath);
-            sw.Write(JsonConvert.SerializeObject(settings));
-            sw.Close();
-
+            //clean it
+            textBoxNewSettingName.ResetText();
+            //show it
+            panelNewSettingName.Show();
+            //select it
+            textBoxNewSettingName.Select();
         }
         /// <summary>
         /// When text change store the url.
@@ -654,8 +677,6 @@ namespace Practice7
         /// </summary>
         public void SaveJsonWithTheLastIndexFirst()
         {
-            //new streamwritter
-            StreamWriter sw = File.CreateText(documentsPath);
             //new list for store
             List<Setting> settings = new List<Setting>();
             //check have index or not
@@ -670,9 +691,78 @@ namespace Practice7
                     settings.Add(mapSetting[(comboBoxSetting.Items[i] as Setting).Name]);
                 }
             }
-            //store it
-            sw.Write(JsonConvert.SerializeObject(settings));
-            //close
+            //save it
+            encrypt(settings);
+        }
+
+        /// <summary>
+        /// Close the panel.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            panelNewSettingName.Visible = false;
+        }
+
+        /// <summary>
+        /// Create new setting or modify with the name.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonAccept_Click(object sender, EventArgs e)
+        {
+            Setting s = null;
+            if (!textBoxNewSettingName.Text.Equals(""))
+                if (!mapSetting.ContainsKey(textBoxNewSettingName.Text))
+                {
+                    //create
+                    s = new Setting(textBoxNewSettingName.Text, this.MainUrl.Clone() as string[], this.SecondaryUrl.Clone() as string[]);
+                    //add it
+                    settings.Add(s);
+                    mapSetting.Add(textBoxNewSettingName.Text, s);
+                    //add to combobox
+                    comboBoxSetting.Items.Add(s);
+                }
+                else
+                {
+                    //new setting
+                    s = mapSetting[textBoxNewSettingName.Text];
+                    s.MainUrl = this.mainUrl.Clone() as string[];
+                    s.SecondaryUrl = this.secondaryUrl.Clone() as string[];
+                }
+            //encrypt it
+            encrypt(settings);
+
+            //close it
+            panelNewSettingName.Visible = false;
+
+            if (s != null)
+                //move index
+                comboBoxSetting.SelectedIndex = comboBoxSetting.Items.IndexOf(s);
+
+        }
+        private void encrypt(List<Setting> settings)
+        {
+            //value to encrypt
+            var valueToEncrypt = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(settings));
+            //create aes
+            var aes = new RijndaelManaged();
+            //initialize
+            aes.IV = Encoding.UTF8.GetBytes(KEY);
+            //key
+            aes.Key = Encoding.UTF8.GetBytes(KEY);
+            //set mode
+            aes.Mode = CipherMode.CBC;
+            aes.Padding = PaddingMode.PKCS7;
+            //encryptor
+            var cryptoTransform = aes.CreateEncryptor();
+            //result
+            var result = cryptoTransform.TransformFinalBlock(valueToEncrypt, 0, valueToEncrypt.Length);
+
+            //save list every time when save clicked
+            StreamWriter sw = File.CreateText(documentsPath);
+            sw.Write(Convert.ToBase64String(result, 0, result.Length));
             sw.Close();
         }
     }

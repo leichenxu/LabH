@@ -63,7 +63,13 @@ namespace Practice7
             this.labelBitRate = new System.Windows.Forms.Label();
             this.labelFPS = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.panelNewSettingName = new System.Windows.Forms.Panel();
+            this.textBoxNewSettingName = new System.Windows.Forms.TextBox();
+            this.labelNewName = new System.Windows.Forms.Label();
+            this.buttonAccept = new System.Windows.Forms.Button();
+            this.buttonCancel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPrevisualize)).BeginInit();
+            this.panelNewSettingName.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelMain1
@@ -362,6 +368,55 @@ namespace Practice7
             this.labelFPS.Size = new System.Drawing.Size(0, 13);
             this.labelFPS.TabIndex = 30;
             // 
+            // panelNewSettingName
+            // 
+            this.panelNewSettingName.Controls.Add(this.buttonCancel);
+            this.panelNewSettingName.Controls.Add(this.buttonAccept);
+            this.panelNewSettingName.Controls.Add(this.labelNewName);
+            this.panelNewSettingName.Controls.Add(this.textBoxNewSettingName);
+            this.panelNewSettingName.Location = new System.Drawing.Point(358, 200);
+            this.panelNewSettingName.Name = "panelNewSettingName";
+            this.panelNewSettingName.Size = new System.Drawing.Size(317, 163);
+            this.panelNewSettingName.TabIndex = 32;
+            this.panelNewSettingName.Visible = false;
+            // 
+            // textBoxNewSettingName
+            // 
+            this.textBoxNewSettingName.Location = new System.Drawing.Point(36, 69);
+            this.textBoxNewSettingName.MaxLength = 20;
+            this.textBoxNewSettingName.Name = "textBoxNewSettingName";
+            this.textBoxNewSettingName.Size = new System.Drawing.Size(251, 20);
+            this.textBoxNewSettingName.TabIndex = 0;
+            // 
+            // labelNewName
+            // 
+            this.labelNewName.AutoSize = true;
+            this.labelNewName.Location = new System.Drawing.Point(33, 52);
+            this.labelNewName.Name = "labelNewName";
+            this.labelNewName.Size = new System.Drawing.Size(155, 13);
+            this.labelNewName.TabIndex = 1;
+            this.labelNewName.Text = "Introduce el nombre del setting.";
+            // 
+            // buttonAccept
+            // 
+            this.buttonAccept.Location = new System.Drawing.Point(53, 114);
+            this.buttonAccept.Name = "buttonAccept";
+            this.buttonAccept.Size = new System.Drawing.Size(75, 23);
+            this.buttonAccept.TabIndex = 2;
+            this.buttonAccept.Text = "Aceptar";
+            this.buttonAccept.UseVisualStyleBackColor = true;
+            this.buttonAccept.Click += new System.EventHandler(this.buttonAccept_Click);
+            // 
+            // buttonCancel
+            // 
+            this.buttonCancel.Location = new System.Drawing.Point(175, 114);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.TabIndex = 3;
+            this.buttonCancel.Text = "Cancelar";
+            this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            // 
             // WinFormSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -370,6 +425,7 @@ namespace Practice7
             this.BackgroundImage = global::Practice7.Properties.Resources.BackGroundSettings;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1064, 616);
+            this.Controls.Add(this.panelNewSettingName);
             this.Controls.Add(this.labelBitRate);
             this.Controls.Add(this.labelFPS);
             this.Controls.Add(this.labelNameVideo);
@@ -412,6 +468,8 @@ namespace Practice7
             this.TransparencyKey = System.Drawing.Color.LimeGreen;
             this.Load += new System.EventHandler(this.WinFormSetting_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPrevisualize)).EndInit();
+            this.panelNewSettingName.ResumeLayout(false);
+            this.panelNewSettingName.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -452,5 +510,10 @@ namespace Practice7
         private System.Windows.Forms.Label labelBitRate;
         private System.Windows.Forms.Label labelFPS;
         private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.Panel panelNewSettingName;
+        private System.Windows.Forms.TextBox textBoxNewSettingName;
+        private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.Button buttonAccept;
+        private System.Windows.Forms.Label labelNewName;
     }
 }

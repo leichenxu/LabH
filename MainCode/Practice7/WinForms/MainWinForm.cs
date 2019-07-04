@@ -76,6 +76,9 @@ namespace Practice7
             //save it
             this.settingForm = settingForm;
 
+            //add extention filter
+            this.fileExplorer.Filter = "AZOR | *" + extension;
+            //add event
             this.FormClosed += checkOpenNewWindow;
         }
         /// <summary>
@@ -109,30 +112,48 @@ namespace Practice7
         /// </summary>
         private void showRecentlyOpennedProjects()
         {
+            //count row in another variable
+            int rowCount = 0;
+            string newFileContent = "";
             //save all the string in a buffer
             string[] bufferString = File.ReadAllLines(this.recentlyOpenedProjectFilePath);
             //read the buffer
             for (int i = 0; i < bufferString.Count(); i++)
             {
-                //create new label
-                System.Windows.Forms.LinkLabel label = new System.Windows.Forms.LinkLabel();
-                //adjust                                
-                label.AutoSize = true;
-                label.BackColor = System.Drawing.Color.Transparent;
-                label.LinkColor = System.Drawing.Color.White;
-                label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                label.Name = "labelProjects" + i.ToString();
-                label.Size = new System.Drawing.Size(100, 25);
-                label.AccessibleDescription = bufferString[i];
-                label.Text = Path.GetFileName(Path.GetDirectoryName(bufferString[i]));
-                label.Click += new System.EventHandler(label_Click);
-                tableLayoutPanelRecentlyProjects.Controls.Add(label, 0, i);
-                //add tooltip
-                tip = new System.Windows.Forms.ToolTip();
-                tip.SetToolTip(label, bufferString[i]);
-                label.AccessibleDefaultActionDescription = bufferString[i];
-
+                //check
+                if (File.Exists(bufferString[i]))
+                {
+                    if (i != bufferString.Count() - 1)
+                        //br
+                        newFileContent += bufferString[i] + "\n";
+                    else
+                        //not br
+                        newFileContent += bufferString[i];
+                    //create new label
+                    System.Windows.Forms.LinkLabel label = new System.Windows.Forms.LinkLabel();
+                    //adjust                                
+                    label.AutoSize = true;
+                    label.BackColor = System.Drawing.Color.Transparent;
+                    label.LinkColor = System.Drawing.Color.White;
+                    label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    label.Name = "labelProjects" + i.ToString();
+                    label.Size = new System.Drawing.Size(100, 25);
+                    label.AccessibleDescription = bufferString[i];
+                    label.Text = Path.GetFileName(Path.GetDirectoryName(bufferString[i]));
+                    label.Click += new System.EventHandler(label_Click);
+                    tableLayoutPanelRecentlyProjects.Controls.Add(label, 0, rowCount);
+                    rowCount++;
+                    //add tooltip
+                    tip = new System.Windows.Forms.ToolTip();
+                    tip.SetToolTip(label, bufferString[i]);
+                    label.AccessibleDefaultActionDescription = bufferString[i];
+                }
             }
+            //save it
+            StreamWriter sw = File.CreateText(this.recentlyOpenedProjectFilePath);
+            sw.Write(newFileContent);
+            //close it
+            sw.Close();
         }
 
         /// <summary>
@@ -173,15 +194,25 @@ namespace Practice7
             //SHOW IT
             if (createNewProjectFileDialog.ShowDialog() == DialogResult.OK)
             {
+
                 //get the path
                 newProjectPath = createNewProjectFileDialog.FileName;
                 //files and directories for crete
                 Directory.CreateDirectory(newProjectPath);
                 Directory.CreateDirectory(newProjectPath + "\\Sources");
+                Directory.CreateDirectory(newProjectPath + "\\Sources\\data");
                 Directory.CreateDirectory(newProjectPath + "\\Sources\\temp");
                 Directory.CreateDirectory(newProjectPath + "\\Sources\\videos");
                 Directory.CreateDirectory(newProjectPath + "\\Sources\\exported");
                 File.Create(newProjectPath + "\\azor" + extension);
+
+                //save it in recently
+                string[] fileToAdd = { newProjectPath + "\\azor" + extension };
+                fileToAdd = fileToAdd.Union(File.ReadAllLines(recentlyOpenedProjectFilePath)).ToArray();
+
+                //write all lines in table
+                File.WriteAllLines(recentlyOpenedProjectFilePath, fileToAdd);
+
 
                 //close the mainform
                 this.Close();
@@ -296,6 +327,7 @@ namespace Practice7
                 this.panelHelp.Visible = true;
             }
         }
+
 
     }
 }

@@ -177,7 +177,7 @@ namespace Practice7
         /// <summary>
         /// FFMPEGTOOL path in current pc, change if is in another path.
         /// </summary>
-        private static string ffmpegtool = @"C:\Users\Developer Lee\source\repos\librerias\ffmpeg-4.1.3-win64-static\bin\ffmpeg.exe";
+        private static string ffmpegtool;//= @"C:\Users\Developer Lee\source\repos\librerias\ffmpeg-4.1.3-win64-static\bin\ffmpeg.exe";
 
         /// <summary>
         /// Path received to store videos.
@@ -222,6 +222,10 @@ namespace Practice7
         public WinFormWithVideoPlayer(string path, WinFormSetting settingForm)
         {
             InitializeComponent();
+
+            
+
+
             //store the path
             this.path = path;
             pathStoreVideo = path + "\\Sources\\temp";
@@ -347,6 +351,9 @@ namespace Practice7
             LoadTagFromDefaultPath();
             //load clips when openned
             LoadClipsInDefaultPath();
+
+            //find ffmpeg
+            ffmpegtool = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)+"\\ffmpeg.exe";
         }
         /// <summary>
         /// Set the state for analysis video.
@@ -467,7 +474,7 @@ namespace Practice7
         private void closingEvent(object sender, EventArgs e)
         {
             DialogResult dialog = MessageBox.Show(CloseProgramMessage, CloseProgramDialogName,
-                MessageBoxButtons.YesNoCancel);
+                MessageBoxButtons.YesNo);
             if (dialog == DialogResult.Yes)
             {
                 //set to true
@@ -508,12 +515,12 @@ namespace Practice7
         private void SaveClipsInDefaultPath()
         {
             //save it
-            StreamWriter sw = File.CreateText(pathStoreTagAndClips + "\\clips.json");
+            StreamWriter sw = File.CreateText(pathStoreTagAndClips + "\\data\\clips.json");
             sw.Write(JsonConvert.SerializeObject(mapAllClip.Values));
             //close it
             sw.Close();
             //save default clip count
-            sw = File.CreateText(pathStoreTagAndClips + "\\DefaultClipCount.txt");
+            sw = File.CreateText(pathStoreTagAndClips + "\\data\\DefaultClipCount.txt");
             sw.Write(clipCount);
             //close it
             sw.Close();
@@ -524,10 +531,10 @@ namespace Practice7
         private void LoadClipsInDefaultPath()
         {
             //if exist clips load it
-            if (File.Exists(pathStoreTagAndClips + "\\clips.json"))
+            if (File.Exists(pathStoreTagAndClips + "\\data\\clips.json"))
             {
                 List<Clip> listClips = JsonConvert.DeserializeObject<List<Clip>>
-                    (File.ReadAllText(pathStoreTagAndClips + "\\clips.json"));
+                    (File.ReadAllText(pathStoreTagAndClips + "\\data\\clips.json"));
                 foreach (Clip clip in listClips)
                 {
                     storeInTableLayoutPanelClips(clip);
@@ -535,10 +542,10 @@ namespace Practice7
             }
             //load default clip count
             //if exist clips load it
-            if (File.Exists(pathStoreTagAndClips + "\\DefaultClipCount.txt"))
+            if (File.Exists(pathStoreTagAndClips + "\\data\\DefaultClipCount.txt"))
             {
                 //open it
-                TextReader reader = File.OpenText(pathStoreTagAndClips + "\\DefaultClipCount.txt");
+                TextReader reader = File.OpenText(pathStoreTagAndClips + "\\data\\DefaultClipCount.txt");
                 //read it
                 clipCount = int.Parse(reader.ReadLine());
                 //close it
@@ -735,32 +742,46 @@ namespace Practice7
         /// </summary>
         private void LoadNewVideoAnalysis(MpvPersonalized mpv, string videoPath, int i)
         {
-            lock (mpv.MpvPlayer.MpvLock)
+            //lock it
+            Monitor.Enter(mpv.MpvPlayer.MpvLock);
+
+            //set false for wait event
+            winFormAnalysis.MapLoaded[mpv.MpvPlayer] = false;
+            //if media alredy loaded then not wait event
+            if (mpv.MpvPlayer.IsMediaLoaded)
+                winFormAnalysis.MapLoaded[mpv.MpvPlayer] = true;
+            //video path
+            mpv.PlayingMedia = videoPath;
+            //add the path again
+            //check sync
+            if (WinFormSync.TimeReference == -1)
+                mpv.MpvPlayer.Load(mpv.PlayingMedia, currentTimeSpan.ToString());
+            else
+                //set time load
+                mpv.MpvPlayer.Load(mpv.PlayingMedia, currentTimeSpan.Subtract(WinFormSync.MpvTimeSpan[playingSignal])
+                        .Add(WinFormSync.MpvTimeSpan[i]).ToString());
+            //if not loaded wait the event
+            if (!winFormAnalysis.MapLoaded[mpv.MpvPlayer] && !mpv.MpvPlayer.IsMediaLoaded && File.Exists(mpv.PlayingMedia))
             {
-                //set false for wait event
-                winFormAnalysis.MapLoaded[mpv.MpvPlayer] = false;
-                //if media alredy loaded then not wait event
-                if (mpv.MpvPlayer.IsMediaLoaded)
-                    winFormAnalysis.MapLoaded[mpv.MpvPlayer] = true;
-                //video path
-                mpv.PlayingMedia = videoPath;
-                //add the path again
-                //check sync
-                if (WinFormSync.TimeReference == -1)
-                    mpv.MpvPlayer.Load(mpv.PlayingMedia, currentTimeSpan.ToString());
-                else
-                    //set time load
-                    mpv.MpvPlayer.Load(mpv.PlayingMedia, currentTimeSpan.Subtract(WinFormSync.MpvTimeSpan[playingSignal])
-                            .Add(WinFormSync.MpvTimeSpan[i]).ToString());
-                //if not loaded wait the event
-                if (!winFormAnalysis.MapLoaded[mpv.MpvPlayer])
-                    winFormAnalysis.MapLoadedEvent[mpv.MpvPlayer].WaitOne();
-                //pause or play
-                if (this.buttonPlay.Visible)
-                    mpv.MpvPlayer.Pause();
-                else
-                    mpv.MpvPlayer.Resume();
+                //leave it
+                Monitor.Exit(mpv.MpvPlayer.MpvLock);
+                Console.WriteLine("video " + mpv.PlayingMedia);
+                winFormAnalysis.MapLoadedEvent[mpv.MpvPlayer].WaitOne();
+                //try enter
+                bool enter = Monitor.TryEnter(mpv.MpvPlayer.MpvLock, 1000);
+                //try it till enter
+                while (!enter)
+                {
+                    enter = Monitor.TryEnter(mpv.MpvPlayer.MpvLock, 1000);
+                }
             }
+            //pause or play
+            if (this.buttonPlay.Visible)
+                mpv.MpvPlayer.Pause();
+            else
+                mpv.MpvPlayer.Resume();
+            Monitor.Exit(mpv.MpvPlayer.MpvLock);
+
         }
         /// <summary>
         /// Change the camera if the key is pressed.
@@ -1152,7 +1173,7 @@ namespace Practice7
         /// <param name="keyData"></param>
         public void ProcessCmdDelegate(Keys keyData)
         {
-            ProcessCmdKey(ref GlobalMessage,keyData);
+            ProcessCmdKey(ref GlobalMessage, keyData);
         }
         /// <summary>
         /// Override input received before do something in user interface, for not move in buttons.
@@ -1170,7 +1191,7 @@ namespace Practice7
                 if (pathVideoPlaying != null && !pathVideoPlaying.Equals(""))
                 {
                     Monitor.Enter(MpvPersonalized.MpvPlayer.MpvLock);
-                    while (!loaded)
+                    if (!loaded && !mpvPersonalized.MpvPlayer.IsMediaLoaded)
                     {
                         Monitor.Exit(MpvPersonalized.MpvPlayer.MpvLock);
                         manualResetEventMpvUnlock.WaitOne();
@@ -1202,11 +1223,13 @@ namespace Practice7
         //        Monitor.Exit(MpvPersonalized.MpvPlayer.MpvLock);
         //        manualResetEventMpvUnlock.WaitOne();
         //        Monitor.Enter(MpvPersonalized.MpvPlayer.MpvLock);
+        //        break;
         //    }
+
         //    //sent the event to the controller
         //    mpvPersonalized.mpvController(new KeyEventArgs(kkk));
         //    Monitor.Exit(MpvPersonalized.MpvPlayer.MpvLock);
-        //    //(sender as System.Windows.Forms.Timer).Stop();
+        //    (sender as System.Windows.Forms.Timer).Stop();
         //}
         /// <summary>
         /// Event when form is closed, kill all the downlaods started.
@@ -2042,8 +2065,12 @@ namespace Practice7
             Label previous = createTimeLabel(clip.PreviousTime);
             Label after = createTimeLabel(clip.LaterTime);
             //set it
-            after.Dock = DockStyle.Bottom;
-            previous.Dock = DockStyle.Bottom;
+            //after.Dock = DockStyle.Bottom;
+            //previous.Dock = DockStyle.Bottom;
+            //clipName.Dock = DockStyle.Bottom;
+            clipName.Margin = new Padding(0, 5, 0, 0);
+            after.Margin = new Padding(0, 5, 0, 0);
+            previous.Margin = new Padding(0, 5, 0, 0);
 
             tableLayoutPanelClips.Controls.Add(checkBoxClip);
             tableLayoutPanelClips.Controls.Add(round);
@@ -2284,7 +2311,7 @@ namespace Practice7
             if (tagMap.Count != 0)
             {
                 //save only the tag, the button only have the event handler, tag have all the information
-                StreamWriter sw = File.CreateText(pathStoreTagAndClips + "\\tag.json");
+                StreamWriter sw = File.CreateText(pathStoreTagAndClips + "\\data\\tag.json");
                 sw.Write(JsonConvert.SerializeObject(tagMap.Values));
                 //close it
                 sw.Close();
@@ -2303,10 +2330,10 @@ namespace Practice7
         private void LoadTagFromDefaultPath()
         {
             //if exist tags load it
-            if (File.Exists(pathStoreTagAndClips + "\\tag.json"))
+            if (File.Exists(pathStoreTagAndClips + "\\data\\tag.json"))
             {
                 List<Tag> listTags = JsonConvert.DeserializeObject<List<Tag>>
-                    (File.ReadAllText(pathStoreTagAndClips + "\\tag.json"));
+                    (File.ReadAllText(pathStoreTagAndClips + "\\data\\tag.json"));
                 foreach (Tag tag in listTags)
                 {
                     createAutomaticOrManualTagButton(tag);
@@ -2473,7 +2500,7 @@ namespace Practice7
             //if have checked, delete it
             if (checkedClipListBox.Count != 0)
             {
-                DialogResult dialog = MessageBox.Show("¿Estás seguro de eliminar lo/s "+
+                DialogResult dialog = MessageBox.Show("¿Estás seguro de eliminar lo/s " +
                     checkedClipListBox.Count + " clip/s?", "Eliminar",
                 MessageBoxButtons.YesNoCancel);
                 if (DialogResult.Yes == dialog)
