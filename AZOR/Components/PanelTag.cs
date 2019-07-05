@@ -104,7 +104,7 @@ namespace AZOR
         /// <summary>
         /// Error msg, if the content of tagname is null.
         /// </summary>
-        private string errorTagNameTextBoxMsg = "Nombre incorrecto";
+        private readonly string errorTagNameTextBoxMsg = "Nombre incorrecto";
         /// <summary>
         /// Error msg, if the content of previus time is null.
         /// </summary>

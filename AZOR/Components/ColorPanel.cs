@@ -68,8 +68,10 @@ namespace AZOR
             for (int j = 0; j < 8; j++)
             {
                 //create and adjust
-                PictureBox PB = new PictureBox();
-                PB.Size = new Size(width, height);
+                PictureBox PB = new PictureBox
+                {
+                    Size = new Size(width, height)
+                };
                 PB.Location =
                 new Point(LR_Interval + Pic_Interval + j *
                 (PB.Size.Width + Pic_Interval) - 2, 0);
@@ -99,9 +101,11 @@ namespace AZOR
             graphic.DrawLines(new Pen(Color.White), point);
 
 
-            Pen pen = new Pen(Color.White, 1);
-            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Custom;
-            pen.DashPattern = new float[] { 1, 1 };
+            Pen pen = new Pen(Color.White, 1)
+            {
+                DashStyle = System.Drawing.Drawing2D.DashStyle.Custom,
+                DashPattern = new float[] { 1, 1 }
+            };
 
 
             Point[] point2 = new Point[5];
@@ -131,9 +135,11 @@ namespace AZOR
             point[3] = new Point(PB.Location.X + PB.Width, PB.Location.Y - 1);
             point[4] = new Point(PB.Location.X - 1, PB.Location.Y - 1);
             graphic.DrawLines(new Pen(Color.Black), point);
-            Pen pen = new Pen(Color.Black, 1);
-            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Custom;
-            pen.DashPattern = new float[] { 1, 1 };
+            Pen pen = new Pen(Color.Black, 1)
+            {
+                DashStyle = System.Drawing.Drawing2D.DashStyle.Custom,
+                DashPattern = new float[] { 1, 1 }
+            };
             Point[] point2 = new Point[5];
             point2[0] = new Point(PB.Location.X - 3, PB.Location.Y - 3);
             point2[1] = new Point(PB.Location.X - 3, PB.Location.Y + PB.Height + 2);

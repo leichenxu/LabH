@@ -238,7 +238,7 @@ namespace AZOR
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             //if is used then no move in interface, and not use in other panel
-            if ((mpvPersonalized.keysThatIHaveUse(keyData) ||
+            if ((mpvPersonalized.KeysThatIHaveUse(keyData) ||
                 keyData == Keys.Tab || keyData == Keys.Up ||
                 keyData == Keys.Down || keyData == Keys.Enter))
             {
@@ -358,7 +358,7 @@ namespace AZOR
         private void OneCommand(Keys keyData)
         {
             lock (mpvPersonalized.MpvPlayer.MpvLock)
-                MpvPersonalized.mpvController(new KeyEventArgs(keyData));
+                MpvPersonalized.MpvController(new KeyEventArgs(keyData));
         }
         /// <summary>
         /// Execute four command for mpv.
@@ -373,7 +373,7 @@ namespace AZOR
                 {
                     lock (mpv.MpvPlayer.MpvLock)
                         if (mpv.MpvPlayer.IsMediaLoaded && mpv.MpvPlayer.Duration > TimeSpan.Zero)
-                            mpv.mpvController(new KeyEventArgs(keyData));
+                            mpv.MpvController(new KeyEventArgs(keyData));
                 }
 
             }
@@ -389,7 +389,7 @@ namespace AZOR
                 {
                     lock (mpv.MpvPlayer.MpvLock)
                         if (mpv.MpvPlayer.IsMediaLoaded)
-                            mpv.mpvController(new KeyEventArgs(keyData));
+                            mpv.MpvController(new KeyEventArgs(keyData));
                 }
 
             }

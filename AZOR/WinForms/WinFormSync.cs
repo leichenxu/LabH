@@ -89,12 +89,12 @@ namespace AZOR
                     break;
             }
             //if is used then no move in interface, and not use in other panel
-            if ((Mpvs[0].keysThatIHaveUse(keyData) ||
+            if ((Mpvs[0].KeysThatIHaveUse(keyData) ||
                 keyData == Keys.Tab || keyData == Keys.Up ||
                 keyData == Keys.Down || keyData == Keys.Enter) && (interactiveMPV > -1))
             {
                 //sent the event to the controller
-                Mpvs[interactiveMPV].mpvController(new KeyEventArgs(keyData));
+                Mpvs[interactiveMPV].MpvController(new KeyEventArgs(keyData));
                 //interface cannot take the input key
                 return true;
             }

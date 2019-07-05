@@ -1185,7 +1185,7 @@ namespace AZOR
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             //if is used then no move in interface, and not use in other panel
-            if ((mpvPersonalized.keysThatIHaveUse(keyData) || keyData == Keys.Tab || keyData == Keys.Up || keyData == Keys.Down || keyData == Keys.Enter)
+            if ((mpvPersonalized.KeysThatIHaveUse(keyData) || keyData == Keys.Tab || keyData == Keys.Up || keyData == Keys.Down || keyData == Keys.Enter)
                 && !panelTag.Visible && !changeCameraBool)
             {
                 //check have video
@@ -1199,7 +1199,7 @@ namespace AZOR
                         Monitor.Enter(MpvPersonalized.MpvPlayer.MpvLock);
                     }
                     //sent the event to the controller
-                    mpvPersonalized.mpvController(new KeyEventArgs(keyData));
+                    mpvPersonalized.MpvController(new KeyEventArgs(keyData));
 
                     //kkk = keyData;
                     //System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
@@ -1572,7 +1572,7 @@ namespace AZOR
         /// <param name="e"></param>
         private void Play_Click(object sender, EventArgs e)
         {
-            this.mpvPersonalized.mpvController(new KeyEventArgs(MpvPersonalized.PauseOrPlayVideo));
+            this.mpvPersonalized.MpvController(new KeyEventArgs(MpvPersonalized.PauseOrPlayVideo));
         }
         /// <summary>
         /// When clicked move to the start point.

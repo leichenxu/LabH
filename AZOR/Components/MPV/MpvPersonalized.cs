@@ -93,7 +93,7 @@ namespace AZOR
         /// </summary>
         /// <param name="keyData">keyData received to check if is used or not.</param>
         /// <returns>Return the comparition with all keys used.</returns>
-        public Boolean keysThatIHaveUse(Keys keyData)
+        public Boolean KeysThatIHaveUse(Keys keyData)
         {
             return keyData == NextFrame || keyData == PreviousFrame ||
                 keyData == MoveForwardKeys || keyData == MoveBackwardKeys ||
@@ -106,7 +106,7 @@ namespace AZOR
         /// <param name="keyEventArgs">Take the keyEventArgs for take inputs like shift+left, used to 
         /// check what action to do.</param>
         /// <returns>Return the key pressed if need to use.</returns>
-        public KeysUsed mpvController(KeyEventArgs keyEventArgs)
+        public KeysUsed MpvController(KeyEventArgs keyEventArgs)
         {
             lock (this.MpvPlayer.MpvLock)
                 //check if have media loaded, if not doesnt need to do something
@@ -129,7 +129,7 @@ namespace AZOR
                     {
 
                         //go to timeSetWithKey for move forward and backward
-                        MpvPlayer.Position = timeSetWithKey(keyEventArgs);
+                        MpvPlayer.Position = TimeSetWithKey(keyEventArgs);
                         //if mpv is in the last second return 
                         if (MpvPlayer.Position == MpvPlayer.Duration)
                         {
@@ -141,7 +141,7 @@ namespace AZOR
                     else if (keyEventArgs.KeyCode == MoveBackward.KeyCode && keyEventArgs.Modifiers == MoveBackward.Modifiers)
                     {
                         //go to timeSetWithKey for move forward and backward
-                        MpvPlayer.Position = timeSetWithKey(keyEventArgs);
+                        MpvPlayer.Position = TimeSetWithKey(keyEventArgs);
                         return KeysUsed.MoveBackWard;
                     }
                     else if (keyEventArgs.KeyCode == NextFrame)
@@ -183,7 +183,7 @@ namespace AZOR
         /// </summary>
         /// <param name="keyEventArgs">KeyEventArg for now move forward or backward.</param>
         /// <returns>The new timeSpan position for media player.</returns>
-        private TimeSpan timeSetWithKey(KeyEventArgs keyEventArgs)
+        private TimeSpan TimeSetWithKey(KeyEventArgs keyEventArgs)
         {
             if (keyEventArgs.Modifiers == Keys.Shift)
             {

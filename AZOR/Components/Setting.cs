@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,8 +34,11 @@ namespace AZOR
             this.secondaryUrl = secondaryUrl;
         }
 
+        [JsonProperty("name")]
         public string Name { get => name; set => name = value; }
+        [JsonProperty("main_url")]
         public string[] MainUrl { get => mainUrl; set => mainUrl = value; }
+        [JsonProperty("secondary_url")]
         public string[] SecondaryUrl { get => secondaryUrl; set => secondaryUrl = value; }
         /// <summary>
         /// Override toString for show name only.

@@ -19,10 +19,10 @@ namespace AZOR
         /// Encryp the content and return in string.
         /// </summary>
         /// <param name="settings"></param>
-        public static String Encrypt(object obj)
+        public static string Encrypt(string text)
         {
             //value to encrypt
-            var valueToEncrypt = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(obj));
+            var valueToEncrypt = Encoding.UTF8.GetBytes(text);
             //create aes
             var aes = new RijndaelManaged();
             //initialize
@@ -43,10 +43,9 @@ namespace AZOR
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static String Decrypt(object obj)
+        public static string Decrypt(string text)
         {
-            //value to descryp
-            var valueToConvert = Convert.FromBase64String(obj.ToString());
+            var valueToConvert = Convert.FromBase64String(text);
             //create aes
             var aes = new RijndaelManaged();
             //initialize
@@ -61,7 +60,7 @@ namespace AZOR
             //result
             var result = cryptoTransform.TransformFinalBlock(valueToConvert, 0, valueToConvert.Length);
             //return it
-            return Encoding.UTF8.GetString(result).ToString();
+            return Encoding.UTF8.GetString(result);
         }
     }
 }

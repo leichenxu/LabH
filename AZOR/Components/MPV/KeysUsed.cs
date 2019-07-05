@@ -8,20 +8,15 @@ namespace AZOR
 {
     public enum KeysUsed
     {
-        
-		Play,Pause,
 
-        
+        Play, Pause,
         MoveToStartPoint,
-
-        
         MoveToEndPoint,
-
         NextFrame,
         PreviousFrame,
         MoveForward,
         MoveBackWard,
         VideoFinished,
         NoRecognized
-}
+    }
 }

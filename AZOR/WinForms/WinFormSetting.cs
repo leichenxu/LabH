@@ -15,7 +15,7 @@ using System.Text;
 namespace AZOR
 {
     public partial class WinFormSetting : Form
-    {      
+    {
         /// <summary>
         /// Azor setting file extension.
         /// </summary>
@@ -83,7 +83,7 @@ namespace AZOR
         /// </summary>
         private void enterNewProjectName(object sender, KeyPressEventArgs k)
         {
-            
+
             if (k.KeyChar == (char)Keys.Return)
             {
                 if (!textBoxNewSettingName.Text.Equals(""))
@@ -162,9 +162,11 @@ namespace AZOR
 
             //check document
             if (File.Exists(documentsPath) && !File.ReadAllText(documentsPath).Equals(""))
-            {            
-                //save it
-                settings = JsonConvert.DeserializeObject<List<Setting>>(AES128.Decrypt(File.ReadAllText(documentsPath)));
+            {
+                //save setting if have content
+                settings= JsonConvert.DeserializeObject<List<Setting>>
+                    (AES128.Decrypt(File.ReadAllText(documentsPath)));
+                
                 //if empty
                 if (settings == null)
                 {
@@ -672,7 +674,7 @@ namespace AZOR
                 }
             }
             //save it
-            encrypt(settings);
+            Encrypt(settings);
         }
 
         /// <summary>
@@ -712,7 +714,7 @@ namespace AZOR
                     s.SecondaryUrl = this.secondaryUrl.Clone() as string[];
                 }
             //encrypt it
-            encrypt(settings);
+            Encrypt(settings);
 
             //close it
             panelNewSettingName.Visible = false;
@@ -722,12 +724,17 @@ namespace AZOR
                 comboBoxSetting.SelectedIndex = comboBoxSetting.Items.IndexOf(s);
 
         }
-        private void encrypt(List<Setting> settings)
+
+        /// <summary>
+        /// Encrypt the content and write it.
+        /// </summary>
+        /// <param name="settings"></param>
+        private void Encrypt(List<Setting> settings)
         {
             //save list every time when save clicked
             StreamWriter sw = File.CreateText(documentsPath);
             sw.Write(AES128.Encrypt(JsonConvert.SerializeObject(settings)));
-            sw.Close();
+            sw.Close();            
         }
     }
 }
