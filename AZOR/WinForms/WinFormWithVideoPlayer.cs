@@ -572,7 +572,7 @@ namespace AZOR
         /// <param name="e"></param>
         private void AddEventFirstTime(object sender, EventArgs e)
         {
-            mpvPersonalized.MpvPlayer.PositionChanged += showTimeChange;
+            mpvPersonalized.MpvPlayer.PositionChanged += ShowTimeChange;
         }
         /// <summary>
         /// Store time key is pressed, store the time and and ajust.
@@ -1060,7 +1060,7 @@ namespace AZOR
         /// <summary>
         /// Show the time when the position change.
         /// </summary>
-        private void showTimeChange(object sender, EventArgs e)
+        private void ShowTimeChange(object sender, EventArgs e)
         {
             //only if have media
             if (mpvPersonalized.MpvPlayer.IsMediaLoaded)
@@ -1068,18 +1068,18 @@ namespace AZOR
                 //thread safe call
                 if (labelTimePlaying.InvokeRequired)
                 {
-                    setTextBotTime s = new setTextBotTime(showTimeChange);
+                    setTextBotTime s = new setTextBotTime(ShowTimeChange);
                     //try it, cannot resolve it, because cant check form closing or not
                     if(CanInvoke)
-                    //try
-                    //{
-                        this.Invoke(s, new object[] { sender, e });
-                    //}
-                    //catch (System.ObjectDisposedException exc)
-                    //{
-                    //    Debug.WriteLine("Closing winform");
-                    //    Debug.WriteLine(exc);
-                    //}
+                        try
+                        {
+                            this.Invoke(s, new object[] { sender, e });
+                        }
+                        catch (System.ObjectDisposedException exc)
+                        {
+                            Debug.WriteLine("Closing winform");
+                            Debug.WriteLine(exc);
+                        }
                 }
                 else
                 {

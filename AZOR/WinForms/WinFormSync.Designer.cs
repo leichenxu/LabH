@@ -97,7 +97,6 @@
             this.Controls.Add(this.pictureBoxVideoOne);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "WinFormSync";
             this.Text = "WinFormSync";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxVideoFour)).EndInit();

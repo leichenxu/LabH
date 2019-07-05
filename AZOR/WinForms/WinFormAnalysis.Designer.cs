@@ -195,7 +195,6 @@
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "WinFormAnalysis";
             this.Text = "WinFormAnalysis";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxNameVideo1)).EndInit();
