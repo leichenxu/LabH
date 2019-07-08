@@ -164,9 +164,9 @@ namespace AZOR
             if (File.Exists(documentsPath) && !File.ReadAllText(documentsPath).Equals(""))
             {
                 //save setting if have content
-                settings= JsonConvert.DeserializeObject<List<Setting>>
+                settings = JsonConvert.DeserializeObject<List<Setting>>
                     (AES128.Decrypt(File.ReadAllText(documentsPath)));
-                
+
                 //if empty
                 if (settings == null)
                 {
@@ -587,26 +587,36 @@ namespace AZOR
         /// <param name="setting"></param>
         private void rewriteAll(Setting setting)
         {
-            //run all and rewrite if have text, else set empty "" text
-            for (int i = 0; i < setting.MainUrl.Length; i++)
-            {
-                if (setting.MainUrl[i] != null)
+            //check null
+            if (setting.MainUrl != null)
+                //run all and rewrite if have text, else set empty "" text
+                for (int i = 0; i < setting.MainUrl.Length; i++)
                 {
-                    this.textBoxMainSetText(i, setting.MainUrl[i]);
+                    if (setting.MainUrl[i] != null)
+                    {
+                        this.textBoxMainSetText(i, setting.MainUrl[i]);
+                    }
+                    else
+                    {
+                        this.textBoxMainSetText(i, "");
+                    }
                 }
-                else
+            //check null
+            if (setting.SecondaryUrl != null)
+                //run all and rewrite if have text, else set empty "" text
+                for (int i = 0; i < setting.SecondaryUrl.Length; i++)
                 {
-                    this.textBoxMainSetText(i, "");
+                    if (setting.SecondaryUrl[i] != null)
+                    {
+                        this.textBoxSecondarySetText(i, setting.SecondaryUrl[i]);
+                    }
+                    else
+                    {
+                        this.textBoxSecondarySetText(i, "");
+                    }
                 }
-                if (setting.SecondaryUrl[i] != null)
-                {
-                    this.textBoxSecondarySetText(i, setting.SecondaryUrl[i]);
-                }
-                else
-                {
-                    this.textBoxSecondarySetText(i, "");
-                }
-            }
+
+
         }
         /// <summary>
         /// Set text with the number to the texbox.
@@ -734,7 +744,7 @@ namespace AZOR
             //save list every time when save clicked
             StreamWriter sw = File.CreateText(documentsPath);
             sw.Write(AES128.Encrypt(JsonConvert.SerializeObject(settings)));
-            sw.Close();            
+            sw.Close();
         }
     }
 }

@@ -45,6 +45,10 @@ namespace AZOR
         /// <returns></returns>
         public static string Decrypt(string text)
         {
+            //null check
+            if (text == null || text.Equals(""))
+                //return
+                return text;
             var valueToConvert = Convert.FromBase64String(text);
             //create aes
             var aes = new RijndaelManaged();

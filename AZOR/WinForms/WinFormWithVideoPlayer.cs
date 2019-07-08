@@ -222,10 +222,8 @@ namespace AZOR
         public WinFormWithVideoPlayer(string path, WinFormSetting settingForm)
         {
             InitializeComponent();
-
-            
-
-
+            //set win name as the same to the project name
+            this.Text = Path.GetFileName(path);
             //store the path
             this.path = path;
             pathStoreVideo = path + "\\Sources\\temp";

@@ -8,6 +8,10 @@ namespace AZOR
     public partial class WinFormLoading : Form
     {
         /// <summary>
+        /// Recently project file name.
+        /// </summary>
+        public static readonly string RecentlyProjectName ="lstpjs.recentlyProjectFile";
+        /// <summary>
         /// The time for "load"(display the progress bar animation)
         /// </summary>
         private int tiempoMax = 2000;
@@ -44,9 +48,9 @@ namespace AZOR
                 Directory.CreateDirectory(documentsPath + "\\AZOR");
             }
             //after create or not check if the file exist, if not create
-            if (!File.Exists(documentsPath + "\\AZOR\\lstpjs"))
+            if (!File.Exists(documentsPath + "\\AZOR\\"+RecentlyProjectName))
             {
-                var file = File.Create(documentsPath + "\\AZOR\\lstpjs");
+                var file = File.Create(documentsPath + "\\AZOR\\"+RecentlyProjectName);
                 //close after create
                 file.Close();
             }

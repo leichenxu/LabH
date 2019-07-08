@@ -44,15 +44,15 @@ namespace AZOR
         /// <summary>
         /// The extention to create.
         /// </summary>
-        string extention = ".xxx";
+        private string extention = ".xxx";
         /// <summary>
         /// Path for read recently documents.
         /// </summary>
-        string recentlyOpenedProjectFilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        private string recentlyOpenedProjectFilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         /// <summary>
         /// Store the recently opened projects in arrayList.
         /// </summary>
-        ArrayList arrayListRecentlyOpennedProjects = new ArrayList();
+        private ArrayList arrayListRecentlyOpennedProjects = new ArrayList();
         /// <summary>
         /// Setting winform.
         /// </summary>
@@ -66,7 +66,7 @@ namespace AZOR
             //cannot maximize window size
             this.MaximizeBox = false;
             //path recently openend project
-            recentlyOpenedProjectFilePath += @"\AZOR\lstpjs";
+            recentlyOpenedProjectFilePath += @"\AZOR\" + WinFormLoading.RecentlyProjectName;
             //center the winform
             this.CenterToScreen();
 
@@ -115,8 +115,8 @@ namespace AZOR
             //count row in another variable
             int rowCount = 0;
             string newFileContent = "";
-            //save all the string in a buffer
-            string[] bufferString = File.ReadAllLines(this.recentlyOpenedProjectFilePath);
+            //save all the string in a buffer, decrypt it first
+            string[] bufferString = AES128.Decrypt(File.ReadAllText(this.recentlyOpenedProjectFilePath)).Split('\n');
             //read the buffer
             for (int i = 0; i < bufferString.Count(); i++)
             {
@@ -151,7 +151,8 @@ namespace AZOR
             }
             //save it
             StreamWriter sw = File.CreateText(this.recentlyOpenedProjectFilePath);
-            sw.Write(newFileContent);
+            //encrypt it and save it
+            sw.Write(AES128.Encrypt(newFileContent));
             //close it
             sw.Close();
         }
@@ -163,21 +164,13 @@ namespace AZOR
         /// <param name="e"></param>
         private void label_Click(object sender, EventArgs e)
         {
-            //if exception show it
-            try
-            {
-                System.Windows.Forms.Label aux = (System.Windows.Forms.Label)sender;
-                MessageBox.Show("Se ha seleccionado el proyecto " + aux.Text);
-                projectStartPath = Path.GetDirectoryName(aux.AccessibleDefaultActionDescription);
-                //close it
-                openWinForm = true;
-                this.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-
+            System.Windows.Forms.Label aux = (System.Windows.Forms.Label)sender;
+            projectStartPath = Path.GetDirectoryName(aux.AccessibleDefaultActionDescription);
+            //rewrite it after click
+            RewriteFile(projectStartPath + "\\azor" + extension);
+            //close it
+            openWinForm = true;
+            this.Close();
         }
 
         /// <summary>
@@ -207,14 +200,15 @@ namespace AZOR
                 File.Create(newProjectPath + "\\azor" + extension);
 
                 //save it in recently
-                string[] fileToAdd = { newProjectPath + "\\azor" + extension };
-                fileToAdd = fileToAdd.Union(File.ReadAllLines(recentlyOpenedProjectFilePath)).ToArray();
-
+                string fileToAdd = newProjectPath + "\\azor" + extension;
+                //check have content or not
+                if (!File.ReadAllText(recentlyOpenedProjectFilePath).Equals(""))
+                {
+                    //decrypt it and add it
+                    fileToAdd = fileToAdd + "\n" + AES128.Decrypt(File.ReadAllText(recentlyOpenedProjectFilePath));
+                }
                 //write all lines in table
-                File.WriteAllLines(recentlyOpenedProjectFilePath, fileToAdd);
-
-
-                
+                File.WriteAllText(recentlyOpenedProjectFilePath, AES128.Encrypt(fileToAdd));
                 //start new thread
                 Thread th = new Thread(opennewform);
                 th.SetApartmentState(ApartmentState.STA);
@@ -257,40 +251,66 @@ namespace AZOR
             }
             else
             {
-                //string[] aux = File.ReadAllLines(recentlyOpenedProjectFilePath);
+                //rewrite with filename
+                RewriteFile(this.fileExplorer.FileName);
+                //////////rewrite all in table
+                ////////for (int i = 0; i < arrayListRecentlyOpennedProjects.Capacity; i++)
+                ////////{
+                ////////    System.Windows.Forms.Label label = (System.Windows.Forms.Label)arrayListRecentlyOpennedProjects[i];
+                ////////    this.tableLayoutPanelRecentlyProjects.Controls.Remove(label);
+                ////////}
+                //////////clear the table
+                ////////this.tableLayoutPanelRecentlyProjects.Controls.Clear();
+                ////////showRecentlyOpennedProjects();
+                
 
-                //get the file name
-                string[] fileToAdd = { this.fileExplorer.FileName };
-                fileToAdd = fileToAdd.Union(File.ReadAllLines(recentlyOpenedProjectFilePath)).ToArray();
-
-                //string aniadir = this.exploradorArchivo.FileName+"\n"+File.ReadAllText(recentlyOpenedProjectFilePath);   
-
-                //write all lines in table
-                File.WriteAllLines(recentlyOpenedProjectFilePath, fileToAdd);
-                //if more than 5 then delete one
-                if (fileToAdd.Count() == 6)
-                {
-                    File.WriteAllLines(recentlyOpenedProjectFilePath, File.ReadAllLines(recentlyOpenedProjectFilePath).
-                        Take(File.ReadAllLines(recentlyOpenedProjectFilePath).Length - 1));
-                }
-                //rewrite all in table
-                for (int i = 0; i < arrayListRecentlyOpennedProjects.Capacity; i++)
-                {
-                    System.Windows.Forms.Label label = (System.Windows.Forms.Label)arrayListRecentlyOpennedProjects[i];
-                    this.tableLayoutPanelRecentlyProjects.Controls.Remove(label);
-                }
-                //clear the table
-                this.tableLayoutPanelRecentlyProjects.Controls.Clear();
-                showRecentlyOpennedProjects();
                 //save the name
                 projectStartPath = Path.GetDirectoryName(this.fileExplorer.FileName);
-
                 //close myself,turn to true
                 openWinForm = true;
                 this.Close();
             }
         }
+        private void RewriteFile(string filename)
+        {
+            //get the file name
+            string fileToAdd = filename;
+            //check have content or not
+            if (!File.ReadAllText(recentlyOpenedProjectFilePath).Equals(""))
+            {
+                //aux file to add, store
+                string auxFileToAdd = AES128.Decrypt(File.ReadAllText(recentlyOpenedProjectFilePath));
+                //check exist or not
+                if (auxFileToAdd.Contains(filename))
+                {
+                    //split it
+                    string[] auxString = auxFileToAdd.Split('\n');
+                    auxFileToAdd = "";
+                    //for and add it
+                    for (int i=0;i<auxString.Length;i++)
+                    {
+                        //check
+                        if (!auxString[i].Equals(fileToAdd))
+                            //last line no \n
+                            if (i != auxString.Length - 1)
+                                auxFileToAdd += auxString[i] + "\n";
+                            else
+                                auxFileToAdd += auxString[i];
+                    }
+                }
+                //decrypt it and add it
+                fileToAdd = fileToAdd + "\n" + auxFileToAdd;
+            }
 
+            //write all lines in table
+            File.WriteAllText(recentlyOpenedProjectFilePath, AES128.Encrypt(fileToAdd));
+            //if more than 5 then delete one
+            if (fileToAdd.Split('\n').Count() > 5)
+            {
+                File.WriteAllLines(recentlyOpenedProjectFilePath, AES128.Decrypt(File.ReadAllText(recentlyOpenedProjectFilePath)).Split('\n').
+                    Take(File.ReadAllLines(recentlyOpenedProjectFilePath).Length - 1));
+            }
+        }
         /// <summary>
         /// Open new form with location, run it.
         /// </summary>
