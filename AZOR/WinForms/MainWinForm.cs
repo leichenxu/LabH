@@ -262,7 +262,7 @@ namespace AZOR
                 //////////clear the table
                 ////////this.tableLayoutPanelRecentlyProjects.Controls.Clear();
                 ////////showRecentlyOpennedProjects();
-                
+
 
                 //save the name
                 projectStartPath = Path.GetDirectoryName(this.fileExplorer.FileName);
@@ -287,7 +287,7 @@ namespace AZOR
                     string[] auxString = auxFileToAdd.Split('\n');
                     auxFileToAdd = "";
                     //for and add it
-                    for (int i=0;i<auxString.Length;i++)
+                    for (int i = 0; i < auxString.Length; i++)
                     {
                         //check
                         if (!auxString[i].Equals(fileToAdd))
@@ -304,8 +304,8 @@ namespace AZOR
 
             //write all lines in table
             File.WriteAllText(recentlyOpenedProjectFilePath, AES128.Encrypt(fileToAdd));
-            //if more than 5 then delete one
-            if (fileToAdd.Split('\n').Count() > 5)
+            //if more than 10 then delete one
+            if (fileToAdd.Split('\n').Count() > 10)
             {
                 File.WriteAllLines(recentlyOpenedProjectFilePath, AES128.Decrypt(File.ReadAllText(recentlyOpenedProjectFilePath)).Split('\n').
                     Take(File.ReadAllLines(recentlyOpenedProjectFilePath).Length - 1));
