@@ -417,6 +417,11 @@ namespace AZOR
             {
                 mpvPersonalized.MpvPlayer.Speed = 64;
             }
+            //speed x100
+            else if (k.KeyChar == '-')
+            {
+                mpvPersonalized.MpvPlayer.Speed = 100;
+            }
 
         }
         /// <summary>
@@ -1009,6 +1014,7 @@ namespace AZOR
             if (mpvPersonalized.MpvPlayer.Position == TimeSpan.Zero)
             {
                 InZero = true;
+                CurrentTimeSpan = TimeSpan.Zero;
             }
             else
             {
