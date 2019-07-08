@@ -725,7 +725,7 @@ namespace AZOR
             //add the path again
             mpv.MpvPlayer.Load(pathVideoPlaying, currentTimeSpan.ToString());
             //check if loaded or not, is yes "unlock"
-            if (!loaded)
+            if (!loaded&&File.Exists(pathVideoPlaying))
             {
                 //leave it
                 Monitor.Exit(mpv.MpvPlayer.MpvLock);
