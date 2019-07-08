@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AZOR.exe" size="864768">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AZOR.exe" size="865792">
       <assemblyIdentity name="AZOR" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>pw6pfkEa8DVePgeYR5m08+bbP7Xt6FQIm0P8NRJ61jE=</dsig:DigestValue>
+        <dsig:DigestValue>ryZ4iTUcgl32n6+W0RdZFoMK5GbDpy2RF6SDmqSyo/Q=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -85,7 +85,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>ENBBOlefS2snGtYkT++CYGzoYIOnqn2+c/fxFU8ZEF4=</dsig:DigestValue>
+        <dsig:DigestValue>RyoKpvzRDq4QqMzsb/vGV1tah9w9tRgGpuPy78E4MbA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -746,6 +746,7 @@ namespace Mpv.NET.Player
                 mpv.Command("playlist-clear");
             }
         }
+
         /// <summary>
         /// Show next frame.
         /// </summary>

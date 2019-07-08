@@ -42,3 +42,4 @@ C:\Users\Developer Lee\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.AssemblyInf
 C:\Users\Developer Lee\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.AssemblyInfo.cs
 C:\Users\Developer Lee\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.dll
 C:\Users\Developer Lee\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.pdb
+C:\Users\Developer Lee\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.csprojAssemblyReference.cache

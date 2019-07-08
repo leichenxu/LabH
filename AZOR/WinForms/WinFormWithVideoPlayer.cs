@@ -17,6 +17,17 @@ namespace AZOR
     public partial class WinFormWithVideoPlayer : Form
     {
         #region Variables 
+        /// <summary>
+        /// When clip save, the name.
+        /// </summary>
+        private readonly string clipFileName = "clip.azorClipFile";
+        /// <summary>
+        /// When tag save, the name.
+        /// </summary>
+        private readonly string tagFileName = "tag.azorTagFile";
+        /// <summary>
+        /// Event for control video loads
+        /// </summary>
         private ManualResetEvent manualResetEventMpvUnlock = new ManualResetEvent(false);
         /// <summary>
         /// Set to true when is closed, and need to wait convert video.
@@ -351,7 +362,62 @@ namespace AZOR
             LoadClipsInDefaultPath();
 
             //find ffmpeg
-            ffmpegtool = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)+"\\ffmpeg.exe";
+            ffmpegtool = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\ffmpeg.exe";
+
+            //add more key events
+            this.KeyPress += MoreKeyPressFunctions;
+        }
+        /// <summary>
+        /// Add more functions to mpv, more speed play back,slower,etc.
+        /// </summary>
+        private void MoreKeyPressFunctions(object sender, KeyPressEventArgs k)
+        {
+            //if ¡ pressed, speed 0.25
+            if (k.KeyChar == '¡')
+            {
+                mpvPersonalized.MpvPlayer.Speed = 0.25;
+            }
+            //speed x0.5
+            else if (k.KeyChar == '\'')
+            {
+                mpvPersonalized.MpvPlayer.Speed = 0.5;
+            }
+            //speed x0.75
+            else if (k.KeyChar == '0')
+            {
+                mpvPersonalized.MpvPlayer.Speed = 0.75;
+            }
+            //speed x2
+            else if (k.KeyChar == 'c' || k.KeyChar == 'C')
+            {
+                mpvPersonalized.MpvPlayer.Speed = 2;
+            }
+            //speed x4
+            else if (k.KeyChar == 'v' || k.KeyChar == 'V')
+            {
+                mpvPersonalized.MpvPlayer.Speed = 4;
+            }
+            //speed x8
+            else if (k.KeyChar == 'b' || k.KeyChar == 'B')
+            {
+                mpvPersonalized.MpvPlayer.Speed = 8;
+            }
+            //speed x16
+            else if (k.KeyChar == 'n' || k.KeyChar == 'N')
+            {
+                mpvPersonalized.MpvPlayer.Speed = 16;
+            }
+            //speed x32
+            else if (k.KeyChar == ',')
+            {
+                mpvPersonalized.MpvPlayer.Speed = 32;
+            }
+            //speed x64
+            else if (k.KeyChar == '.')
+            {
+                mpvPersonalized.MpvPlayer.Speed = 64;
+            }
+
         }
         /// <summary>
         /// Set the state for analysis video.
@@ -513,8 +579,9 @@ namespace AZOR
         private void SaveClipsInDefaultPath()
         {
             //save it
-            StreamWriter sw = File.CreateText(pathStoreTagAndClips + "\\data\\clips.json");
-            sw.Write(JsonConvert.SerializeObject(mapAllClip.Values));
+            StreamWriter sw = File.CreateText(pathStoreTagAndClips + "\\data\\" + clipFileName);
+            //encrypt it and save it
+            sw.Write(AES128.Encrypt(JsonConvert.SerializeObject(mapAllClip.Values)));
             //close it
             sw.Close();
             //save default clip count
@@ -529,10 +596,10 @@ namespace AZOR
         private void LoadClipsInDefaultPath()
         {
             //if exist clips load it
-            if (File.Exists(pathStoreTagAndClips + "\\data\\clips.json"))
+            if (File.Exists(pathStoreTagAndClips + "\\data\\" + clipFileName))
             {
                 List<Clip> listClips = JsonConvert.DeserializeObject<List<Clip>>
-                    (File.ReadAllText(pathStoreTagAndClips + "\\data\\clips.json"));
+                    (AES128.Decrypt(File.ReadAllText(pathStoreTagAndClips + "\\data\\" + clipFileName)));
                 foreach (Clip clip in listClips)
                 {
                     storeInTableLayoutPanelClips(clip);
@@ -723,7 +790,7 @@ namespace AZOR
             //add the path again
             mpv.MpvPlayer.Load(pathVideoPlaying, currentTimeSpan.ToString());
             //check if loaded or not, is yes "unlock"
-            if (!loaded&&File.Exists(pathVideoPlaying))
+            if (!loaded && File.Exists(pathVideoPlaying))
             {
                 //leave it
                 Monitor.Exit(mpv.MpvPlayer.MpvLock);
@@ -1068,7 +1135,7 @@ namespace AZOR
                 {
                     setTextBotTime s = new setTextBotTime(ShowTimeChange);
                     //try it, cannot resolve it, because cant check form closing or not
-                    if(CanInvoke)
+                    if (CanInvoke)
                         try
                         {
                             this.Invoke(s, new object[] { sender, e });
@@ -2310,8 +2377,9 @@ namespace AZOR
             if (tagMap.Count != 0)
             {
                 //save only the tag, the button only have the event handler, tag have all the information
-                StreamWriter sw = File.CreateText(pathStoreTagAndClips + "\\data\\tag.json");
-                sw.Write(JsonConvert.SerializeObject(tagMap.Values));
+                StreamWriter sw = File.CreateText(pathStoreTagAndClips + "\\data\\" + tagFileName);
+                //encrypt it and save it
+                sw.Write(AES128.Encrypt(JsonConvert.SerializeObject(tagMap.Values)));
                 //close it
                 sw.Close();
             }
@@ -2329,10 +2397,10 @@ namespace AZOR
         private void LoadTagFromDefaultPath()
         {
             //if exist tags load it
-            if (File.Exists(pathStoreTagAndClips + "\\data\\tag.json"))
+            if (File.Exists(pathStoreTagAndClips + "\\data\\" + tagFileName))
             {
                 List<Tag> listTags = JsonConvert.DeserializeObject<List<Tag>>
-                    (File.ReadAllText(pathStoreTagAndClips + "\\data\\tag.json"));
+                    (AES128.Decrypt(File.ReadAllText(pathStoreTagAndClips + "\\data\\" + tagFileName)));
                 foreach (Tag tag in listTags)
                 {
                     createAutomaticOrManualTagButton(tag);
@@ -2588,7 +2656,7 @@ namespace AZOR
             }
             catch (Exception)
             {
-                MessageBox.Show("Not tag.json file");
+                MessageBox.Show("Not " + tagFileName + " file");
             }
 
         }
