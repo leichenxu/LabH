@@ -44,6 +44,7 @@ namespace AZOR
         #region timespan              
         private TimeSpan timeForMoveToVideoEndPoint = new TimeSpan(0, 0, 0, 11);
         private TimeSpan timeSpanForAddOrSubstract = new TimeSpan(0, 0, 3);
+        private TimeSpan timeSpanForReversePlay = new TimeSpan(0, 0, 0, 0, 303);
         #endregion
         /*
          * The media player used.
@@ -71,6 +72,7 @@ namespace AZOR
         public TimeSpan TimeForMoveToVideoEndPoint { get => timeForMoveToVideoEndPoint; set => timeForMoveToVideoEndPoint = value; }
         public MpvPlayer MpvPlayer { get => mpvPlayer; set => mpvPlayer = value; }
         public string PlayingMedia { get => playingMedia; set => playingMedia = value; }
+        public TimeSpan TimeSpanForReversePlay { get => timeSpanForReversePlay; set => timeSpanForReversePlay = value; }
         #endregion
 
         /// <summary>

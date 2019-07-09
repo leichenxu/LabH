@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AZOR.exe" size="866816">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AZOR.exe" size="867328">
       <assemblyIdentity name="AZOR" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>cTFWl6Dxb2VvyE3vkbdPz1i1zRRQjWfCtQ0KUCVICbs=</dsig:DigestValue>
+        <dsig:DigestValue>7lcSnTs88D8e5Z7NnR0AXrKPBgIuWJwJMt7l6o1kZU4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -381,37 +381,37 @@ namespace AZOR
             //if x pressed, speed -2
             if (k.KeyChar == 'x' || k.KeyChar == 'X')
             {
-                interval = 250;
+                interval = 240;
             }
             //speed X-4
             else if (k.KeyChar == 'z' || k.KeyChar == 'Z')
             {
-                interval = 125;
+                interval = 120;
             }
             //speed X-8
             else if (k.KeyChar == 'k' || k.KeyChar == 'K')
             {
-                interval = 72;
+                interval = 100;
             }
             //speed x-16
             else if (k.KeyChar == 'j' || k.KeyChar == 'J')
             {
-                interval = 36;
+                interval = 80;
             }
             //speed X-32
             else if (k.KeyChar == 'g' || k.KeyChar == 'G')
             {
-                interval = 18;
+                interval = 40;
             }
             //speed x-64
             else if (k.KeyChar == 'd' || k.KeyChar == 'D')
             {
-                interval = 9;
+                interval = 20;
             }
             //speed x-128
             else if (k.KeyChar == 'e' || k.KeyChar == 'E')
             {
-                interval = 1;
+                interval = 10;
             }
             if (interval != -1)
             {
@@ -495,14 +495,9 @@ namespace AZOR
             }
             if (speed != -1)
             {
-                //check reverse play
-                if (reversePlaying)
-                {
-                    //if was playing
-                    if (!buttonPlay.Visible)
-                        //play it
-                        MpvPersonalized.MpvPlayer.Resume();
-                }
+
+                //play it
+                MpvPersonalized.MpvPlayer.Resume();
                 //stop the timer
                 timerReversePlay.Stop();
                 //set the time
@@ -2812,10 +2807,15 @@ namespace AZOR
         {
             //check loaded
             if (mpvPersonalized.MpvPlayer.IsMediaLoaded)
+                //safe lock
                 lock (MpvPersonalized.MpvPlayer.MpvLock)
                 {
-                    //backframe
-                    mpvPersonalized.MpvPlayer.BackFrame(true);
+                    //check time
+                    if (MpvPersonalized.MpvPlayer.Position.Subtract(MpvPersonalized.TimeSpanForReversePlay) > MpvPersonalized.TimeSpanForReversePlay)
+                        MpvPersonalized.MpvPlayer.Position = MpvPersonalized.MpvPlayer.Position.Subtract(MpvPersonalized.TimeSpanForReversePlay);
+                    else
+                        //set zero for not running all time
+                        MpvPersonalized.MpvPlayer.Position = TimeSpan.Zero;
                 }
         }
     }
