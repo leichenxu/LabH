@@ -712,7 +712,7 @@ namespace AZOR
             mpvPersonalized = new MpvPersonalized(this.mpvPictureBox.Handle);
             mpvPersonalized.MpvPlayer.AutoPlay = true;
             mpvPersonalized.MpvPlayer.MediaLoaded += setMediaPlayerTime;
-            mpvPersonalized.MpvPlayer.KeepOpen = Mpv.NET.Player.KeepOpen.Yes;
+            mpvPersonalized.MpvPlayer.KeepOpen = Mpv.NET.Player.KeepOpen.Always;
             mpvPersonalized.MpvPlayer.PositionChanged += storeTimeChangeEvent;
             //add the event first time showed
             this.Shown += AddEventFirstTime;
@@ -1363,8 +1363,12 @@ namespace AZOR
                     }
                     //check reverse playing
                     if (!reversePlaying)
+                    {
                         //sent the event to the controller
                         mpvPersonalized.MpvController(new KeyEventArgs(keyData));
+                        //set speed to 1
+                        MpvPersonalized.MpvPlayer.Speed = 1;
+                    }
                     else
                     {
                         //check space
