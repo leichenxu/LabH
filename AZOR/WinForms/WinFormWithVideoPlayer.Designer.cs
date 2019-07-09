@@ -79,6 +79,7 @@
             this.buttonSync = new System.Windows.Forms.Button();
             this.openFileDialogTagPath = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogTag = new System.Windows.Forms.SaveFileDialog();
+            this.timerReversePlay = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.mpvPictureBox)).BeginInit();
             this.contextMenuRightClickOnTime.SuspendLayout();
             this.panelClipsSaved.SuspendLayout();
@@ -655,16 +656,20 @@
             // 
             // openFileDialogTagPath
             // 
-            this.openFileDialogTagPath.DefaultExt = "json";
+            this.openFileDialogTagPath.DefaultExt = "azorTagFile";
             this.openFileDialogTagPath.FileName = "openFileDialog1";
-            this.openFileDialogTagPath.Filter = "Tag file (*.json)|*.json";
+            this.openFileDialogTagPath.Filter = "Tag file (*.azorTagFile)|*.azorTagFile";
             this.openFileDialogTagPath.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialogTagPath_FileOk);
             // 
             // saveFileDialogTag
             // 
-            this.saveFileDialogTag.DefaultExt = "json";
-            this.saveFileDialogTag.Filter = "Tag file (*.json)|*.json";
+            this.saveFileDialogTag.DefaultExt = "azorTagFile";
+            this.saveFileDialogTag.Filter = "Tag file (*.azorTagFile)|*.azorTagFile";
             this.saveFileDialogTag.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialogTag_FileOk);
+            // 
+            // timerReversePlay
+            // 
+            this.timerReversePlay.Tick += new System.EventHandler(this.timerReversePlay_Tick);
             // 
             // WinFormWithVideoPlayer
             // 
@@ -778,5 +783,6 @@
         private System.Windows.Forms.Button buttonSync;
         private System.Windows.Forms.OpenFileDialog openFileDialogTagPath;
         private System.Windows.Forms.SaveFileDialog saveFileDialogTag;
+        private System.Windows.Forms.Timer timerReversePlay;
     }
 }

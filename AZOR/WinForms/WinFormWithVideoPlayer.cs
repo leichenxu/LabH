@@ -18,6 +18,10 @@ namespace AZOR
     {
         #region Variables 
         /// <summary>
+        /// Check video is reverse playing or not
+        /// </summary>
+        private bool reversePlaying = false;
+        /// <summary>
         /// When clip save, the name.
         /// </summary>
         private readonly string clipFileName = "clip.azorClipFile";
@@ -365,64 +369,147 @@ namespace AZOR
             ffmpegtool = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\ffmpeg.exe";
 
             //add more key events
-            this.KeyPress += MoreKeyPressFunctions;
+            this.KeyPress += KeyPressAddSpeedFunctions;//more speed
+            this.KeyPress += KeyPressReverseSpeedFunctions;
+        }
+        /// <summary>
+        /// Reverse play simulation changing time span.
+        /// </summary>
+        private void KeyPressReverseSpeedFunctions(object sender, KeyPressEventArgs k)
+        {
+            int interval = -1;
+            //if x pressed, speed -2
+            if (k.KeyChar == 'x' || k.KeyChar == 'X')
+            {
+                interval = 250;
+            }
+            //speed X-4
+            else if (k.KeyChar == 'z' || k.KeyChar == 'Z')
+            {
+                interval = 125;
+            }
+            //speed X-8
+            else if (k.KeyChar == 'k' || k.KeyChar == 'K')
+            {
+                interval = 72;
+            }
+            //speed x-16
+            else if (k.KeyChar == 'j' || k.KeyChar == 'J')
+            {
+                interval = 36;
+            }
+            //speed X-32
+            else if (k.KeyChar == 'g' || k.KeyChar == 'G')
+            {
+                interval = 18;
+            }
+            //speed x-64
+            else if (k.KeyChar == 'd' || k.KeyChar == 'D')
+            {
+                interval = 9;
+            }
+            //speed x-128
+            else if (k.KeyChar == 'e' || k.KeyChar == 'E')
+            {
+                interval = 1;
+            }
+            if (interval != -1)
+            {
+                //stop the timer
+                timerReversePlay.Stop();
+                //new interval
+                timerReversePlay.Interval = interval;
+                //run it again
+                AfterReverseKeyPressed();
+            }
+        }
+
+        /// <summary>
+        /// General code after reverse key is pressed.
+        /// </summary>
+        private void AfterReverseKeyPressed()
+        {
+
+            //set true
+            reversePlaying = true;
+            timerReversePlay.Start();
+            mpvPersonalized.MpvPlayer.Pause();
+            buttonPause.Visible = true;
+            buttonPlay.Visible = false;
         }
         /// <summary>
         /// Add more functions to mpv, more speed play back,slower,etc.
         /// </summary>
-        private void MoreKeyPressFunctions(object sender, KeyPressEventArgs k)
+        private void KeyPressAddSpeedFunctions(object sender, KeyPressEventArgs k)
         {
+            double speed = -1;
             //if ¡ pressed, speed 0.25
             if (k.KeyChar == '¡')
             {
-                mpvPersonalized.MpvPlayer.Speed = 0.25;
+                speed = 0.25;
             }
             //speed x0.5
             else if (k.KeyChar == '\'')
             {
-                mpvPersonalized.MpvPlayer.Speed = 0.5;
+                speed = 0.5;
             }
             //speed x0.75
             else if (k.KeyChar == '0')
             {
-                mpvPersonalized.MpvPlayer.Speed = 0.75;
+                speed = 0.75;
             }
             //speed x2
             else if (k.KeyChar == 'c' || k.KeyChar == 'C')
             {
-                mpvPersonalized.MpvPlayer.Speed = 2;
+                speed = 2;
             }
             //speed x4
             else if (k.KeyChar == 'v' || k.KeyChar == 'V')
             {
-                mpvPersonalized.MpvPlayer.Speed = 4;
+                speed = 4;
             }
             //speed x8
             else if (k.KeyChar == 'b' || k.KeyChar == 'B')
             {
-                mpvPersonalized.MpvPlayer.Speed = 8;
+                speed = 8;
             }
             //speed x16
             else if (k.KeyChar == 'n' || k.KeyChar == 'N')
             {
-                mpvPersonalized.MpvPlayer.Speed = 16;
+                speed = 16;
             }
             //speed x32
             else if (k.KeyChar == ',')
             {
-                mpvPersonalized.MpvPlayer.Speed = 32;
+                speed = 32;
             }
             //speed x64
             else if (k.KeyChar == '.')
             {
-                mpvPersonalized.MpvPlayer.Speed = 64;
+                speed = 64;
             }
             //speed x100
             else if (k.KeyChar == '-')
             {
-                mpvPersonalized.MpvPlayer.Speed = 100;
+                speed = 100;
             }
-
+            if (speed != -1)
+            {
+                //check reverse play
+                if (reversePlaying)
+                {
+                    //if was playing
+                    if (!buttonPlay.Visible)
+                        //play it
+                        MpvPersonalized.MpvPlayer.Resume();
+                }
+                //stop the timer
+                timerReversePlay.Stop();
+                //set the time
+                mpvPersonalized.MpvPlayer.Speed = speed;
+                //set to false
+                reversePlaying = false;
+            }
         }
         /// <summary>
         /// Set the state for analysis video.
@@ -731,21 +818,23 @@ namespace AZOR
         /// <param name="eventArgs"></param>
         private void videoPaused(object sender, EventArgs eventArgs)
         {
-            //thread safe call
-            if (labelTimePlaying.InvokeRequired)
-            {
-                //create the delegate for invoke
-                buttonPlayOrPauseShow b = new buttonPlayOrPauseShow(videoPaused);
-                //check can invoke or not
-                if (!this.IsDisposed && !mpvPersonalized.MpvPlayer.IsPlaying && CanInvoke)
-                    this.Invoke(b, new object[] { sender, eventArgs });
-            }
-            else
-            {
-                //show the button
-                buttonPlay.Show();
-                buttonPause.Visible = false;
-            }
+            //check reverse play
+            if (!reversePlaying)
+                //thread safe call
+                if (labelTimePlaying.InvokeRequired)
+                {
+                    //create the delegate for invoke
+                    buttonPlayOrPauseShow b = new buttonPlayOrPauseShow(videoPaused);
+                    //check can invoke or not
+                    if (!this.IsDisposed && !mpvPersonalized.MpvPlayer.IsPlaying && CanInvoke)
+                        this.Invoke(b, new object[] { sender, eventArgs });
+                }
+                else
+                {
+                    //show the button
+                    buttonPlay.Show();
+                    buttonPause.Visible = false;
+                }
         }
         private delegate void buttonPlayOrPauseShow(object sender, EventArgs eventArgs);
         /// <summary>
@@ -755,18 +844,20 @@ namespace AZOR
         /// <param name="eventArgs"></param>
         private void videoResumed(object sender, EventArgs eventArgs)
         {
-            //thread safe call, its the same(videoPaused())
-            if (labelTimePlaying.InvokeRequired)
-            {
-                buttonPlayOrPauseShow b = new buttonPlayOrPauseShow(videoResumed);
-                if (!this.IsDisposed && mpvPersonalized.MpvPlayer.IsPlaying && CanInvoke)
-                    this.Invoke(b, new object[] { sender, eventArgs });
-            }
-            else
-            {
-                buttonPlay.Visible = false;
-                buttonPause.Show();
-            }
+            //check reverse play
+            if (!reversePlaying)
+                //thread safe call, its the same(videoPaused())
+                if (labelTimePlaying.InvokeRequired)
+                {
+                    buttonPlayOrPauseShow b = new buttonPlayOrPauseShow(videoResumed);
+                    if (!this.IsDisposed && mpvPersonalized.MpvPlayer.IsPlaying && CanInvoke)
+                        this.Invoke(b, new object[] { sender, eventArgs });
+                }
+                else
+                {
+                    buttonPlay.Visible = false;
+                    buttonPause.Show();
+                }
 
         }
         /// <summary>
@@ -776,9 +867,11 @@ namespace AZOR
         {
             //add the new video
             this.LoadNewVideo(this.mpvPersonalized);
+
             //add event
             this.mpvPersonalized.MpvPlayer.MediaPaused += videoPaused;
             this.mpvPersonalized.MpvPlayer.MediaResumed += videoResumed;
+
         }
         /// <summary>
         /// Load the new video.
@@ -1039,16 +1132,20 @@ namespace AZOR
                 //check it
                 if (!InZero && mpvPersonalized.MpvPlayer.IsMediaLoaded && CurrentTimeSpan > TimeSpan.Zero)
                 {
-                    //set time
-                    SetPlayerTime(this.mpvPersonalized);
+                    //if not enabled, set time, mean not reverse play
+                    if (!reversePlaying)
+                    {
+                        //set time
+                        SetPlayerTime(this.mpvPersonalized);
+                        //add events
+                        this.mpvPersonalized.MpvPlayer.MediaPaused += videoPaused;
+                        this.mpvPersonalized.MpvPlayer.MediaResumed += videoResumed;
+                    }
                     //if reload one stop it
                     //if (winFormAnalysis.ReloadOne)
                     // winFormAnalysis.MpvPersonalized.MpvPlayer.Stop();
                     //set time
                     SetAnalysisTime();
-                    //add events
-                    this.mpvPersonalized.MpvPlayer.MediaPaused += videoPaused;
-                    this.mpvPersonalized.MpvPlayer.MediaResumed += videoResumed;
                     //state play or pause
                     if (this.buttonPlay.Visible)
                         (sender as Mpv.NET.Player.MpvPlayer).Pause();
@@ -1269,14 +1366,48 @@ namespace AZOR
                         manualResetEventMpvUnlock.WaitOne();
                         Monitor.Enter(MpvPersonalized.MpvPlayer.MpvLock);
                     }
-                    //sent the event to the controller
-                    mpvPersonalized.MpvController(new KeyEventArgs(keyData));
-
-                    //kkk = keyData;
-                    //System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-                    //timer.Interval = 100;
-                    //timer.Tick += pruebaTick;
-                    //timer.Start();
+                    //check reverse playing
+                    if (!reversePlaying)
+                        //sent the event to the controller
+                        mpvPersonalized.MpvController(new KeyEventArgs(keyData));
+                    else
+                    {
+                        //check space
+                        if (keyData == Keys.Space)
+                        {
+                            if (timerReversePlay.Enabled)
+                            {
+                                //stop the timer
+                                timerReversePlay.Stop();
+                                //change the visible
+                                this.buttonPlay.Show();
+                                this.buttonPause.Hide();
+                            }
+                            else
+                            {
+                                //start it again
+                                timerReversePlay.Start();
+                                //change the visible
+                                this.buttonPlay.Hide();
+                                this.buttonPause.Show();
+                            }
+                        }
+                        else
+                        {
+                            //check next frame or back frame
+                            if (keyData == MpvPersonalized.NextFrame || keyData == MpvPersonalized.PreviousFrame)
+                            {
+                                //if yes stop it
+                                //stop the timer
+                                timerReversePlay.Stop();
+                                //change the visible
+                                this.buttonPlay.Show();
+                                this.buttonPause.Hide();
+                            }
+                            //then sende the command
+                            mpvPersonalized.MpvController(new KeyEventArgs(keyData));
+                        }
+                    }
 
                     Monitor.Exit(MpvPersonalized.MpvPlayer.MpvLock);
                     winFormAnalysis.CommandToMpv(keyData);
@@ -1286,23 +1417,7 @@ namespace AZOR
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-        //Keys kkk;
-        //private void pruebaTick(object sender, EventArgs e)
-        //{
-        //    Monitor.Enter(MpvPersonalized.MpvPlayer.MpvLock);
-        //    while (!loaded)
-        //    {
-        //        Monitor.Exit(MpvPersonalized.MpvPlayer.MpvLock);
-        //        manualResetEventMpvUnlock.WaitOne();
-        //        Monitor.Enter(MpvPersonalized.MpvPlayer.MpvLock);
-        //        break;
-        //    }
 
-        //    //sent the event to the controller
-        //    mpvPersonalized.mpvController(new KeyEventArgs(kkk));
-        //    Monitor.Exit(MpvPersonalized.MpvPlayer.MpvLock);
-        //    (sender as System.Windows.Forms.Timer).Stop();
-        //}
         /// <summary>
         /// Event when form is closed, kill all the downlaods started.
         /// </summary>
@@ -2688,6 +2803,20 @@ namespace AZOR
                 MessageBox.Show("No hay tags");
             }
         }
-
+        /// <summary>
+        /// When tick move the position.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timerReversePlay_Tick(object sender, EventArgs e)
+        {
+            //check loaded
+            if (mpvPersonalized.MpvPlayer.IsMediaLoaded)
+                lock (MpvPersonalized.MpvPlayer.MpvLock)
+                {
+                    //backframe
+                    mpvPersonalized.MpvPlayer.BackFrame(true);
+                }
+        }
     }
 }

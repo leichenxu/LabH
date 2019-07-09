@@ -761,12 +761,12 @@ namespace Mpv.NET.Player
         /// <summary>
 		/// Show back frame.
 		/// </summary>
-		public void BackFrame()
+		public void BackFrame(bool playing)
         {
             lock (MpvLock)
             {
                 mpv.Command("frame-back-step");
-                IsPlaying = false;
+                IsPlaying = playing;
             }
         }
 

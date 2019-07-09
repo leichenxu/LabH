@@ -156,7 +156,7 @@ namespace AZOR
                     }
                     else if (keyEventArgs.KeyCode == previousFrame)
                     {
-                        mpvPlayer.BackFrame();
+                        mpvPlayer.BackFrame(false);
                         return KeysUsed.PreviousFrame;
                     }
                     if (keyEventArgs.KeyCode == MoveVideoToStartPoint)
