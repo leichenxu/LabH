@@ -44,7 +44,8 @@ namespace AZOR
         #region timespan              
         private TimeSpan timeForMoveToVideoEndPoint = new TimeSpan(0, 0, 0, 11);
         private TimeSpan timeSpanForAddOrSubstract = new TimeSpan(0, 0, 3);
-        private TimeSpan timeSpanForReversePlay = new TimeSpan(0, 0, 0, 0, 303);
+        private TimeSpan timeSpanForReversePlay = new TimeSpan(0, 0, 0, 0, 200);
+        private TimeSpan timeSpanForCheckEndOfFile = new TimeSpan(0, 0, 0, 1);
         #endregion
         /*
          * The media player used.
@@ -73,6 +74,7 @@ namespace AZOR
         public MpvPlayer MpvPlayer { get => mpvPlayer; set => mpvPlayer = value; }
         public string PlayingMedia { get => playingMedia; set => playingMedia = value; }
         public TimeSpan TimeSpanForReversePlay { get => timeSpanForReversePlay; set => timeSpanForReversePlay = value; }
+        public TimeSpan TimeSpanForCheckEndOfFile { get => timeSpanForCheckEndOfFile; set => timeSpanForCheckEndOfFile = value; }
         #endregion
 
         /// <summary>
@@ -100,6 +102,28 @@ namespace AZOR
             return keyData == NextFrame || keyData == PreviousFrame ||
                 keyData == MoveForwardKeys || keyData == MoveBackwardKeys ||
                 keyData == PauseOrPlayVideo || keyData == MoveVideoToStartPoint || keyData == MoveVideoToEndPoint;
+        }
+        /// <summary>
+        /// Check if the media player need to use this key for change speed.
+        /// </summary>
+        /// <param name="keyData">keyData received to check if is used or not.</param>
+        /// <returns>Return the comparition with all keys used.</returns>
+        public Boolean KeysSpeedUse(char keyData)
+        {
+            return keyData == '¡' || keyData == '\'' ||
+                keyData == '0' || keyData == 'C' ||
+                keyData == 'c' || keyData == 'v' || keyData == 'V'
+                || keyData == 'b' ||
+                keyData == 'B' || keyData == 'n' ||
+                keyData == 'N' || keyData == ',' || keyData == '.'
+                || keyData == '-' ||
+                keyData == 'x' || keyData == 'X' ||
+                keyData == 'z' || keyData == 'Z' || keyData == 'k'
+                || keyData == 'K' ||
+                keyData == 'j' || keyData == 'J' ||
+                keyData == 'g' || keyData == 'G' || keyData == 'd'
+                || keyData == 'D' ||
+                keyData == 'e' || keyData == 'E';
         }
 
         /// <summary>
@@ -158,7 +182,7 @@ namespace AZOR
                     }
                     else if (keyEventArgs.KeyCode == previousFrame)
                     {
-                        mpvPlayer.BackFrame(false);
+                        mpvPlayer.BackFrame();
                         return KeysUsed.PreviousFrame;
                     }
                     if (keyEventArgs.KeyCode == MoveVideoToStartPoint)
@@ -175,6 +199,11 @@ namespace AZOR
                         //keep playing
                         MpvPlayer.Resume();
                         return KeysUsed.MoveToEndPoint;
+                    }
+                    else
+                    {
+                        //change speeed
+
                     }
                 }
             return KeysUsed.NoRecognized;

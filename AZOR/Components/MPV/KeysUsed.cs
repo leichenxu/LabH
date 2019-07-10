@@ -17,6 +17,7 @@ namespace AZOR
         MoveForward,
         MoveBackWard,
         VideoFinished,
-        NoRecognized
+        NoRecognized,
+        ChangeSpeed
     }
 }
