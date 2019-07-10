@@ -17,6 +17,14 @@ namespace AZOR
     public class MpvPersonalized
     {
         /// <summary>
+        /// Check reverse playing or not.
+        /// </summary>
+        private bool reversePlaying = false;
+        /// <summary>
+        /// Timer for reverse play.
+        /// </summary>
+        private Timer timerReversePlay = new Timer();
+        /// <summary>
         /// Store the playing video.
         /// </summary>
         private string playingMedia;
@@ -75,6 +83,8 @@ namespace AZOR
         public string PlayingMedia { get => playingMedia; set => playingMedia = value; }
         public TimeSpan TimeSpanForReversePlay { get => timeSpanForReversePlay; set => timeSpanForReversePlay = value; }
         public TimeSpan TimeSpanForCheckEndOfFile { get => timeSpanForCheckEndOfFile; set => timeSpanForCheckEndOfFile = value; }
+        public bool ReversePlaying { get => reversePlaying; set => reversePlaying = value; }
+        public Timer TimerReversePlay { get => timerReversePlay; set => timerReversePlay = value; }
         #endregion
 
         /// <summary>
@@ -90,8 +100,36 @@ namespace AZOR
             MpvPlayer.AutoPlay = true;
             //dont close the mpv after finish the video
             MpvPlayer.KeepOpen = Mpv.NET.Player.KeepOpen.Yes;
+            //add tick
+            TimerReversePlay.Tick += timerReversePlay_Tick;
         }
-
+        /// <summary>
+        /// When tick move the position.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timerReversePlay_Tick(object sender, EventArgs e)
+        {
+            //check loaded
+            if (MpvPlayer.IsMediaLoaded)
+                //safe lock
+                lock (MpvPlayer.MpvLock)
+                {
+                    //pause it
+                    MpvPlayer.Pause();
+                    //check time
+                    if (MpvPlayer.Position.Subtract(TimeSpanForReversePlay) > TimeSpanForReversePlay)
+                    {
+                        //time
+                        MpvPlayer.Position = MpvPlayer.Position.Subtract(TimeSpanForReversePlay);
+                        //then back frame
+                        MpvPlayer.BackFrame();
+                    }
+                    else
+                        //set zero for not running all time
+                        MpvPlayer.Position = TimeSpan.Zero;
+                }
+        }
         /// <summary>
         /// Check if the media player need to use this key or not.
         /// </summary>
@@ -103,28 +141,6 @@ namespace AZOR
                 keyData == MoveForwardKeys || keyData == MoveBackwardKeys ||
                 keyData == PauseOrPlayVideo || keyData == MoveVideoToStartPoint || keyData == MoveVideoToEndPoint;
         }
-        /// <summary>
-        /// Check if the media player need to use this key for change speed.
-        /// </summary>
-        /// <param name="keyData">keyData received to check if is used or not.</param>
-        /// <returns>Return the comparition with all keys used.</returns>
-        public Boolean KeysSpeedUse(char keyData)
-        {
-            return keyData == '¡' || keyData == '\'' ||
-                keyData == '0' || keyData == 'C' ||
-                keyData == 'c' || keyData == 'v' || keyData == 'V'
-                || keyData == 'b' ||
-                keyData == 'B' || keyData == 'n' ||
-                keyData == 'N' || keyData == ',' || keyData == '.'
-                || keyData == '-' ||
-                keyData == 'x' || keyData == 'X' ||
-                keyData == 'z' || keyData == 'Z' || keyData == 'k'
-                || keyData == 'K' ||
-                keyData == 'j' || keyData == 'J' ||
-                keyData == 'g' || keyData == 'G' || keyData == 'd'
-                || keyData == 'D' ||
-                keyData == 'e' || keyData == 'E';
-        }
 
         /// <summary>
         /// The controller that manage all event when the key used is pressed.
@@ -133,6 +149,39 @@ namespace AZOR
         /// check what action to do.</param>
         /// <returns>Return the key pressed if need to use.</returns>
         public KeysUsed MpvController(KeyEventArgs keyEventArgs)
+        {
+            KeysUsed k = OwnController(keyEventArgs);
+            //check add speed or not
+            if (k != KeysUsed.AddSpeed)
+            {
+                //set speed to 1
+                MpvPlayer.Speed = 1;
+            }
+            if (k != KeysUsed.NoRecognized && k != KeysUsed.ReverseSpeed)
+            {
+
+                //check reverse play
+                if (timerReversePlay.Enabled)
+                {
+                    //stop the timer
+                    timerReversePlay.Stop();
+                    //reverse play to false
+                    reversePlaying = false;
+                    //check space for pause
+                    if (keyEventArgs.KeyData == Keys.Space)
+                    {
+                        //pause it, dont play
+                        MpvPlayer.Pause();
+                    }
+                }
+            }
+            return k;
+        }
+        /// <summary>
+        /// Do controller things with key received.
+        /// </summary>
+        /// <param name="keyEventArgs"></param>
+        private KeysUsed OwnController(KeyEventArgs keyEventArgs)
         {
             lock (this.MpvPlayer.MpvLock)
                 //check if have media loaded, if not doesnt need to do something
@@ -203,12 +252,172 @@ namespace AZOR
                     else
                     {
                         //change speeed
-
+                        if (AddSpeedCheck(keyEventArgs) != -1)
+                        {
+                            return KeysUsed.AddSpeed;
+                        }
+                        else if (KeyPressReverseSpeed(keyEventArgs) != -1)
+                        {
+                            return KeysUsed.ReverseSpeed;
+                        }
                     }
                 }
             return KeysUsed.NoRecognized;
         }
 
+        /// <summary>
+        /// Check if the media player need to use this key for change speed.
+        /// </summary>
+        /// <param name="keyData">keyData received to check if is used or not.</param>
+        /// <returns>Return the comparition with all keys used.</returns>
+        public Boolean KeysSpeedUse(Keys keyData)
+        {
+            return keyData == Keys.Oem6 /*¡*/|| keyData == Keys.Oem4/*'*/ ||
+                keyData == Keys.D0 || keyData == Keys.C | keyData == Keys.V
+                || keyData == Keys.B ||
+                keyData == Keys.N || keyData == Keys.Oemcomma/*,*/ || keyData == Keys.OemPeriod/*.*/
+                || keyData == Keys.OemMinus/*-*/  ||
+                 keyData == Keys.X ||
+                keyData == Keys.Z || keyData == Keys.K ||
+                keyData == Keys.J ||
+                keyData == Keys.G || keyData == Keys.D ||
+                keyData == Keys.E;
+        }
+        /// <summary>
+        /// Check speed add
+        /// </summary>
+        /// <param name="keyEventArgs"></param>
+        private double AddSpeedCheck(KeyEventArgs keyEventArgs)
+        {
+            double speed = -1;
+            //if ¡ pressed, speed 0.25
+            if (keyEventArgs.KeyData == Keys.Oem6)
+            {
+                speed = 0.25;
+            }
+            //speed x0.5
+            else if (keyEventArgs.KeyData == Keys.Oem4)
+            {
+                speed = 0.5;
+            }
+            //speed x0.75
+            else if (keyEventArgs.KeyData == Keys.D0)
+            {
+                speed = 0.75;
+            }
+            //speed x2
+            else if (keyEventArgs.KeyData == Keys.C)
+            {
+                speed = 2;
+            }
+            //speed x4
+            else if (keyEventArgs.KeyData == Keys.V)
+            {
+                speed = 4;
+            }
+            //speed x8
+            else if (keyEventArgs.KeyData == Keys.B)
+            {
+                speed = 8;
+            }
+            //speed x16
+            else if (keyEventArgs.KeyData== Keys.N)
+            {
+                speed = 16;
+            }
+            //speed x32
+            else if (keyEventArgs.KeyData == Keys.Oemcomma)
+            {
+                speed = 32;
+            }
+            //speed x64
+            else if (keyEventArgs.KeyData == Keys.OemPeriod)
+            {
+                speed = 64;
+            }
+            //speed x100
+            else if (keyEventArgs.KeyData == Keys.OemMinus/*-*/ )
+            {
+                speed = 100;
+            }
+            //check add speed
+            if (speed != -1)
+            {
+                //play it
+                MpvPlayer.Resume();
+                //stop the timer
+                timerReversePlay.Stop();
+                //set the time
+                MpvPlayer.Speed = speed;
+                //set to false
+                reversePlaying = false;
+            }
+            return speed;
+        }
+
+        /// <summary>
+        /// Reverse play simulation changing time span.
+        /// </summary>
+        private int KeyPressReverseSpeed(KeyEventArgs k)
+        {
+            int interval = -1;
+            //if x pressed, speed -2
+            if (k.KeyData== Keys.X)
+            {
+                interval = 240;
+            }
+            //speed X-4
+            else if (k.KeyData== Keys.Z)
+            {
+                interval = 120;
+            }
+            //speed X-8
+            else if (k.KeyData == Keys.K)
+            {
+                interval = 100;
+            }
+            //speed x-16
+            else if (k.KeyData == Keys.J)
+            {
+                interval = 80;
+            }
+            //speed X-32
+            else if (k.KeyData == Keys.G)
+            {
+                interval = 40;
+            }
+            //speed x-64
+            else if (k.KeyData == Keys.D)
+            {
+                interval = 20;
+            }
+            //speed x-128
+            else if (k.KeyData == Keys.E)
+            {
+                interval = 10;
+            }
+            if (interval != -1)
+            {
+                //stop the timer
+                timerReversePlay.Stop();
+                //new interval
+                timerReversePlay.Interval = interval;
+                //run it again
+                AfterReverseKeyPressed();
+            }
+            return interval;
+        }
+
+        /// <summary>
+        /// General code after reverse key is pressed.
+        /// </summary>
+        private void AfterReverseKeyPressed()
+        {
+            //set true
+            reversePlaying = true;
+            timerReversePlay.Start();
+            MpvPlayer.Pause();
+        }
         /// <summary>
         /// Set te time forward or backward with the key received.
         /// </summary>
