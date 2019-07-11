@@ -247,13 +247,13 @@ namespace AZOR
             this.path = path;
             pathStoreVideo = path + "\\Sources\\temp";
             pathStoreTagAndClips = path + "\\Sources";
-            myOwnInitializeComponent();
+            MyOwnInitializeComponent();
             //save settings
             this.settingForm = settingForm;
             //if can show, show it,else close functions
             if (!settingForm.CanShow)
             {
-                openProjectSet();
+                OpenProjectSet();
                 buttonAnalysis.Enabled = true;
                 this.buttonSync.Enabled = true;
             }
@@ -265,7 +265,7 @@ namespace AZOR
         /// <summary>
         /// If the project is openned, set id.
         /// </summary>
-        private void openProjectSet()
+        private void OpenProjectSet()
         {
             //set button enable to false
             this.buttonSetting.Enabled = false;
@@ -288,7 +288,7 @@ namespace AZOR
                 //when can see show the time
                 this.Shown += new EventHandler(SetRecordTime);
                 //call it for add all functions
-                timerEndProgressBar_Tick(null, null);
+                TimerEndProgressBar_Tick(null, null);
                 //stop the reload timer
                 timerReload.Stop();
             }
@@ -320,7 +320,7 @@ namespace AZOR
         /// My own component initialize.
         /// Adjust the components.
         /// </summary>
-        private void myOwnInitializeComponent()
+        private void MyOwnInitializeComponent()
         {
             //scroll time ajust
             tableLayoutPanelClips.AutoSize = true;
@@ -340,18 +340,18 @@ namespace AZOR
             //activate keyinput
             KeyPreview = true;
             //form closing event
-            this.FormClosing += closingEvent;
+            this.FormClosing += ClosingEvent;
             //create the mpv and ajust some variables
-            createMPVAndAjust();
+            CreateMPVAndAjust();
 
             //transparent components
             this.mpvPictureBox.BackColor = System.Drawing.Color.Transparent;
 
             //add functions
-            panelClipsSaved.Click += rightClickOnClipPanel;
+            panelClipsSaved.Click += RightClickOnClipPanel;
 
             //adjust paneltag
-            panelTag.VisibleChanged += createOrNotButtonTag;
+            panelTag.VisibleChanged += CreateOrNotButtonTag;
 
             //enable controls when progress bar close
             labelProgressBarLoading.VisibleChanged += EnableControls;
@@ -452,7 +452,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void createOrNotButtonTag(object sender, EventArgs e)
+        private void CreateOrNotButtonTag(object sender, EventArgs e)
         {
             //when panel tag visible pause the layout
             if (panelTag.Visible)
@@ -466,16 +466,16 @@ namespace AZOR
             //check have information or not for create tag button
             if (panelTag.HaveInformation)
             {
-                createAutomaticOrManualTagButton(panelTag.NewTagInfo);
+                CreateAutomaticOrManualTagButton(panelTag.NewTagInfo);
             }
         }
         /// <summary>
         /// Create the automatic button and return it for use if is necesary.
         /// </summary>
-        private Button createAutomaticOrManualTagButton(Tag tag)
+        private Button CreateAutomaticOrManualTagButton(Tag tag)
         {
             //create the button
-            Button tagButton = createButtonTag(tag);
+            Button tagButton = CreateButtonTag(tag);
             //add to tag
             AddTag(tag, tagButton);
             //scroll it
@@ -490,7 +490,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void closingEvent(object sender, EventArgs e)
+        private void ClosingEvent(object sender, EventArgs e)
         {
             DialogResult dialog = MessageBox.Show(CloseProgramMessage, CloseProgramDialogName,
                 MessageBoxButtons.YesNo);
@@ -506,11 +506,11 @@ namespace AZOR
                 if (convertVideo)
                 {
                     //same things
-                    this.stopButtonPressedEvent(null, null);
+                    this.StopButtonPressedEvent(null, null);
                     //send to back
                     mpvPictureBox.SendToBack();
                 }
-                this.FormClosing -= closingEvent;
+                this.FormClosing -= ClosingEvent;
                 lock (convertProcessMap)
                     //if have process
                     if (convertProcessMap.Count > 0)
@@ -557,7 +557,7 @@ namespace AZOR
                     (AES128.Decrypt(File.ReadAllText(pathStoreTagAndClips + "\\data\\" + clipFileName)));
                 foreach (Clip clip in listClips)
                 {
-                    storeInTableLayoutPanelClips(clip);
+                    StoreInTableLayoutPanelClips(clip);
                 }
             }
             //load default clip count
@@ -575,19 +575,19 @@ namespace AZOR
         /// <summary>
         /// Create the mpv and ajust.
         /// </summary>
-        private void createMPVAndAjust()
+        private void CreateMPVAndAjust()
         {
             mpvPersonalized = new MpvPersonalized(this.mpvPictureBox.Handle);
             mpvPersonalized.MpvPlayer.AutoPlay = true;
-            mpvPersonalized.MpvPlayer.MediaLoaded += setMediaPlayerTime;
+            mpvPersonalized.MpvPlayer.MediaLoaded += SetMediaPlayerTime;
             mpvPersonalized.MpvPlayer.KeepOpen = Mpv.NET.Player.KeepOpen.Always;
-            mpvPersonalized.MpvPlayer.PositionChanged += storeTimeChangeEvent;
+            mpvPersonalized.MpvPlayer.PositionChanged += StoreTimeChangeEvent;
             //add the event first time showed
             this.Shown += AddEventFirstTime;
 
 
-            this.mpvPersonalized.MpvPlayer.MediaPaused += videoPaused;
-            this.mpvPersonalized.MpvPlayer.MediaResumed += videoResumed;
+            this.mpvPersonalized.MpvPlayer.MediaPaused += VideoPaused;
+            this.mpvPersonalized.MpvPlayer.MediaResumed += VideoResumed;
         }
         /// <summary>
         /// Add event when first time showed.
@@ -603,7 +603,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="keyEventArgs"></param>
-        private void storeTimeEvent(object sender, KeyEventArgs keyEventArgs)
+        private void StoreTimeEvent(object sender, KeyEventArgs keyEventArgs)
         {
             //check if have mdia loaded
             if (this.mpvPersonalized.MpvPlayer.IsMediaLoaded && !panelTag.Visible)
@@ -620,7 +620,7 @@ namespace AZOR
                     //save color
                     clip.MyColor = Color.Black;
                     //store it
-                    storeInTableLayoutPanelClips(clip);
+                    StoreInTableLayoutPanelClips(clip);
                 }
             }
         }
@@ -628,7 +628,7 @@ namespace AZOR
         /// Create the time label with the time span, hh:mm:ss ms.
         /// </summary>
         /// <returns>Return the label created.</returns>
-        private Label createTimeLabel(string time)
+        private Label CreateTimeLabel(string time)
         {
             Label newLabelTime = new Label();
             //cannot autosize, for make same size in all
@@ -638,7 +638,7 @@ namespace AZOR
             //set the text (time)
             newLabelTime.Text = mpvPersonalized.MpvPlayer.Position.ToString(@"hh\:mm\:ss\.ff");
             //add the right click function
-            newLabelTime.Click += clickOnTimeLabel;
+            newLabelTime.Click += ClickOnTimeLabel;
             //set time
             newLabelTime.Text = time;
             return newLabelTime;
@@ -647,7 +647,7 @@ namespace AZOR
         /// Add the label to the table for show.
         /// </summary>
         /// <param name="labelToAdd">Label to add.</param>
-        private void addTimeToTable(Label labelToAdd)
+        private void AddTimeToTable(Label labelToAdd)
         {
             //adjust the label
             labelToAdd.Dock = DockStyle.Fill;
@@ -664,16 +664,16 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="eventArgs"></param>
-        private void reloadVideo(object sender, EventArgs eventArgs)
+        private void ReloadVideo(object sender, EventArgs eventArgs)
         {
             //lock the mpv
             lock (mpvPersonalized.MpvPlayer.MpvLock)
             {
                 //this two lines for now set text when video is reloading
-                this.mpvPersonalized.MpvPlayer.MediaPaused -= videoPaused;
-                this.mpvPersonalized.MpvPlayer.MediaResumed -= videoResumed;
+                this.mpvPersonalized.MpvPlayer.MediaPaused -= VideoPaused;
+                this.mpvPersonalized.MpvPlayer.MediaResumed -= VideoResumed;
                 //add the new video
-                this.addVideo();
+                this.AddVideo();
             }
             //mpv unlock
             manualResetEventMpvUnlock.Set();
@@ -683,7 +683,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="eventArgs"></param>
-        private void videoPaused(object sender, EventArgs eventArgs)
+        private void VideoPaused(object sender, EventArgs eventArgs)
         {
             //check reverse play
             if (!MpvPersonalized.ReversePlaying)
@@ -691,7 +691,7 @@ namespace AZOR
                 if (labelTimePlaying.InvokeRequired)
                 {
                     //create the delegate for invoke
-                    buttonPlayOrPauseShow b = new buttonPlayOrPauseShow(videoPaused);
+                    buttonPlayOrPauseShow b = new buttonPlayOrPauseShow(VideoPaused);
                     //check can invoke or not
                     if (!this.IsDisposed && CanInvoke)
                         this.Invoke(b, new object[] { sender, eventArgs });
@@ -717,14 +717,14 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="eventArgs"></param>
-        private void videoResumed(object sender, EventArgs eventArgs)
+        private void VideoResumed(object sender, EventArgs eventArgs)
         {
             //check reverse play
             if (!MpvPersonalized.ReversePlaying)
                 //thread safe call, its the same(videoPaused())
                 if (labelTimePlaying.InvokeRequired)
                 {
-                    buttonPlayOrPauseShow b = new buttonPlayOrPauseShow(videoResumed);
+                    buttonPlayOrPauseShow b = new buttonPlayOrPauseShow(VideoResumed);
                     if (!this.IsDisposed && CanInvoke)
                         this.Invoke(b, new object[] { sender, eventArgs });
                 }
@@ -738,7 +738,7 @@ namespace AZOR
         /// <summary>
         /// Clean media player entries and add the video.
         /// </summary>
-        private void addVideo()
+        private void AddVideo()
         {
             //add the new video
             this.LoadNewVideo(this.mpvPersonalized);
@@ -826,7 +826,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="k"></param>
-        private void changeCameraEvent(object sender, KeyEventArgs k)
+        private void ChangeCameraEvent(object sender, KeyEventArgs k)
         {
             //check video is playing,not writting
             if (pathVideoPlaying != null && !panelTag.Visible)
@@ -834,26 +834,26 @@ namespace AZOR
                 //check in all is not the same camera
                 if (k.KeyCode == playCameraOne && !this.pathVideoPlaying.Equals(ChangeCameraUrl[0]))
                 {
-                    ajustCameraButton(labelSignal1, k);
+                    AjustCameraButton(labelSignal1, k);
                 }
                 else if (playCameraTwo == k.KeyCode && !this.pathVideoPlaying.Equals(ChangeCameraUrl[1]))
                 {
-                    ajustCameraButton(labelSignal2, k);
+                    AjustCameraButton(labelSignal2, k);
                 }
                 else if (playCameraThree == k.KeyCode && !this.pathVideoPlaying.Equals(ChangeCameraUrl[2]))
                 {
-                    ajustCameraButton(labelSignal3, k);
+                    AjustCameraButton(labelSignal3, k);
                 }
                 else if (playCameraFour == k.KeyCode && !this.pathVideoPlaying.Equals(ChangeCameraUrl[3]))
                 {
-                    ajustCameraButton(labelSignal4, k);
+                    AjustCameraButton(labelSignal4, k);
                 }
             }
         }
         /// <summary>
         /// Ajust the button for camera change when is invoked.
         /// </summary>
-        private void ajustCameraButton(Label label, KeyEventArgs k)
+        private void AjustCameraButton(Label label, KeyEventArgs k)
         {
             //set enable the last button that enabled=false
             labelForDesactivate.Enabled = true;
@@ -884,7 +884,7 @@ namespace AZOR
                 CheckTimeWithSync(3);
                 playingSignal = 3;
             }
-            changeCamera();
+            ChangeCamera();
             //set enabled the button
             label.Enabled = false;
             //store current button
@@ -909,21 +909,21 @@ namespace AZOR
         /// <summary>
         /// Change the camera with the video path.
         /// </summary>
-        private void changeCamera()
+        private void ChangeCamera()
         {
             //lock it
             lock (mpvPersonalized.MpvPlayer.MpvLock)
             {
                 changeCameraBool = true;
                 //set autoplay
-                setPauseOrPlayWhenRelaod();
+                SetPauseOrPlayWhenRelaod();
                 //if (mpvPersonalized.MpvPlayer.Position != TimeSpan.Zero)
                 //    //when change camera store current time span, and then when change set it.
                 //    this.CurrentTimeSpan = mpvPersonalized.MpvPlayer.Position;
                 //stop the current video
                 this.mpvPersonalized.MpvPlayer.Stop();
                 //add video
-                this.addVideo();
+                this.AddVideo();
                 changeCameraBool = false;
                 //if reload one stop it
                 if (winFormAnalysis.ReloadOne)
@@ -937,7 +937,7 @@ namespace AZOR
         /// <summary>
         /// Set play or pause when the video is reload.
         /// </summary>
-        private void setPauseOrPlayWhenRelaod()
+        private void SetPauseOrPlayWhenRelaod()
         {
             MpvSetPauseOrPlay(this.mpvPersonalized);
             ////check analysis is open or not
@@ -992,7 +992,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void timerReload_Tick(object sender, EventArgs e)
+        private void TimerReload_Tick(object sender, EventArgs e)
         {
             //if in zero then when reload dont put time
             if (mpvPersonalized.MpvPlayer.Position == TimeSpan.Zero)
@@ -1011,16 +1011,16 @@ namespace AZOR
             }
             else
                 //set it to analysis and current
-                this.setPauseOrPlayWhenRelaod();
+                this.SetPauseOrPlayWhenRelaod();
 
-            this.addVideo();
+            this.AddVideo();
         }
         /// <summary>
         /// When the video is loaded set the timespan.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>        
-        private void setMediaPlayerTime(object sender, EventArgs e)
+        private void SetMediaPlayerTime(object sender, EventArgs e)
         {
             loaded = true;
             ManualResetEventMedia.Set();
@@ -1111,7 +1111,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void storeTimeChangeEvent(object sender, EventArgs e)
+        private void StoreTimeChangeEvent(object sender, EventArgs e)
         {
             lock (mpvPersonalized.MpvPlayer.MpvLock)
                 //if is not zero then save
@@ -1164,11 +1164,11 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void stopButtonPressedEvent(object sender, EventArgs e)
+        private void StopButtonPressedEvent(object sender, EventArgs e)
         {
 
             //same code, so call this
-            killProcess(sender, e);
+            KillProcess(sender, e);
             //not reload again
             this.timerReload.Stop();
             timerLoadingVideo.Stop();
@@ -1183,7 +1183,7 @@ namespace AZOR
             //close view
             this.mpvPictureBox.Visible = false;
             //stop the timer and change the image
-            stopRecordTimerAndChangeButtonImage();
+            StopRecordTimerAndChangeButtonImage();
             //desactivate stop(save) button
             buttonRecordVideo.Enabled = false;
 
@@ -1195,7 +1195,7 @@ namespace AZOR
             }
             //convert the video
             if (convertVideo)
-                this.convertVideoEvent();
+                this.ConvertVideoEvent();
             ChangeCameraUrlForAfterConvert();
 
         }
@@ -1212,11 +1212,11 @@ namespace AZOR
         /// <summary>
         /// Stop the record timer, and change the record image.
         /// </summary>
-        private void stopRecordTimerAndChangeButtonImage()
+        private void StopRecordTimerAndChangeButtonImage()
         {
             if (buttonRecordVideo.InvokeRequired)
             {
-                SetButtonRecord s = new SetButtonRecord(stopRecordTimerAndChangeButtonImage);
+                SetButtonRecord s = new SetButtonRecord(StopRecordTimerAndChangeButtonImage);
                 if (CanInvoke)
                     this.Invoke(s);
             }
@@ -1300,7 +1300,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender">The object that called the evend.</param>
         /// <param name="eventArgs">Contains event argument.</param>
-        private void killProcess(object sender, EventArgs eventArgs)
+        private void KillProcess(object sender, EventArgs eventArgs)
         {
             CanInvoke = false;
             //foreach all process and if nod exited kill it
@@ -1313,7 +1313,7 @@ namespace AZOR
         /// <summary>
         /// Convert video and show progress bar.
         /// </summary>
-        private void convertVideoEvent()
+        private void ConvertVideoEvent()
         {
             lock (this)
             {
@@ -1329,7 +1329,7 @@ namespace AZOR
                 process = new Process();
                 info = new ProcessStartInfo();
                 //create it
-                Control c = createCPBForConvert(cont);
+                Control c = CreateCPBForConvert(cont);
                 c.BringToFront();
                 //add it
                 try
@@ -1352,7 +1352,7 @@ namespace AZOR
                 info.Arguments = strArg;
                 process.StartInfo = info;
                 process.EnableRaisingEvents = true;
-                process.Exited += new EventHandler(waitConvert);
+                process.Exited += new EventHandler(WaitConvert);
 
                 process.Start();
             }
@@ -1360,7 +1360,7 @@ namespace AZOR
         /// <summary>
         /// Wait convert process.
         /// </summary>
-        private void waitConvert(object sender, EventArgs e)
+        private void WaitConvert(object sender, EventArgs e)
         {
 
             if (this.InvokeRequired)
@@ -1409,7 +1409,7 @@ namespace AZOR
                             //show mpv, and play video
                             //show it then play
                             this.mpvPictureBox.Visible = true;
-                            this.reloadVideo(null, null);
+                            this.ReloadVideo(null, null);
                             //check if was closed or not
                             if (WasClosed)
                             {
@@ -1433,7 +1433,7 @@ namespace AZOR
         /// </summary>
         /// <param name="i"></param>
         /// <param name="all"></param>
-        private Control createCPBForConvert(int i)
+        private Control CreateCPBForConvert(int i)
         {
             //create new circular progress bar, for show progress
             CircularProgressBar.CircularProgressBar c = new CircularProgressBar.CircularProgressBar();
@@ -1497,7 +1497,7 @@ namespace AZOR
         /// </summary>
         /// <param name="videoName"></param>
         /// <param name="process"></param>
-        private void processStart(string videoName, Process process, int i)
+        private void ProcessStart(string videoName, Process process, int i)
         {
             ProcessStartInfo info = new ProcessStartInfo();
             string videoUrl = (settingForm.ComboBoxSetting.Items[WinFormSetting.LastIndex] as Setting).MainUrl[i];
@@ -1520,7 +1520,7 @@ namespace AZOR
             process.Start();
             //when process finish close the process
             process.EnableRaisingEvents = true;
-            process.Exited += new EventHandler(processEnd);
+            process.Exited += new EventHandler(ProcessEnd);
 
             //add the name
             videoNames.Add(videoName);
@@ -1531,7 +1531,7 @@ namespace AZOR
         /// </summary>
         /// <param name="source"></param>
         /// <param name="e"></param>
-        private void processEnd(object source, EventArgs e)
+        private void ProcessEnd(object source, EventArgs e)
         {
             Process process = source as Process;
             //when finish close
@@ -1543,19 +1543,19 @@ namespace AZOR
             {
                 //stop the reload timer
                 this.timerReload.Stop();
-                stopRecordTimerAndChangeButtonImage();
+                StopRecordTimerAndChangeButtonImage();
             }
             lock (this)
                 //convert video when process end            
                 if (arrayListProcessForDownloadVideo.Count == 0 && convertVideo)
-                    convertVideoEvent();
+                    ConvertVideoEvent();
         }
         /// <summary>
         /// Save button click event.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void save_Click(object sender, EventArgs e)
+        private void Save_Click(object sender, EventArgs e)
         {
             //setting enable=false, dont allow to use it
             this.buttonSetting.Enabled = false;
@@ -1569,7 +1569,7 @@ namespace AZOR
             {
                 Process p = new Process();
                 string nombreVideo = "\\Camera" + (i + 1) + "Main.mp4";
-                this.processStart(nombreVideo, p, i);
+                this.ProcessStart(nombreVideo, p, i);
                 arrayListProcessForDownloadVideo.Add(p);
                 //save once the path
                 if (pathVideoPlaying == null)
@@ -1578,8 +1578,8 @@ namespace AZOR
             //set the new image
             buttonRecordVideo.Image = Properties.Resources.stopButtonAnimate;
             //remove the actual funciton and add the new
-            buttonRecordVideo.Click -= this.save_Click;
-            buttonRecordVideo.Click += this.stopButtonPressedEvent;
+            buttonRecordVideo.Click -= this.Save_Click;
+            buttonRecordVideo.Click += this.StopButtonPressedEvent;
             //start the chronometer and timer
             stopwatchVideoRecording.Start();
             timerRecording.Start();
@@ -1603,7 +1603,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void cameraButton_Click(object sender, EventArgs e)
+        private void CameraButton_Click(object sender, EventArgs e)
         {
             if (pathVideoPlaying != null)
             {
@@ -1611,19 +1611,19 @@ namespace AZOR
                 //one button one change, reuse code
                 if (l == labelSignal1)
                 {
-                    changeCameraEvent(sender, new KeyEventArgs(playCameraOne));
+                    ChangeCameraEvent(sender, new KeyEventArgs(playCameraOne));
                 }
                 else if (l == labelSignal2)
                 {
-                    changeCameraEvent(sender, new KeyEventArgs(playCameraTwo));
+                    ChangeCameraEvent(sender, new KeyEventArgs(playCameraTwo));
                 }
                 else if (l == labelSignal3)
                 {
-                    changeCameraEvent(sender, new KeyEventArgs(playCameraThree));
+                    ChangeCameraEvent(sender, new KeyEventArgs(playCameraThree));
                 }
                 else if (l == labelSignal4)
                 {
-                    changeCameraEvent(sender, new KeyEventArgs(playCameraFour));
+                    ChangeCameraEvent(sender, new KeyEventArgs(playCameraFour));
                 }
 
             }
@@ -1660,7 +1660,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void antFrame_Click(object sender, EventArgs e)
+        private void AntFrame_Click(object sender, EventArgs e)
         {
             ProcessCmdKey(ref GlobalMessage, MpvPersonalized.PreviousFrame);
         }
@@ -1669,7 +1669,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void sigFrame_Click(object sender, EventArgs e)
+        private void SigFrame_Click(object sender, EventArgs e)
         {
             ProcessCmdKey(ref GlobalMessage, MpvPersonalized.NextFrame);
         }
@@ -1678,7 +1678,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender">Label clicked.</param>
         /// <param name="eventArgs">Event with arguments.</param>
-        private void clickOnTimeLabel(object sender, EventArgs eventArgs)
+        private void ClickOnTimeLabel(object sender, EventArgs eventArgs)
         {
             Label labelClicked = sender as Label;
             MouseEventArgs mouseEventArgs = eventArgs as MouseEventArgs;
@@ -1728,9 +1728,9 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            deleteClipRowOnTable(lastRowClicked);
+            DeleteClipRowOnTable(lastRowClicked);
             /*//if multiple selected
             if (checkedClipListBox.Count != 0)
             {
@@ -1750,7 +1750,7 @@ namespace AZOR
         /// Delete one clip in the table.
         /// </summary>
         /// <param name="control"></param>
-        private void deleteClipRowOnTable(Control control)
+        private void DeleteClipRowOnTable(Control control)
         {
             //get the row
             int row = tableLayoutPanelClips.Controls.IndexOf(control) / 5;
@@ -1771,7 +1771,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonBackward_Click(object sender, EventArgs e)
+        private void ButtonBackward_Click(object sender, EventArgs e)
         {
             ProcessCmdKey(ref GlobalMessage, MpvPersonalized.MoveBackwardKeys);
         }
@@ -1780,7 +1780,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonForward_Click(object sender, EventArgs e)
+        private void ButtonForward_Click(object sender, EventArgs e)
         {
             ProcessCmdKey(ref GlobalMessage, MpvPersonalized.MoveForwardKeys);
         }
@@ -1789,7 +1789,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void timerRecording_Tick(object sender, EventArgs e)
+        private void TimerRecording_Tick(object sender, EventArgs e)
         {
             this.labelRecordTime.Text = stopwatchVideoRecording.Elapsed.ToString(@"hh\:mm\:ss");
         }
@@ -1798,10 +1798,10 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void timerLoadingVideo_Tick(object sender, EventArgs e)
+        private void TimerLoadingVideo_Tick(object sender, EventArgs e)
         {
             //increment
-            this.incrementProgressBar();
+            this.IncrementProgressBar();
             //check if finished
             if (this.progressBarLoadingVideo.Value == this.progressBarLoadingVideo.Maximum)
             {
@@ -1814,7 +1814,7 @@ namespace AZOR
         /// <summary>
         /// Add the increment to the progress bar.
         /// </summary>
-        private void incrementProgressBar()
+        private void IncrementProgressBar()
         {
             //increment 1 the progress bar
             this.progressBarLoadingVideo.Increment(1);
@@ -1826,20 +1826,20 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void timerEndProgressBar_Tick(object sender, EventArgs e)
+        private void TimerEndProgressBar_Tick(object sender, EventArgs e)
         {
             //load the video(add video to the list for play)
-            this.addVideo();
+            this.AddVideo();
             //stop the timer
             timerEndProgressBar.Stop();
             //cameras button have the same function
-            this.labelSignal1.Click += new System.EventHandler(cameraButton_Click);
-            this.labelSignal2.Click += new System.EventHandler(cameraButton_Click);
-            this.labelSignal3.Click += new System.EventHandler(cameraButton_Click);
-            this.labelSignal4.Click += new System.EventHandler(cameraButton_Click);
+            this.labelSignal1.Click += new System.EventHandler(CameraButton_Click);
+            this.labelSignal2.Click += new System.EventHandler(CameraButton_Click);
+            this.labelSignal3.Click += new System.EventHandler(CameraButton_Click);
+            this.labelSignal4.Click += new System.EventHandler(CameraButton_Click);
             //controladores teclado de control
-            this.KeyDown += changeCameraEvent;
-            this.KeyDown += storeTimeEvent;
+            this.KeyDown += ChangeCameraEvent;
+            this.KeyDown += StoreTimeEvent;
             labelForDesactivate = labelSignal1;
             labelSignal1.Enabled = false;
             this.timerReload.Start();
@@ -1860,7 +1860,7 @@ namespace AZOR
         /// <summary>
         /// Save all locations in tag, all have the margin.
         /// </summary>
-        private void setTag(Control cons)
+        private void SetTag(Control cons)
         {
             foreach (Control con in cons.Controls)
             {
@@ -1868,7 +1868,7 @@ namespace AZOR
                 con.Tag = con.Width + ":" + con.Height + ":" + con.Left + ":" + con.Top + ":" + con.Font.Size;
                 //if this controls have controls save it
                 if (con.Controls.Count > 0)
-                    setTag(con);
+                    SetTag(con);
             }
 
         }
@@ -1878,7 +1878,7 @@ namespace AZOR
         /// <param name="newx"></param>
         /// <param name="newy"></param>
         /// <param name="cons"></param>
-        private void setControls(float newx, float newy, Control cons)
+        private void SetControls(float newx, float newy, Control cons)
         {
             try
             {
@@ -1904,7 +1904,7 @@ namespace AZOR
                             //if have chill controls
                             if (con.Controls.Count > 0)
                             {
-                                setControls(newx, newy, con);
+                                SetControls(newx, newy, con);
                             }
                         }
                     }
@@ -1923,7 +1923,7 @@ namespace AZOR
         {
             currentWidht = this.Width;
             currentHeight = this.Height;
-            setTag(this);//save tag
+            SetTag(this);//save tag
             this.Resize += WinForm_Resize;
         }
         /// <summary>
@@ -1936,7 +1936,7 @@ namespace AZOR
             //calculate the new proportion and then change the size
             float newx = (this.Width) / currentWidht;
             float newy = (this.Height) / currentHeight;
-            setControls(newx, newy, this);
+            SetControls(newx, newy, this);
         }
         /// <summary>
         /// Add tag to button.
@@ -1949,10 +1949,10 @@ namespace AZOR
             tagMap.Add(button, tag);
             if (tag.TagMode.IsAutomatic)
                 //add click event
-                button.Click += tagAutomaticButtonEvent;
+                button.Click += TagAutomaticButtonEvent;
             else
             {
-                button.Click += tagManualButtonEvent;
+                button.Click += TagManualButtonEvent;
             }
             //add the button
             tableLayoutPanelTags.Controls.Add(button);
@@ -1967,7 +1967,7 @@ namespace AZOR
         /// <summary>
         /// Manual tag button event.
         /// </summary>
-        private void tagManualButtonEvent(object sender, EventArgs e)
+        private void TagManualButtonEvent(object sender, EventArgs e)
         {
             //check media loaded
             if (mpvPersonalized.MpvPlayer.IsMediaLoaded)
@@ -1991,9 +1991,9 @@ namespace AZOR
                 if (tag != null)
                 {
                     //crate new clip
-                    Clip clip = createManualClip(tag, mpvPersonalized.MpvPlayer.Position, b);
+                    Clip clip = CreateManualClip(tag, mpvPersonalized.MpvPlayer.Position, b);
                     clip.MyColor = b.FlatAppearance.BorderColor;
-                    storeInTableLayoutPanelClips(clip);
+                    StoreInTableLayoutPanelClips(clip);
                     //clean it
                     manualTagMap.Remove(b);
                     //remove the animation
@@ -2003,7 +2003,7 @@ namespace AZOR
                 }
                 else if (b != null)
                 {
-                    createAndStoreAnimation(b);
+                    CreateAndStoreAnimation(b);
                 }
                 //draw it                
                 b.Invalidate();
@@ -2014,20 +2014,20 @@ namespace AZOR
         /// Create and store the waiting animation.
         /// </summary>
         /// <param name="b"></param>
-        private void createAndStoreAnimation(Button b)
+        private void CreateAndStoreAnimation(Button b)
         {
             //if this button dont have the animation create it
             if (!mapAnimation.ContainsKey(b))
             {
                 //create
-                CircularProgressBar.CircularProgressBar newAnimation = constructorCPB(b,
+                CircularProgressBar.CircularProgressBar newAnimation = ConstructorCPB(b,
                     b.FlatAppearance.BorderColor);
                 //store
                 mapAnimation.Add(b, newAnimation);
                 //add to button
                 b.Controls.Add(newAnimation);
                 //add event
-                newAnimation.Click += tagManualButtonEvent;
+                newAnimation.Click += TagManualButtonEvent;
             }
             //change button style
             b.ForeColor = b.FlatAppearance.BorderColor;
@@ -2039,7 +2039,7 @@ namespace AZOR
         /// Create and return the progress bar.
         /// </summary>
         /// <returns></returns>
-        private CircularProgressBar.CircularProgressBar constructorCPB(Button b, Color color)
+        private CircularProgressBar.CircularProgressBar ConstructorCPB(Button b, Color color)
         {
             //create it
             CircularProgressBar.CircularProgressBar c = new CircularProgressBar.CircularProgressBar();
@@ -2079,7 +2079,7 @@ namespace AZOR
         /// <param name="postTimeSpan"></param>
         /// <param name="b"></param>
         /// <returns>Return the clip created.</returns>
-        private Clip createManualClip(Tag tag, TimeSpan postTimeSpan, Button b)
+        private Clip CreateManualClip(Tag tag, TimeSpan postTimeSpan, Button b)
         {
             //tagcount+1
             tag.TagCount++;
@@ -2092,7 +2092,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void tagAutomaticButtonEvent(object sender, EventArgs e)
+        private void TagAutomaticButtonEvent(object sender, EventArgs e)
         {
             if (mpvPersonalized.MpvPlayer.IsMediaLoaded)
             {
@@ -2100,18 +2100,18 @@ namespace AZOR
                 //take the tag
                 Tag tag = tagMap[buttonTag];
                 //crate new clip
-                Clip clip = createAutomaticClip(tag);
+                Clip clip = CreateAutomaticClip(tag);
                 //save color
                 clip.MyColor = buttonTag.FlatAppearance.BorderColor;
                 //store it
-                storeInTableLayoutPanelClips(clip);
+                StoreInTableLayoutPanelClips(clip);
             }
         }
         /// <summary>
         /// Store the content in the table.
         /// </summary>
         /// <param name="clip"></param>
-        private void storeInTableLayoutPanelClips(Clip clip)
+        private void StoreInTableLayoutPanelClips(Clip clip)
         {
 
             //create the content in the table
@@ -2119,15 +2119,15 @@ namespace AZOR
             checkBoxClip.AutoSize = false;
             checkBoxClip.Text = "";
             checkBoxClip.Dock = DockStyle.Fill;
-            Label clipName = createClipText(clip.TagName);
+            Label clipName = CreateClipText(clip.TagName);
             //create and adjust round
             RoundPictureBox round = new RoundPictureBox(clip.MyColor);
             round.Size = roundSize;
             round.Dock = DockStyle.Bottom;
 
             //create current time label
-            Label previous = createTimeLabel(clip.PreviousTime);
-            Label after = createTimeLabel(clip.LaterTime);
+            Label previous = CreateTimeLabel(clip.PreviousTime);
+            Label after = CreateTimeLabel(clip.LaterTime);
             //set it
             //after.Dock = DockStyle.Bottom;
             //previous.Dock = DockStyle.Bottom;
@@ -2149,15 +2149,15 @@ namespace AZOR
             panelClipsSaved.ScrollControlIntoView(after);
 
             //add event
-            tableLayoutPanelClips.Click += rightClickOnClipPanel;
-            clipName.Click += clickInClipNameEvent;
-            checkBoxClip.CheckedChanged += checkedBoxEvent;
-            checkBoxClip.MouseDown += rightClickOnClipPanel;//use mouse down for check right click
-            previous.Click += rightClickOnClipPanel;
-            clipName.Click += rightClickOnClipPanel;
-            clipName.MouseEnter += mouseOnClipNameForShowFullNameEvent;
-            after.Click += rightClickOnClipPanel;
-            round.Click += rightClickOnClipPanel;
+            tableLayoutPanelClips.Click += RightClickOnClipPanel;
+            clipName.Click += ClickInClipNameEvent;
+            checkBoxClip.CheckedChanged += CheckedBoxEvent;
+            checkBoxClip.MouseDown += RightClickOnClipPanel;//use mouse down for check right click
+            previous.Click += RightClickOnClipPanel;
+            clipName.Click += RightClickOnClipPanel;
+            clipName.MouseEnter += MouseOnClipNameForShowFullNameEvent;
+            after.Click += RightClickOnClipPanel;
+            round.Click += RightClickOnClipPanel;
             //store it
             mapAllClip.Add(checkBoxClip, clip);
         }
@@ -2166,7 +2166,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void clickInClipNameEvent(object sender, EventArgs e)
+        private void ClickInClipNameEvent(object sender, EventArgs e)
         {
             //get label
             Label labelClicked = sender as Label;
@@ -2174,11 +2174,10 @@ namespace AZOR
             int row = tableLayoutPanelClips.Controls.IndexOf(labelClicked) / 5;
             //save label clicked
             labelClicked = tableLayoutPanelClips.Controls[row * 5 + 3] as Label;
-            TimeSpan timeParsed;
             MouseEventArgs mouseEventArgs = e as MouseEventArgs;
             if (labelClicked != null && mouseEventArgs.Button == MouseButtons.Left)
             {
-                TimeSpan.TryParse(labelClicked.Text, out timeParsed);
+                TimeSpan.TryParse(labelClicked.Text, out TimeSpan timeParsed);
                 if (timeParsed != null && timeParsed >= TimeSpan.Zero && timeParsed < mpvPersonalized.MpvPlayer.Duration)
                 {
                     //if not right click and clicked, change current video time
@@ -2190,11 +2189,10 @@ namespace AZOR
         /// <summary>
         /// Show the full name when the mouse on the clip name.
         /// </summary>
-        private void mouseOnClipNameForShowFullNameEvent(object sender, EventArgs e)
+        private void MouseOnClipNameForShowFullNameEvent(object sender, EventArgs e)
         {
-            Label label = sender as Label;
             //if is label, show the tooltip
-            if (label != null)
+            if (sender is Label label)
                 tip.SetToolTip(label, mapFullClipName[label]);
         }
         /// <summary>
@@ -2202,7 +2200,7 @@ namespace AZOR
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        private Label createClipText(string text)
+        private Label CreateClipText(string text)
         {
             Label newLabel = new Label();
             newLabel.AutoSize = false;
@@ -2226,7 +2224,7 @@ namespace AZOR
         /// </summary>
         /// <param name="tag"></param>
         /// <returns></returns>
-        private Clip createAutomaticClip(Tag tag)
+        private Clip CreateAutomaticClip(Tag tag)
         {
             TimeSpan currentTime = mpvPersonalized.MpvPlayer.Position;
             //tagcount+1
@@ -2240,7 +2238,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void checkBoxAllClips_CheckedChanged(object sender, EventArgs e)
+        private void CheckBoxAllClips_CheckedChanged(object sender, EventArgs e)
         {
             Boolean state = false;
             //check
@@ -2259,7 +2257,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void rightClickOnClipPanel(object sender, EventArgs e)
+        private void RightClickOnClipPanel(object sender, EventArgs e)
         {
             MouseEventArgs mouseEventArgs = e as MouseEventArgs;
             //Check right click 
@@ -2274,7 +2272,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void contextMenuRightClickOnTime_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        private void ContextMenuRightClickOnTime_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             //if have something to delete or export enable it
             if (tableLayoutPanelClips.Controls.Count == 0)
@@ -2293,7 +2291,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void checkedBoxEvent(object sender, EventArgs e)
+        private void CheckedBoxEvent(object sender, EventArgs e)
         {
             //add to arraylist when checked
             CheckBox c = sender as CheckBox;
@@ -2309,7 +2307,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonNewTag_Click(object sender, EventArgs e)
+        private void ButtonNewTag_Click(object sender, EventArgs e)
         {
             //lock the panel and show it
             lock (panelTag)
@@ -2335,7 +2333,7 @@ namespace AZOR
         /// </summary>
         /// <param name="tag"></param>
         /// <returns></returns>
-        private Button createButtonTag(Tag tag)
+        private Button CreateButtonTag(Tag tag)
         {
             //create new button
             Button buttonTag = new Button();
@@ -2356,7 +2354,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonPlay_Click(object sender, EventArgs e)
+        private void ButtonPlay_Click(object sender, EventArgs e)
         {
             ProcessCmdKey(ref GlobalMessage, MpvPersonalized.PauseOrPlayVideo);
         }
@@ -2365,7 +2363,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonSaveTags_Click(object sender, EventArgs e)
+        private void ButtonSaveTags_Click(object sender, EventArgs e)
         {
             //show it for set the path to store tag
             this.saveFileDialogTag.ShowDialog();
@@ -2387,7 +2385,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonLoadTags_Click(object sender, EventArgs e)
+        private void ButtonLoadTags_Click(object sender, EventArgs e)
         {
             //show it
             openFileDialogTagPath.ShowDialog();
@@ -2401,7 +2399,7 @@ namespace AZOR
                     (AES128.Decrypt(File.ReadAllText(pathStoreTagAndClips + "\\data\\" + tagFileName)));
                 foreach (Tag tag in listTags)
                 {
-                    createAutomaticOrManualTagButton(tag);
+                    CreateAutomaticOrManualTagButton(tag);
                 }
             }
         }
@@ -2410,9 +2408,9 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonSetting_Click(object sender, EventArgs e)
+        private void ButtonSetting_Click(object sender, EventArgs e)
         {
-            settingForm.centerShow();
+            settingForm.CenterShow();
         }
 
         /// <summary>
@@ -2420,16 +2418,16 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            exportClipRowOnTable(lastRowClicked, 0);
+            ExportClipRowOnTable(lastRowClicked, 0);
         }
         /// <summary>
         /// Thread export video clip from table.
         /// </summary>
         /// <param name="control"></param>
         /// <param name="cont"></param>
-        private void exportClipRowOnTable(Control control, int cont)
+        private void ExportClipRowOnTable(Control control, int cont)
         {
             //get row
             int row = tableLayoutPanelClips.Controls.IndexOf(control) / 5;
@@ -2445,7 +2443,7 @@ namespace AZOR
                 endTime = TimeSpan.Parse(tableLayoutPanelClips.Controls[row * 5 + 4].Text);
             }
             //create new thread for export
-            Thread th = new Thread(() => exportVideo(startTime.ToString(), endTime.ToString(), clipName, cont));
+            Thread th = new Thread(() => ExportVideo(startTime.ToString(), endTime.ToString(), clipName, cont));
             th.Start();
         }
         /// <summary>
@@ -2453,7 +2451,7 @@ namespace AZOR
         /// </summary>
         /// <param name="startTime"></param>
         /// <param name="endTime"></param>
-        private void exportVideo(string startTime, string endTime, string clipName, int cont)
+        private void ExportVideo(string startTime, string endTime, string clipName, int cont)
         {
             Process process;
             ProcessStartInfo info;
@@ -2537,7 +2535,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonExport_Click(object sender, EventArgs e)
+        private void ButtonExport_Click(object sender, EventArgs e)
         {
             //if have checked, export it
             if (checkedClipListBox.Count != 0)
@@ -2546,7 +2544,7 @@ namespace AZOR
                 int cont = 0;
                 foreach (CheckBox c in checkedClipListBox)
                 {
-                    Thread th = new Thread(() => exportClipRowOnTable(c, cont));
+                    Thread th = new Thread(() => ExportClipRowOnTable(c, cont));
                     th.Start();
                     th.Join();
                     cont++;
@@ -2560,7 +2558,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonDelete_Click(object sender, EventArgs e)
+        private void ButtonDelete_Click(object sender, EventArgs e)
         {
             //if have checked, delete it
             if (checkedClipListBox.Count != 0)
@@ -2572,7 +2570,7 @@ namespace AZOR
                 {
                     foreach (CheckBox c in checkedClipListBox)
                     {
-                        deleteClipRowOnTable(c);
+                        DeleteClipRowOnTable(c);
                     }
                     checkedClipListBox.Clear();
                     checkBoxAllClips.Checked = false;
@@ -2592,12 +2590,12 @@ namespace AZOR
                 if (mpvPersonalized.MpvPlayer.IsPlaying)
                 {
                     mpvPersonalized.MpvPlayer.Pause();
-                    winFormAnalysis.centerShow(this.pathVideoPlaying);
+                    winFormAnalysis.CenterShow(this.pathVideoPlaying);
                     mpvPersonalized.MpvPlayer.Resume();
                 }
                 else
                     //create analysis view
-                    winFormAnalysis.centerShow(this.pathVideoPlaying);
+                    winFormAnalysis.CenterShow(this.pathVideoPlaying);
             }
             else
             {
@@ -2610,20 +2608,20 @@ namespace AZOR
         /// <param name="k"></param>
         public void AnalisysFormEvent(KeyEventArgs k)
         {
-            changeCameraEvent(null, k);
+            ChangeCameraEvent(null, k);
         }
         /// <summary>
         /// When clicked, show the sync form.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonSync_Click(object sender, EventArgs e)
+        private void ButtonSync_Click(object sender, EventArgs e)
         {
             //if not visible, show it
             if (!WinFormSync.Visible)
             {
                 //create analysis view
-                WinFormSync.centerShow();
+                WinFormSync.CenterShow();
             }
             else
             {
@@ -2635,7 +2633,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void openFileDialogTagPath_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        private void OpenFileDialogTagPath_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             //try catch for check the information
             try
@@ -2646,7 +2644,7 @@ namespace AZOR
                 {
                     //check it
                     if (tag.CheckTag())
-                        createAutomaticOrManualTagButton(tag);
+                        CreateAutomaticOrManualTagButton(tag);
                     else
                         //throw exception
                         throw new Exception();
@@ -2663,7 +2661,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void saveFileDialogTag_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        private void SaveFileDialogTag_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             //if have tag to save, save it
             if (tagMap.Count != 0)

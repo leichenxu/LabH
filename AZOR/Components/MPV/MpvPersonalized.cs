@@ -101,14 +101,14 @@ namespace AZOR
             //dont close the mpv after finish the video
             MpvPlayer.KeepOpen = Mpv.NET.Player.KeepOpen.Yes;
             //add tick
-            TimerReversePlay.Tick += timerReversePlay_Tick;
+            TimerReversePlay.Tick += TimerReversePlay_Tick;
         }
         /// <summary>
         /// When tick move the position.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void timerReversePlay_Tick(object sender, EventArgs e)
+        private void TimerReversePlay_Tick(object sender, EventArgs e)
         {
             //check loaded
             if (MpvPlayer.IsMediaLoaded)

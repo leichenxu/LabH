@@ -71,9 +71,9 @@ namespace AZOR
         public WinFormSetting()
         {
             InitializeComponent();
-            myOwnInitialize();
+            MyOwnInitialize();
             //key input
-            textBoxNewSettingName.KeyPress += enterNewProjectName;
+            textBoxNewSettingName.KeyPress += EnterNewProjectName;
 
             //find ffmpeg
             ffmpegtool = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) + "\\ffmpeg.exe";
@@ -81,21 +81,21 @@ namespace AZOR
         /// <summary>
         /// Take the name and create the project.
         /// </summary>
-        private void enterNewProjectName(object sender, KeyPressEventArgs k)
+        private void EnterNewProjectName(object sender, KeyPressEventArgs k)
         {
 
             if (k.KeyChar == (char)Keys.Return)
             {
                 if (!textBoxNewSettingName.Text.Equals(""))
                 {
-                    this.buttonAccept_Click(sender, k);
+                    this.ButtonAccept_Click(sender, k);
                 }
             }
         }
         /// <summary>
         /// Show it in center.
         /// </summary>
-        public void centerShow()
+        public void CenterShow()
         {
             //center it
             this.CenterToScreen();
@@ -123,7 +123,7 @@ namespace AZOR
         /// <summary>
         /// My own initialize component.
         /// </summary>
-        private void myOwnInitialize()
+        private void MyOwnInitialize()
         {
             // mpv.MediaResumed += setAvailable;
             //set the text in bot for align the textbox
@@ -138,27 +138,27 @@ namespace AZOR
             labelSecondary3.TextAlign = ContentAlignment.BottomCenter;
             labelSecondary4.TextAlign = ContentAlignment.BottomCenter;
 
-            this.VisibleChanged += notShowWriteInTextBox;
+            this.VisibleChanged += NotShowWriteInTextBox;
             //add the button event, all main button do the same thing
-            buttonMain1.Click += buttonMainClickEvent;
-            buttonMain2.Click += buttonMainClickEvent;
-            buttonMain3.Click += buttonMainClickEvent;
-            buttonMain4.Click += buttonMainClickEvent;
+            buttonMain1.Click += ButtonMainClickEvent;
+            buttonMain2.Click += ButtonMainClickEvent;
+            buttonMain3.Click += ButtonMainClickEvent;
+            buttonMain4.Click += ButtonMainClickEvent;
 
             //add text change event, main
-            textBoxMain1.TextChanged += textBoxMain_TextChanged;
-            textBoxMain2.TextChanged += textBoxMain_TextChanged;
-            textBoxMain3.TextChanged += textBoxMain_TextChanged;
-            textBoxMain4.TextChanged += textBoxMain_TextChanged;
+            textBoxMain1.TextChanged += TextBoxMain_TextChanged;
+            textBoxMain2.TextChanged += TextBoxMain_TextChanged;
+            textBoxMain3.TextChanged += TextBoxMain_TextChanged;
+            textBoxMain4.TextChanged += TextBoxMain_TextChanged;
 
             //add text change event, url
-            textBoxSecondary1.TextChanged += textBoxSecondary_TextChanged;
-            textBoxSecondary2.TextChanged += textBoxSecondary_TextChanged;
-            textBoxSecondary3.TextChanged += textBoxSecondary_TextChanged;
-            textBoxSecondary4.TextChanged += textBoxSecondary_TextChanged;
+            textBoxSecondary1.TextChanged += TextBoxSecondary_TextChanged;
+            textBoxSecondary2.TextChanged += TextBoxSecondary_TextChanged;
+            textBoxSecondary3.TextChanged += TextBoxSecondary_TextChanged;
+            textBoxSecondary4.TextChanged += TextBoxSecondary_TextChanged;
 
             //store last index
-            this.FormClosed += storeIndexClean;
+            this.FormClosed += StoreIndexClean;
 
             //check document
             if (File.Exists(documentsPath) && !File.ReadAllText(documentsPath).Equals(""))
@@ -203,7 +203,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void storeIndexClean(object sender, EventArgs e)
+        private void StoreIndexClean(object sender, EventArgs e)
         {
             if (!comboBoxSetting.Text.Equals(""))
             {
@@ -225,11 +225,11 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void setAvailable(object sender, EventArgs e)
+        private void SetAvailable(object sender, EventArgs e)
         {
             if (this.InvokeRequired)
             {
-                SetAvailableText s = new SetAvailableText(setAvailable);
+                SetAvailableText s = new SetAvailableText(SetAvailable);
                 this.Invoke(s, new object[] { sender, e });
             }
             else
@@ -241,7 +241,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonMainClickEvent(object sender, EventArgs e)
+        private void ButtonMainClickEvent(object sender, EventArgs e)
         {
             mpv.Stop();
             Button b = sender as Button;
@@ -270,10 +270,10 @@ namespace AZOR
             if (url != null && !url.Equals(""))
             {
                 //store the info
-                string info = checkUrl(url);
+                string info = CheckUrl(url);
                 if (info != null)
                 {
-                    showInformation(url, info);
+                    ShowInformation(url, info);
                 }
                 else
                 {
@@ -293,7 +293,7 @@ namespace AZOR
         /// Show the information with the url.
         /// </summary>
         /// <param name="url"></param>
-        private void showInformation(string url, string info)
+        private void ShowInformation(string url, string info)
         {
             try
             {
@@ -342,7 +342,7 @@ namespace AZOR
         /// Check the url, in case of http,https,rstp if is available or not.
         /// </summary>
         /// <param name="url"></param>
-        private string checkUrl(string url)
+        private string CheckUrl(string url)
         {
             try
             {
@@ -369,26 +369,25 @@ namespace AZOR
             string output = Run(ffmpegtool, @params);
             string resolutionRegex = "(\\d+)x(\\d+)";
             string nameRegex = "(title\\s*:\\s*)(.+)";
-            Match nameInfo = getInfoFromOutput(output, nameRegex);
+            Match nameInfo = GetInfoFromOutput(output, nameRegex);
             if (nameInfo.Success)
             {
                 //get name
                 info += nameInfo.Groups[2].Value;
             }
             //match the info then check it
-            Match reInfo = getInfoFromOutput(output, resolutionRegex);
+            Match reInfo = GetInfoFromOutput(output, resolutionRegex);
             if (reInfo.Success)
             {
                 //get resolution info
-                int width = 0; int height = 0;
-                int.TryParse(reInfo.Groups[1].Value, out width);
-                int.TryParse(reInfo.Groups[2].Value, out height);
+                int.TryParse(reInfo.Groups[1].Value, out int width);
+                int.TryParse(reInfo.Groups[2].Value, out int height);
                 info += ";" + width + " x" + height;
             }
 
             //get bit rate
             string bitRateRegex = "(bitrate\\s*:\\s*)(.+)";
-            Match bitRateInfo = getInfoFromOutput(output, bitRateRegex);
+            Match bitRateInfo = GetInfoFromOutput(output, bitRateRegex);
             if (bitRateInfo.Success)
             {
                 //get rate and add it
@@ -396,7 +395,7 @@ namespace AZOR
             }
             //get fps
             string fpsRegex = "(,\\s*)(\\d{2,3})(\\s*fps\\s*,)";
-            Match fpsInfo = getInfoFromOutput(output, fpsRegex);
+            Match fpsInfo = GetInfoFromOutput(output, fpsRegex);
             if (bitRateInfo.Success)
             {
                 //get name
@@ -406,7 +405,7 @@ namespace AZOR
             return info;
         }
 
-        private Match getInfoFromOutput(string output, string regex)
+        private Match GetInfoFromOutput(string output, string regex)
         {
             //get the video format
             var re = new Regex(regex);/*("(\\d{2,3})x(\\d{2,3})");*/
@@ -476,7 +475,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void notShowWriteInTextBox(object sender, EventArgs e)
+        private void NotShowWriteInTextBox(object sender, EventArgs e)
         {
             //for not show writting in textbox
             this.labelMain1.Select();
@@ -502,7 +501,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonSaveSetting_Click(object sender, EventArgs e)
+        private void ButtonSaveSetting_Click(object sender, EventArgs e)
         {
             //clean it
             textBoxNewSettingName.ResetText();
@@ -516,7 +515,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void textBoxMain_TextChanged(object sender, EventArgs e)
+        private void TextBoxMain_TextChanged(object sender, EventArgs e)
         {
             TextBox t = sender as TextBox;
             //check all and save it
@@ -544,7 +543,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void textBoxSecondary_TextChanged(object sender, EventArgs e)
+        private void TextBoxSecondary_TextChanged(object sender, EventArgs e)
         {
             TextBox t = sender as TextBox;
             //check all and save it
@@ -573,19 +572,19 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void comboBoxSetting_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBoxSetting_SelectedIndexChanged(object sender, EventArgs e)
         {
             //take the item then casting
             Setting s = comboBoxSetting.Items[comboBoxSetting.SelectedIndex] as Setting;
             //rewrite it
-            rewriteAll(s);
+            RewriteAll(s);
         }
 
         /// <summary>
         /// Rewrite all textbox with setting given.
         /// </summary>
         /// <param name="setting"></param>
-        private void rewriteAll(Setting setting)
+        private void RewriteAll(Setting setting)
         {
             //check null
             if (setting.MainUrl != null)
@@ -594,11 +593,11 @@ namespace AZOR
                 {
                     if (setting.MainUrl[i] != null)
                     {
-                        this.textBoxMainSetText(i, setting.MainUrl[i]);
+                        this.TextBoxMainSetText(i, setting.MainUrl[i]);
                     }
                     else
                     {
-                        this.textBoxMainSetText(i, "");
+                        this.TextBoxMainSetText(i, "");
                     }
                 }
             //check null
@@ -608,11 +607,11 @@ namespace AZOR
                 {
                     if (setting.SecondaryUrl[i] != null)
                     {
-                        this.textBoxSecondarySetText(i, setting.SecondaryUrl[i]);
+                        this.TextBoxSecondarySetText(i, setting.SecondaryUrl[i]);
                     }
                     else
                     {
-                        this.textBoxSecondarySetText(i, "");
+                        this.TextBoxSecondarySetText(i, "");
                     }
                 }
 
@@ -623,7 +622,7 @@ namespace AZOR
         /// </summary>
         /// <param name="i"></param>
         /// <param name="text"></param>
-        private void textBoxMainSetText(int i, string text)
+        private void TextBoxMainSetText(int i, string text)
         {
             switch (i)
             {
@@ -646,7 +645,7 @@ namespace AZOR
         /// </summary>
         /// <param name="i"></param>
         /// <param name="text"></param>
-        private void textBoxSecondarySetText(int i, string text)
+        private void TextBoxSecondarySetText(int i, string text)
         {
             switch (i)
             {
@@ -692,7 +691,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonCancel_Click(object sender, EventArgs e)
+        private void ButtonCancel_Click(object sender, EventArgs e)
         {
             panelNewSettingName.Visible = false;
         }
@@ -702,7 +701,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonAccept_Click(object sender, EventArgs e)
+        private void ButtonAccept_Click(object sender, EventArgs e)
         {
             Setting s = null;
             if (!textBoxNewSettingName.Text.Equals(""))

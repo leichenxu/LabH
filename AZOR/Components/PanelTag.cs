@@ -19,7 +19,7 @@ namespace AZOR
         /// Return the panel.
         /// </summary>
         /// <returns></returns>
-        public Panel getPanel()
+        public Panel GetPanel()
         {
             return panelCreateTag;
         }
@@ -28,7 +28,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonCreateTag_Click(object sender, EventArgs e)
+        private void ButtonCreateTag_Click(object sender, EventArgs e)
         {
             string errorMsg = "";
             int previousTimeSpan = 0;
@@ -41,20 +41,20 @@ namespace AZOR
                 errorMsg += errorTagNameTextBoxMsg + "\n";
             }
             if ((textBoxPreviousTime.Text.Equals("") || !Int32.TryParse(textBoxPreviousTime.Text, out previousTimeSpan))&&
-                (!comboBoxMode.Text.Equals(TagMode.manualText())))
+                (!comboBoxMode.Text.Equals(TagMode.ManualText())))
             {
                 //clean it if the content is wrong
                 textBoxPreviousTime.ResetText();
                 errorMsg += errorTagPreviousTimeTextBoxMsg + "\n";
             }
             if ((textBoxLaterTime.Text.Equals("") || !Int32.TryParse(textBoxLaterTime.Text, out laterTimeSpan))
-                &&(!comboBoxMode.Text.Equals(TagMode.manualText())))
+                &&(!comboBoxMode.Text.Equals(TagMode.ManualText())))
             {
                 //clean it if the content is wrong
                 textBoxLaterTime.ResetText();
                 errorMsg += errorTagLaterTimeTextBoxMsg;
             }
-            if (!comboBoxMode.Text.Equals(TagMode.manualText()) && !comboBoxMode.Text.Equals(TagMode.automaticText()))
+            if (!comboBoxMode.Text.Equals(TagMode.ManualText()) && !comboBoxMode.Text.Equals(TagMode.AutomaticText()))
             {
                 //clean it if the content is wrong
                 comboBoxMode.ResetText();
@@ -72,13 +72,13 @@ namespace AZOR
                     new TagMode(comboBoxMode.Text),colorPanel.GetColor);                                
                 this.haveInformation = true;
                 panelCreateTag.Visible = false;
-                cleanCreatePanelTag();
+                CleanCreatePanelTag();
             }
         }
         /// <summary>
         /// Clean the content in the panel.
         /// </summary>
-        private void cleanCreatePanelTag()
+        private void CleanCreatePanelTag()
         {
             ColorPanel.GetColor = Color.Black;
             comboBoxMode.ResetText();
@@ -108,15 +108,15 @@ namespace AZOR
         /// <summary>
         /// Error msg, if the content of previus time is null.
         /// </summary>
-        private string errorTagPreviousTimeTextBoxMsg = "Tiempo anterior incorrecto";
+        private readonly string errorTagPreviousTimeTextBoxMsg = "Tiempo anterior incorrecto";
         /// <summary>
         /// Error msg, if the content of later time is null.
         /// </summary>
-        private string errorTagLaterTimeTextBoxMsg = "Tiempo posterior incorrecto";
+        private readonly string errorTagLaterTimeTextBoxMsg = "Tiempo posterior incorrecto";
         /// <summary>
         /// Error msg, if the select of combobox is wrong.
         /// </summary>
-        private string errorModeMsg = "Modo incorrecto";
+        private readonly string errorModeMsg = "Modo incorrecto";
         /// <summary>
         /// Maximun lenght of tag name
         /// </summary>
@@ -230,7 +230,7 @@ namespace AZOR
             this.buttonCancelCreateTag.TabIndex = 3;
             this.buttonCancelCreateTag.Text = "Cancelar";
             this.buttonCancelCreateTag.UseVisualStyleBackColor = true;
-            this.buttonCancelCreateTag.Click += new System.EventHandler(this.buttonCancelCreateTag_Click);
+            this.buttonCancelCreateTag.Click += new System.EventHandler(this.ButtonCancelCreateTag_Click);
             // 
             // panelForColour
             // 
@@ -262,7 +262,7 @@ namespace AZOR
             this.buttonCreateTag.TabIndex = 1;
             this.buttonCreateTag.Text = "Crear";
             this.buttonCreateTag.UseVisualStyleBackColor = true;
-            this.buttonCreateTag.Click += new System.EventHandler(buttonCreateTag_Click);
+            this.buttonCreateTag.Click += new System.EventHandler(ButtonCreateTag_Click);
             // 
             // comboBoxMode
             // 
@@ -293,7 +293,7 @@ namespace AZOR
             this.panelCreateTag.Name = "panelCreateTag";
             this.panelCreateTag.Size = new System.Drawing.Size(393, 544);
             this.panelCreateTag.Visible = false;
-            panelCreateTag.VisibleChanged += setControls;
+            panelCreateTag.VisibleChanged += SetControls;
             this.panelForColour.ResumeLayout(false);
             this.panelForColour.PerformLayout();
             this.panelCreateTag.ResumeLayout(false);
@@ -304,15 +304,15 @@ namespace AZOR
             ColorPanel = new ColorPanel(panelForColour);
 
             //adjust the combo box
-            comboBoxMode.Items.Add(TagMode.automaticText());
-            comboBoxMode.Items.Add(TagMode.manualText());
+            comboBoxMode.Items.Add(TagMode.AutomaticText());
+            comboBoxMode.Items.Add(TagMode.ManualText());
             //background image
             panelCreateTag.BackgroundImageLayout = ImageLayout.Stretch;
 
             
         }
 
-        private void buttonCancelCreateTag_Click(object sender, EventArgs e)
+        private void ButtonCancelCreateTag_Click(object sender, EventArgs e)
         {
             lock (panelCreateTag)
             {
@@ -323,10 +323,10 @@ namespace AZOR
 
                 this.panelCreateTag.ResumeLayout();
                 this.panelCreateTag.PerformLayout();
-                getPanel().Enabled =false;
+                GetPanel().Enabled =false;
             }
         }
-        private void setControls(object sender, EventArgs e)
+        private void SetControls(object sender, EventArgs e)
         {
             Debug.WriteLine(panelCreateTag.Visible);
             foreach (Control c in panelCreateTag.Controls)

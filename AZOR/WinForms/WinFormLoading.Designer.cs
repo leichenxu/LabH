@@ -69,12 +69,12 @@
             // 
             // timer
             // 
-            this.timer.Tick += new System.EventHandler(this.timerProgressBar_Tick);
+            this.timer.Tick += new System.EventHandler(this.TimerProgressBar_Tick);
             // 
             // timerEndWinForm
             // 
             this.timerEndWinForm.Interval = 650;
-            this.timerEndWinForm.Tick += new System.EventHandler(this.timerEndWinForm_Tick);
+            this.timerEndWinForm.Tick += new System.EventHandler(this.TimerEndWinForm_Tick);
             // 
             // WinFormLoading
             // 

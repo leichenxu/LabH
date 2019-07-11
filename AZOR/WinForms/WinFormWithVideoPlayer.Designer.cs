@@ -111,7 +111,7 @@
             this.buttonRecordVideo.TabIndex = 1;
             this.buttonRecordVideo.TabStop = false;
             this.buttonRecordVideo.UseVisualStyleBackColor = false;
-            this.buttonRecordVideo.Click += new System.EventHandler(this.save_Click);
+            this.buttonRecordVideo.Click += new System.EventHandler(this.Save_Click);
             // 
             // buttonPause
             // 
@@ -177,7 +177,7 @@
             this.buttonPreviousFrame.TabIndex = 5;
             this.buttonPreviousFrame.TabStop = false;
             this.buttonPreviousFrame.UseVisualStyleBackColor = false;
-            this.buttonPreviousFrame.Click += new System.EventHandler(this.antFrame_Click);
+            this.buttonPreviousFrame.Click += new System.EventHandler(this.AntFrame_Click);
             // 
             // buttonNextFrame
             // 
@@ -193,7 +193,7 @@
             this.buttonNextFrame.TabIndex = 6;
             this.buttonNextFrame.TabStop = false;
             this.buttonNextFrame.UseVisualStyleBackColor = false;
-            this.buttonNextFrame.Click += new System.EventHandler(this.sigFrame_Click);
+            this.buttonNextFrame.Click += new System.EventHandler(this.SigFrame_Click);
             // 
             // recibidor
             // 
@@ -207,7 +207,7 @@
             // timerReload
             // 
             this.timerReload.Interval = 10000;
-            this.timerReload.Tick += new System.EventHandler(this.timerReload_Tick);
+            this.timerReload.Tick += new System.EventHandler(this.TimerReload_Tick);
             // 
             // contextMenuRightClickOnTime
             // 
@@ -216,21 +216,21 @@
             this.exportarToolStripMenuItem});
             this.contextMenuRightClickOnTime.Name = "contextMenuClickEnTiempo";
             this.contextMenuRightClickOnTime.Size = new System.Drawing.Size(118, 48);
-            this.contextMenuRightClickOnTime.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuRightClickOnTime_Opening);
+            this.contextMenuRightClickOnTime.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuRightClickOnTime_Opening);
             // 
             // eliminarToolStripMenuItem
             // 
             this.eliminarToolStripMenuItem.Name = "eliminarToolStripMenuItem";
             this.eliminarToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.eliminarToolStripMenuItem.Text = "Eliminar";
-            this.eliminarToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            this.eliminarToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
             // 
             // exportarToolStripMenuItem
             // 
             this.exportarToolStripMenuItem.Name = "exportarToolStripMenuItem";
             this.exportarToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.exportarToolStripMenuItem.Text = "Exportar";
-            this.exportarToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
+            this.exportarToolStripMenuItem.Click += new System.EventHandler(this.ExportToolStripMenuItem_Click);
             // 
             // tableLayoutPanelClips
             // 
@@ -259,7 +259,7 @@
             this.checkBoxAllClips.Size = new System.Drawing.Size(15, 14);
             this.checkBoxAllClips.TabIndex = 16;
             this.checkBoxAllClips.UseVisualStyleBackColor = false;
-            this.checkBoxAllClips.CheckedChanged += new System.EventHandler(this.checkBoxAllClips_CheckedChanged);
+            this.checkBoxAllClips.CheckedChanged += new System.EventHandler(this.CheckBoxAllClips_CheckedChanged);
             // 
             // panelClipsSaved
             // 
@@ -323,7 +323,7 @@
             this.buttonForward.Size = new System.Drawing.Size(44, 41);
             this.buttonForward.TabIndex = 21;
             this.buttonForward.UseVisualStyleBackColor = false;
-            this.buttonForward.Click += new System.EventHandler(this.buttonForward_Click);
+            this.buttonForward.Click += new System.EventHandler(this.ButtonForward_Click);
             // 
             // buttonBackward
             // 
@@ -337,7 +337,7 @@
             this.buttonBackward.Size = new System.Drawing.Size(44, 41);
             this.buttonBackward.TabIndex = 22;
             this.buttonBackward.UseVisualStyleBackColor = false;
-            this.buttonBackward.Click += new System.EventHandler(this.buttonBackward_Click);
+            this.buttonBackward.Click += new System.EventHandler(this.ButtonBackward_Click);
             // 
             // labelRecordTime
             // 
@@ -355,7 +355,7 @@
             // timerRecording
             // 
             this.timerRecording.Interval = 50;
-            this.timerRecording.Tick += new System.EventHandler(this.timerRecording_Tick);
+            this.timerRecording.Tick += new System.EventHandler(this.TimerRecording_Tick);
             // 
             // labelTimePlaying
             // 
@@ -455,12 +455,12 @@
             // 
             // timerLoadingVideo
             // 
-            this.timerLoadingVideo.Tick += new System.EventHandler(this.timerLoadingVideo_Tick);
+            this.timerLoadingVideo.Tick += new System.EventHandler(this.TimerLoadingVideo_Tick);
             // 
             // timerEndProgressBar
             // 
             this.timerEndProgressBar.Interval = 650;
-            this.timerEndProgressBar.Tick += new System.EventHandler(this.timerEndProgressBar_Tick);
+            this.timerEndProgressBar.Tick += new System.EventHandler(this.TimerEndProgressBar_Tick);
             // 
             // labelMarks
             // 
@@ -514,7 +514,7 @@
             this.buttonNewTag.Size = new System.Drawing.Size(34, 36);
             this.buttonNewTag.TabIndex = 46;
             this.buttonNewTag.UseVisualStyleBackColor = false;
-            this.buttonNewTag.Click += new System.EventHandler(this.buttonNewTag_Click);
+            this.buttonNewTag.Click += new System.EventHandler(this.ButtonNewTag_Click);
             // 
             // timerComprobarProcess
             // 
@@ -536,7 +536,7 @@
             this.buttonPlay.TabStop = false;
             this.buttonPlay.UseVisualStyleBackColor = false;
             this.buttonPlay.Visible = false;
-            this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
+            this.buttonPlay.Click += new System.EventHandler(this.ButtonPlay_Click);
             // 
             // buttonSaveTags
             // 
@@ -546,7 +546,7 @@
             this.buttonSaveTags.TabIndex = 48;
             this.buttonSaveTags.Text = "saveTags";
             this.buttonSaveTags.UseVisualStyleBackColor = true;
-            this.buttonSaveTags.Click += new System.EventHandler(this.buttonSaveTags_Click);
+            this.buttonSaveTags.Click += new System.EventHandler(this.ButtonSaveTags_Click);
             // 
             // buttonLoadTags
             // 
@@ -556,7 +556,7 @@
             this.buttonLoadTags.TabIndex = 49;
             this.buttonLoadTags.Text = "loadTags";
             this.buttonLoadTags.UseVisualStyleBackColor = true;
-            this.buttonLoadTags.Click += new System.EventHandler(this.buttonLoadTags_Click);
+            this.buttonLoadTags.Click += new System.EventHandler(this.ButtonLoadTags_Click);
             // 
             // buttonSetting
             // 
@@ -571,7 +571,7 @@
             this.buttonSetting.TabIndex = 50;
             this.buttonSetting.Text = "SETTING";
             this.buttonSetting.UseVisualStyleBackColor = false;
-            this.buttonSetting.Click += new System.EventHandler(this.buttonSetting_Click);
+            this.buttonSetting.Click += new System.EventHandler(this.ButtonSetting_Click);
             // 
             // progressBarLoadingVideo
             // 
@@ -606,7 +606,7 @@
             this.buttonExport.Size = new System.Drawing.Size(34, 26);
             this.buttonExport.TabIndex = 51;
             this.buttonExport.UseVisualStyleBackColor = false;
-            this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
+            this.buttonExport.Click += new System.EventHandler(this.ButtonExport_Click);
             // 
             // buttonDelete
             // 
@@ -619,7 +619,7 @@
             this.buttonDelete.Size = new System.Drawing.Size(33, 26);
             this.buttonDelete.TabIndex = 52;
             this.buttonDelete.UseVisualStyleBackColor = false;
-            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
+            this.buttonDelete.Click += new System.EventHandler(this.ButtonDelete_Click);
             // 
             // buttonAnalysis
             // 
@@ -651,20 +651,20 @@
             this.buttonSync.TabIndex = 54;
             this.buttonSync.Text = "SYNC";
             this.buttonSync.UseVisualStyleBackColor = false;
-            this.buttonSync.Click += new System.EventHandler(this.buttonSync_Click);
+            this.buttonSync.Click += new System.EventHandler(this.ButtonSync_Click);
             // 
             // openFileDialogTagPath
             // 
             this.openFileDialogTagPath.DefaultExt = "azorTagFile";
             this.openFileDialogTagPath.FileName = "openFileDialog1";
             this.openFileDialogTagPath.Filter = "Tag file (*.azorTagFile)|*.azorTagFile";
-            this.openFileDialogTagPath.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialogTagPath_FileOk);
+            this.openFileDialogTagPath.FileOk += new System.ComponentModel.CancelEventHandler(this.OpenFileDialogTagPath_FileOk);
             // 
             // saveFileDialogTag
             // 
             this.saveFileDialogTag.DefaultExt = "azorTagFile";
             this.saveFileDialogTag.Filter = "Tag file (*.azorTagFile)|*.azorTagFile";
-            this.saveFileDialogTag.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialogTag_FileOk);
+            this.saveFileDialogTag.FileOk += new System.ComponentModel.CancelEventHandler(this.SaveFileDialogTag_FileOk);
             // 
             // WinFormWithVideoPlayer
             // 

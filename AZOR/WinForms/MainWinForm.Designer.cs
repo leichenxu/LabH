@@ -70,7 +70,7 @@
             this.buttonNewProject.Size = new System.Drawing.Size(100, 76);
             this.buttonNewProject.TabIndex = 1;
             this.buttonNewProject.UseVisualStyleBackColor = false;
-            this.buttonNewProject.Click += new System.EventHandler(this.newProject_Click);
+            this.buttonNewProject.Click += new System.EventHandler(this.NewProject_Click);
             // 
             // buttonOpenProject
             // 
@@ -84,7 +84,7 @@
             this.buttonOpenProject.Size = new System.Drawing.Size(74, 76);
             this.buttonOpenProject.TabIndex = 2;
             this.buttonOpenProject.UseVisualStyleBackColor = false;
-            this.buttonOpenProject.Click += new System.EventHandler(this.openProject_Click);
+            this.buttonOpenProject.Click += new System.EventHandler(this.OpenProject_Click);
             // 
             // buttonSettings
             // 
@@ -97,7 +97,7 @@
             this.buttonSettings.TabIndex = 3;
             this.buttonSettings.Text = "Settings";
             this.buttonSettings.UseVisualStyleBackColor = false;
-            this.buttonSettings.Click += new System.EventHandler(this.settings_Click);
+            this.buttonSettings.Click += new System.EventHandler(this.Settings_Click);
             // 
             // buttonHelp
             // 
@@ -111,11 +111,11 @@
             this.buttonHelp.Size = new System.Drawing.Size(53, 80);
             this.buttonHelp.TabIndex = 4;
             this.buttonHelp.UseVisualStyleBackColor = false;
-            this.buttonHelp.Click += new System.EventHandler(this.help_Click);
+            this.buttonHelp.Click += new System.EventHandler(this.Help_Click);
             // 
             // fileExplorer
             // 
-            this.fileExplorer.FileOk += new System.ComponentModel.CancelEventHandler(this.exploradorArchivo_FileOk);
+            this.fileExplorer.FileOk += new System.ComponentModel.CancelEventHandler(this.ExploradorArchivo_FileOk);
             // 
             // tableLayoutPanelRecentlyProjects
             // 
@@ -227,7 +227,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainWinForm";
             this.Text = "MainWinForm";
-            this.Load += new System.EventHandler(this.mainWinFormLoad_Load);
+            this.Load += new System.EventHandler(this.MainWinFormLoad_Load);
             this.panelSetting.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -155,7 +155,7 @@ namespace AZOR
         /// <summary>
         /// Show it in center.
         /// </summary>
-        public void centerShow(string playingVideo)
+        public void CenterShow(string playingVideo)
         {
             //when openned, same state
             if (!parentMpvPersonalized.MpvPlayer.IsPlaying)

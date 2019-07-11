@@ -106,7 +106,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonSave_Click(object sender, EventArgs e)
+        private void ButtonSave_Click(object sender, EventArgs e)
         {
             SaveTimeEvent();
         }
@@ -146,7 +146,7 @@ namespace AZOR
         /// <summary>
         /// Show it in center.
         /// </summary>
-        public void centerShow()
+        public void CenterShow()
         {
             //reset
             interactiveMPV = -1;

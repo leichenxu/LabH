@@ -47,8 +47,8 @@ namespace AZOR
             ColorPanel = new ColorPanel(panelForColour);
 
             //adjust the combo box
-            comboBoxMode.Items.Add(TagMode.automaticText());
-            comboBoxMode.Items.Add(TagMode.manualText());
+            comboBoxMode.Items.Add(TagMode.AutomaticText());
+            comboBoxMode.Items.Add(TagMode.ManualText());
 
             //set to automatic
             comboBoxMode.SelectedIndex = 0;
@@ -83,7 +83,7 @@ namespace AZOR
         /// <summary>
         /// Clean the content in the panel.
         /// </summary>
-        private void cleanCreatePanelTag()
+        private void CleanCreatePanelTag()
         {
             ColorPanel.GetColor = Color.Black;
             //set to automatic
@@ -104,11 +104,11 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonCancelCreateTag_Click(object sender, EventArgs e)
+        private void ButtonCancelCreateTag_Click(object sender, EventArgs e)
         {            
             this.HaveInformation = false;
             this.Visible = false;
-            this.cleanCreatePanelTag();
+            this.CleanCreatePanelTag();
             
         }
 
@@ -117,7 +117,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonCreateTag_Click(object sender, EventArgs e)
+        private void ButtonCreateTag_Click(object sender, EventArgs e)
         {
             string errorMsg = "";
             int previousTimeSpan = 0;
@@ -130,20 +130,20 @@ namespace AZOR
                 errorMsg += errorTagNameTextBoxMsg + "\n";
             }
             if ((numericUpDownPreTime.Text.Equals("") || !Int32.TryParse(numericUpDownPreTime.Text, out previousTimeSpan)) &&
-                (!comboBoxMode.Text.Equals(TagMode.manualText())))
+                (!comboBoxMode.Text.Equals(TagMode.ManualText())))
             {
                 //clean it if the content is wrong
                 numericUpDownPreTime.ResetText();
                 errorMsg += errorTagPreviousTimeTextBoxMsg + "\n";
             }
             if ((numericUpDownPostTime.Text.Equals("") || !Int32.TryParse(numericUpDownPostTime.Text, out laterTimeSpan))
-                && (!comboBoxMode.Text.Equals(TagMode.manualText())))
+                && (!comboBoxMode.Text.Equals(TagMode.ManualText())))
             {
                 //clean it if the content is wrong
                 numericUpDownPostTime.ResetText();
                 errorMsg += errorTagLaterTimeTextBoxMsg;
             }
-            if (!comboBoxMode.Text.Equals(TagMode.manualText()) && !comboBoxMode.Text.Equals(TagMode.automaticText()))
+            if (!comboBoxMode.Text.Equals(TagMode.ManualText()) && !comboBoxMode.Text.Equals(TagMode.AutomaticText()))
             {
                 //clean it if the content is wrong
                 comboBoxMode.ResetText();
@@ -161,7 +161,7 @@ namespace AZOR
                     new TagMode(comboBoxMode.Text),colorPanel.GetColor);
                 this.HaveInformation = true;
                 this.Visible = false;
-                cleanCreatePanelTag();
+                CleanCreatePanelTag();
             }
         }
         /// <summary>
@@ -169,21 +169,21 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void comboBoxMode_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBoxMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (TagMode.automaticText().Equals(comboBoxMode.Text))
+            if (TagMode.AutomaticText().Equals(comboBoxMode.Text))
             {
-                this.setTimeVisible(true);
+                this.SetTimeVisible(true);
             }
             else
             {
-                this.setTimeVisible(false);
+                this.SetTimeVisible(false);
             }
         }
         /// <summary>
         /// Set the visible to false or true.
         /// </summary>
-        private void setTimeVisible(Boolean v)
+        private void SetTimeVisible(Boolean v)
         {
             this.labelLaterTime.Visible = v;
             this.labelPreviousTime.Visible = v;

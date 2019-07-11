@@ -316,7 +316,7 @@ namespace AZOR
             this.buttonSaveSetting.TabIndex = 26;
             this.buttonSaveSetting.Text = "Save";
             this.buttonSaveSetting.UseVisualStyleBackColor = true;
-            this.buttonSaveSetting.Click += new System.EventHandler(this.buttonSaveSetting_Click);
+            this.buttonSaveSetting.Click += new System.EventHandler(this.ButtonSaveSetting_Click);
             // 
             // comboBoxSetting
             // 
@@ -326,7 +326,7 @@ namespace AZOR
             this.comboBoxSetting.Name = "comboBoxSetting";
             this.comboBoxSetting.Size = new System.Drawing.Size(121, 21);
             this.comboBoxSetting.TabIndex = 27;
-            this.comboBoxSetting.SelectedIndexChanged += new System.EventHandler(this.comboBoxSetting_SelectedIndexChanged);
+            this.comboBoxSetting.SelectedIndexChanged += new System.EventHandler(this.ComboBoxSetting_SelectedIndexChanged);
             // 
             // labelAvailable
             // 
@@ -405,7 +405,7 @@ namespace AZOR
             this.buttonAccept.TabIndex = 2;
             this.buttonAccept.Text = "Aceptar";
             this.buttonAccept.UseVisualStyleBackColor = true;
-            this.buttonAccept.Click += new System.EventHandler(this.buttonAccept_Click);
+            this.buttonAccept.Click += new System.EventHandler(this.ButtonAccept_Click);
             // 
             // buttonCancel
             // 
@@ -415,7 +415,7 @@ namespace AZOR
             this.buttonCancel.TabIndex = 3;
             this.buttonCancel.Text = "Cancelar";
             this.buttonCancel.UseVisualStyleBackColor = true;
-            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
             // WinFormSetting
             // 

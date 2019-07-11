@@ -79,19 +79,19 @@ namespace AZOR
             //add extention filter
             this.fileExplorer.Filter = "AZOR | *" + extension;
             //add event
-            this.FormClosed += checkOpenNewWindow;
+            this.FormClosed += CheckOpenNewWindow;
         }
         /// <summary>
         /// Check open or not new window, if yes open it.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void checkOpenNewWindow(object sender, EventArgs e)
+        private void CheckOpenNewWindow(object sender, EventArgs e)
         {
             if (openWinForm)
             {
                 //start new thread
-                Thread th = new Thread(openCreatedProject);
+                Thread th = new Thread(OpenCreatedProject);
                 th.SetApartmentState(ApartmentState.STA);
                 settingForm.CanShow = false;
                 th.Start();
@@ -102,15 +102,15 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void mainWinFormLoad_Load(object sender, EventArgs e)
+        private void MainWinFormLoad_Load(object sender, EventArgs e)
         {
-            showRecentlyOpennedProjects();
+            ShowRecentlyOpennedProjects();
         }
 
         /// <summary>
         /// Read all the lines in the file, and write it.
         /// </summary>
-        private void showRecentlyOpennedProjects()
+        private void ShowRecentlyOpennedProjects()
         {
             //count row in another variable
             int rowCount = 0;
@@ -140,7 +140,7 @@ namespace AZOR
                     label.Size = new System.Drawing.Size(100, 25);
                     label.AccessibleDescription = bufferString[i];
                     label.Text = Path.GetFileName(Path.GetDirectoryName(bufferString[i]));
-                    label.Click += new System.EventHandler(label_Click);
+                    label.Click += new System.EventHandler(Label_Click);
                     tableLayoutPanelRecentlyProjects.Controls.Add(label, 0, rowCount);
                     rowCount++;
                     //add tooltip
@@ -162,7 +162,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void label_Click(object sender, EventArgs e)
+        private void Label_Click(object sender, EventArgs e)
         {
             System.Windows.Forms.Label aux = (System.Windows.Forms.Label)sender;
             projectStartPath = Path.GetDirectoryName(aux.AccessibleDefaultActionDescription);
@@ -178,7 +178,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void newProject_Click(object sender, EventArgs e)
+        private void NewProject_Click(object sender, EventArgs e)
         {
             //createProjectsFileExplorer = new FileExplorer(this, extention,settingForm);
             ////show it
@@ -210,7 +210,7 @@ namespace AZOR
                 //write all lines in table
                 File.WriteAllText(recentlyOpenedProjectFilePath, AES128.Encrypt(fileToAdd));
                 //start new thread
-                Thread th = new Thread(opennewform);
+                Thread th = new Thread(Opennewform);
                 th.SetApartmentState(ApartmentState.STA);
                 th.Start();
                 //close the mainform
@@ -220,7 +220,7 @@ namespace AZOR
         /// <summary>
         /// Open new form, run it.
         /// </summary>
-        private void opennewform()
+        private void Opennewform()
         {
             Application.Run(new WinFormWithVideoPlayer(newProjectPath, settingForm));
         }
@@ -229,7 +229,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void openProject_Click(object sender, EventArgs e)
+        private void OpenProject_Click(object sender, EventArgs e)
         {
             //show file explorer for open project
             this.fileExplorer.ShowDialog();
@@ -240,7 +240,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void exploradorArchivo_FileOk(object sender, CancelEventArgs e)
+        private void ExploradorArchivo_FileOk(object sender, CancelEventArgs e)
         {
             //if wrong extention notify it
             if (!Path.GetExtension(this.fileExplorer.FileName).Equals(extention))
@@ -314,7 +314,7 @@ namespace AZOR
         /// <summary>
         /// Open new form with location, run it.
         /// </summary>
-        private void openCreatedProject()
+        private void OpenCreatedProject()
         {
             Application.Run(new WinFormWithVideoPlayer(projectStartPath, settingForm));
         }
@@ -325,7 +325,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void settings_Click(object sender, EventArgs e)
+        private void Settings_Click(object sender, EventArgs e)
         {
             this.settingForm.ShowDialog();
 
@@ -336,7 +336,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void help_Click(object sender, EventArgs e)
+        private void Help_Click(object sender, EventArgs e)
         {
 
             if (this.panelHelp.Visible)

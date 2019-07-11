@@ -47,7 +47,7 @@
             this.buttonMoveBackward.TabIndex = 0;
             this.buttonMoveBackward.Text = "<<";
             this.buttonMoveBackward.UseVisualStyleBackColor = true;
-            this.buttonMoveBackward.Click += new System.EventHandler(this.backward_Click);
+            this.buttonMoveBackward.Click += new System.EventHandler(this.Backward_Click);
             // 
             // buttonMoveForward
             // 
@@ -58,7 +58,7 @@
             this.buttonMoveForward.TabIndex = 1;
             this.buttonMoveForward.Text = ">>";
             this.buttonMoveForward.UseVisualStyleBackColor = true;
-            this.buttonMoveForward.Click += new System.EventHandler(this.adelante_Click);
+            this.buttonMoveForward.Click += new System.EventHandler(this.Adelante_Click);
             // 
             // buttonOpenFileExplorer
             // 
@@ -69,7 +69,7 @@
             this.buttonOpenFileExplorer.TabIndex = 2;
             this.buttonOpenFileExplorer.Text = "Abrir ruta";
             this.buttonOpenFileExplorer.UseVisualStyleBackColor = true;
-            this.buttonOpenFileExplorer.Click += new System.EventHandler(this.openFileExplorer_Click);
+            this.buttonOpenFileExplorer.Click += new System.EventHandler(this.OpenFileExplorer_Click);
             // 
             // labelPathText
             // 
@@ -88,7 +88,7 @@
             this.textBoxPath.Name = "textBoxPath";
             this.textBoxPath.Size = new System.Drawing.Size(353, 20);
             this.textBoxPath.TabIndex = 4;
-            this.textBoxPath.TextChanged += new System.EventHandler(this.path_TextChanged);
+            this.textBoxPath.TextChanged += new System.EventHandler(this.Path_TextChanged);
             // 
             // webBrowserFiles
             // 
@@ -98,7 +98,7 @@
             this.webBrowserFiles.Name = "webBrowserFiles";
             this.webBrowserFiles.Size = new System.Drawing.Size(584, 230);
             this.webBrowserFiles.TabIndex = 5;
-            this.webBrowserFiles.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_DocumentCompleted);
+            this.webBrowserFiles.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.WebBrowser_DocumentCompleted);
             // 
             // buttonCreateProject
             // 
@@ -109,7 +109,7 @@
             this.buttonCreateProject.TabIndex = 6;
             this.buttonCreateProject.Text = "Crear";
             this.buttonCreateProject.UseVisualStyleBackColor = true;
-            this.buttonCreateProject.Click += new System.EventHandler(this.createProject_Click);
+            this.buttonCreateProject.Click += new System.EventHandler(this.CreateProject_Click);
             // 
             // textBoxNewFileName
             // 

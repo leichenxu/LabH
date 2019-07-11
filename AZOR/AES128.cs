@@ -51,14 +51,16 @@ namespace AZOR
                 return text;
             var valueToConvert = Convert.FromBase64String(text);
             //create aes
-            var aes = new RijndaelManaged();
-            //initialize
-            aes.IV = Encoding.UTF8.GetBytes(KEY);
-            //key
-            aes.Key = Encoding.UTF8.GetBytes(KEY);
-            //set mode
-            aes.Mode = CipherMode.CBC;
-            aes.Padding = PaddingMode.PKCS7;
+            var aes = new RijndaelManaged
+            {
+                //initialize
+                IV = Encoding.UTF8.GetBytes(KEY),
+                //key
+                Key = Encoding.UTF8.GetBytes(KEY),
+                //set mode
+                Mode = CipherMode.CBC,
+                Padding = PaddingMode.PKCS7
+            };
             //create decryptor
             var cryptoTransform = aes.CreateDecryptor();
             //result

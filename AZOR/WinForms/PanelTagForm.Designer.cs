@@ -54,7 +54,7 @@
             this.comboBoxMode.Name = "comboBoxMode";
             this.comboBoxMode.Size = new System.Drawing.Size(311, 21);
             this.comboBoxMode.TabIndex = 1;
-            this.comboBoxMode.SelectedIndexChanged += new System.EventHandler(this.comboBoxMode_SelectedIndexChanged);
+            this.comboBoxMode.SelectedIndexChanged += new System.EventHandler(this.ComboBoxMode_SelectedIndexChanged);
             // 
             // panelForColour
             // 
@@ -76,7 +76,7 @@
             this.buttonCreateTag.TabIndex = 1;
             this.buttonCreateTag.Text = "Crear";
             this.buttonCreateTag.UseVisualStyleBackColor = false;
-            this.buttonCreateTag.Click += new System.EventHandler(this.buttonCreateTag_Click);
+            this.buttonCreateTag.Click += new System.EventHandler(this.ButtonCreateTag_Click);
             // 
             // buttonCancelCreateTag
             // 
@@ -90,7 +90,7 @@
             this.buttonCancelCreateTag.TabIndex = 3;
             this.buttonCancelCreateTag.Text = "Cancelar";
             this.buttonCancelCreateTag.UseVisualStyleBackColor = false;
-            this.buttonCancelCreateTag.Click += new System.EventHandler(this.buttonCancelCreateTag_Click);
+            this.buttonCancelCreateTag.Click += new System.EventHandler(this.ButtonCancelCreateTag_Click);
             // 
             // textBoxNameTag
             // 

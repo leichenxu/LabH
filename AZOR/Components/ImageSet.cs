@@ -15,7 +15,7 @@ namespace AZOR
         /// <param name="img"></param>
         /// <param name="s"></param>
         /// <returns></returns>
-        public static Image resetImageSize(Image img, Size s)
+        public static Image ResetImageSize(Image img, Size s)
         {
             //create new image with the size given.
             Image newImage = new Bitmap(s.Width, s.Height);

@@ -42,20 +42,20 @@ namespace AZOR
             //save these variables
             this.mainForm = mainForm;
             this.extension = extension;
-            this.KeyPress += enterNewProjectName;
+            this.KeyPress += EnterNewProjectName;
             //save setting
             this.settingForm = settingForm;
         }
         /// <summary>
         /// Take the name and create the project.
         /// </summary>
-        private void enterNewProjectName(object sender, KeyPressEventArgs k)
+        private void EnterNewProjectName(object sender, KeyPressEventArgs k)
         {
             if (k.KeyChar == (char)Keys.Return)
             {
                 if (textBoxNewFileName.Text != null)
                 {
-                    this.createProject_Click(sender, k);
+                    this.CreateProject_Click(sender, k);
                 }
             }
         }
@@ -64,7 +64,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void openFileExplorer_Click(object sender, EventArgs e)
+        private void OpenFileExplorer_Click(object sender, EventArgs e)
         {
             //using folderbrowerdialog to show the file explorer
             using (FolderBrowserDialog fbd = new FolderBrowserDialog()
@@ -90,7 +90,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void backward_Click(object sender, EventArgs e)
+        private void Backward_Click(object sender, EventArgs e)
         {
             //if can go back backward
             if (webBrowserFiles.CanGoBack)
@@ -102,7 +102,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void adelante_Click(object sender, EventArgs e)
+        private void Adelante_Click(object sender, EventArgs e)
         {
             //if can go forward go forward
             if (webBrowserFiles.CanGoForward)
@@ -114,7 +114,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void path_TextChanged(object sender, EventArgs e)
+        private void Path_TextChanged(object sender, EventArgs e)
         {
             //if directory exist change it
             if (Directory.Exists(this.textBoxPath.Text))
@@ -128,7 +128,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void createProject_Click(object sender, EventArgs e)
+        private void CreateProject_Click(object sender, EventArgs e)
         {
             //check webbrowser not null
             if (this.webBrowserFiles.Url != null)
@@ -152,7 +152,7 @@ namespace AZOR
                     this.mainForm.Close();
                     this.Close();
                     //start new thread
-                    Thread th = new Thread(opennewform);
+                    Thread th = new Thread(Opennewform);
                     th.SetApartmentState(ApartmentState.STA);
                     th.Start();
                 }
@@ -167,7 +167,7 @@ namespace AZOR
         /// <summary>
         /// Open new form, run it.
         /// </summary>
-        private void opennewform()
+        private void Opennewform()
         {
             Application.Run(new WinFormWithVideoPlayer(projectStorePath, settingForm));
         }
@@ -177,7 +177,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void webBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             //change the textbox for have current path
             this.textBoxPath.Text = new Uri(this.webBrowserFiles.Url.ToString()).LocalPath.ToString();

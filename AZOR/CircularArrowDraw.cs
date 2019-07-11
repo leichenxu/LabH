@@ -14,15 +14,15 @@ namespace AZOR
         private Timer timerDrawCircular= new Timer();
         private int startAngleDrawOne = 90;
         private int startAngleDrawTwo = 270;
-        private Color penColor;
+        private readonly Color penColor;
         /// <summary>
         /// The angule chosed.
         /// </summary>
-        private int angle = 190;
+        private readonly int angle = 190;
         public CircularArrowDraw(Control control,Color color)
         {
             control.ForeColor = color;
-            control.Paint += paintCircularImage;
+            control.Paint += PaintCircularImage;
             controlToPaint = control;
             //set the interval
             TimerDrawCircular.Interval = 100;
@@ -33,18 +33,18 @@ namespace AZOR
         /// <summary>
         /// Start again the draw animation.
         /// </summary>
-        public void startAgain()
+        public void StartAgain()
         {            
             controlToPaint.ForeColor = penColor;
-            controlToPaint.Paint += paintCircularImage;
+            controlToPaint.Paint += PaintCircularImage;
             TimerDrawCircular.Start();
         }
         /// <summary>
         /// When end stop the animation and repaint.
         /// </summary>
-        public void endDraw()
+        public void EndDraw()
         {
-            controlToPaint.Paint -= paintCircularImage;
+            controlToPaint.Paint -= PaintCircularImage;
             controlToPaint.ForeColor = Color.White;
             controlToPaint.Invalidate();
         }
@@ -55,14 +55,16 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="eventArgs"></param>
-        private void paintCircularImage(object sender, EventArgs eventArgs)
+        private void PaintCircularImage(object sender, EventArgs eventArgs)
         {
             Control c = sender as Control;
             PaintEventArgs e = eventArgs as PaintEventArgs;
             //color and size of pen
-            Pen p = new Pen(penColor, 3);
-            //the line chosed
-            p.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+            Pen p = new Pen(penColor, 3)
+            {
+                //the line chosed
+                EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor
+            };
             //round location and radius
             int cx = c.ClientSize.Width / 2;
             int cy = c.ClientSize.Height / 2;

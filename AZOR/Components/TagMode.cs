@@ -10,8 +10,8 @@ namespace AZOR
     {
         private Boolean isAutomatic;
         private Boolean isManual;
-        private static string automaticString = "Automatico";
-        private static string manualString = "Manual";
+        private static readonly string automaticString = "Automatico";
+        private static readonly string manualString = "Manual";
         /// <summary>
         /// For Json default constructor.
         /// </summary>
@@ -21,7 +21,7 @@ namespace AZOR
         }
         public TagMode(string text)
         {
-            setModeWithString(text);
+            SetModeWithString(text);
         }
         public TagMode(bool isAutomatic, bool isManual)
         {
@@ -31,11 +31,11 @@ namespace AZOR
 
         public bool IsAutomatic { get => isAutomatic; set => isAutomatic = value; }
         public bool IsManual { get => isManual; set => isManual = value; }
-        public static string automaticText()
+        public static string AutomaticText()
         {
             return automaticString;
         }
-        public static string manualText()
+        public static string ManualText()
         {
             return manualString;
         }
@@ -44,7 +44,7 @@ namespace AZOR
         /// </summary>
         /// <param name="text"></param>
         /// <returns>True if text is correct, false otherwise.</returns>
-        public Boolean setModeWithString(String text)
+        public Boolean SetModeWithString(String text)
         {
             if (text.Equals(automaticString))
             {

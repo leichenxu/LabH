@@ -30,7 +30,7 @@ namespace AZOR
             //start timer
             this.timer.Start();
             //check if azor existe, if not create
-            checkAndCreateAZOR();
+            CheckAndCreateAZOR();
 
             //center
             this.CenterToScreen();
@@ -38,7 +38,7 @@ namespace AZOR
         /// <summary>
         /// Check if azor existe, if not create.
         /// </summary>
-        private void checkAndCreateAZOR()
+        private void CheckAndCreateAZOR()
         {
             //get current pc documents path
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -58,7 +58,7 @@ namespace AZOR
         /// <summary>
         /// Add the increment to the progress bar.
         /// </summary>
-        private void incrementProgressBar()
+        private void IncrementProgressBar()
         {
             //increment 1 the progress bar
             this.progressBarLoading.Increment(1);
@@ -70,10 +70,10 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void timerProgressBar_Tick(object sender, EventArgs e)
+        private void TimerProgressBar_Tick(object sender, EventArgs e)
         {
             //increment
-            this.incrementProgressBar();
+            this.IncrementProgressBar();
             //check if finished
             if (this.progressBarLoading.Value == this.progressBarLoading.Maximum)
             {
@@ -86,7 +86,7 @@ namespace AZOR
         /// <summary>
         /// Open the new winform when is called.
         /// </summary>
-        private void opennewform()
+        private void Opennewform()
         {
             Application.Run(new MainWinForm(new WinFormSetting()));
         }
@@ -95,12 +95,12 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void timerEndWinForm_Tick(object sender, EventArgs e)
+        private void TimerEndWinForm_Tick(object sender, EventArgs e)
         {
             //stop the timer
             this.timerEndWinForm.Stop();
             //create new thread
-            Thread th = new Thread(opennewform);
+            Thread th = new Thread(Opennewform);
             th.SetApartmentState(ApartmentState.STA);
             //start thread
             th.Start();
