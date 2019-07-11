@@ -124,6 +124,7 @@ namespace AZOR
 
             (e as FormClosingEventArgs).Cancel = true;
             this.Visible = false;
+            MpvPersonalized.TimerReversePlay.Stop();
             //all reload to false
             reloadOne = false;
             ReloadTwo = false;
@@ -132,10 +133,12 @@ namespace AZOR
             foreach (MpvPersonalized m in FourMpv)
             {
                 m.MpvPlayer.Stop();
+                m.TimerReversePlay.Stop();
             }
             foreach (MpvPersonalized m in twoMainMpv)
             {
                 m.MpvPlayer.Stop();
+                m.TimerReversePlay.Stop();
             }
             MpvPersonalized.MpvPlayer.Stop();
             //hide all
@@ -168,6 +171,8 @@ namespace AZOR
             mpvPersonalized.MpvPlayer.MediaLoaded += SetTime;
             //when openned set it
             reloadOne = true;
+            //if mainform reverse playing,analysis too
+            CheckReversePlay(MpvPersonalized);         
             //bg image to none
             this.BackgroundImage = null;
         }
@@ -180,19 +185,21 @@ namespace AZOR
             mapLoaded[sender as MpvPlayer] = true;
             MapLoadedEvent[sender as MpvPlayer].Set();
 
-            foreach(MpvPersonalized m in TwoMainMpv)
-            {
-                if(m.MpvPlayer==(sender as MpvPlayer))
-                    Console.WriteLine("video " + m.PlayingMedia+"sania enviado");
-            }
-            foreach (MpvPersonalized m in fourMpv)
-            {
-                if (m.MpvPlayer == (sender as MpvPlayer))
-                    Console.WriteLine("video " + m.PlayingMedia + "sania enviado");
-            }
+            //foreach(MpvPersonalized m in TwoMainMpv)
+            //{
+            //    if(m.MpvPlayer==(sender as MpvPlayer))
+            //        Console.WriteLine("video " + m.PlayingMedia+"sania enviado");
+            //}
+            //foreach (MpvPersonalized m in fourMpv)
+            //{
+            //    if (m.MpvPlayer == (sender as MpvPlayer))
+            //        Console.WriteLine("video " + m.PlayingMedia + "sania enviado");
+            //}
             
             //get the player
             Mpv.NET.Player.MpvPlayer player = sender as MpvPlayer;
+            //set same speed speed
+            player.Speed = parentMpvPersonalized.MpvPlayer.Speed;
             //enter parent mpv
             Monitor.Enter(parentMpvPersonalized.MpvPlayer.MpvLock);
             //try enter player
@@ -238,7 +245,7 @@ namespace AZOR
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             //if is used then no move in interface, and not use in other panel
-            if ((mpvPersonalized.KeysThatIHaveUse(keyData) ||
+            if ((mpvPersonalized.KeysThatIHaveUse(keyData) || MpvPersonalized.KeysSpeedUse(keyData)||
                 keyData == Keys.Tab || keyData == Keys.Up ||
                 keyData == Keys.Down || keyData == Keys.Enter))
             {
@@ -327,29 +334,32 @@ namespace AZOR
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
+        /// <summary>
+        /// Send command to mpv.
+        /// </summary>
+        /// <param name="keyData"></param>
         public void CommandToMpv(Keys keyData)
         {
             if (ReloadOne)
             {
-                Thread th = new Thread(() => OneCommand(keyData));
-                th.Start();
-                th.Join();
-                //OneCommand(keyData);
+                //Thread th = new Thread(() => OneCommand(keyData));
+                //th.Start();
+                //th.Join();
+                OneCommand(keyData);
             }
             else if (reloadFour)
             {
-                //FourCommand(keyData);
-                Thread th = new Thread(() => FourCommand(keyData));
-                th.Start();
-                th.Join();
-
+                FourCommand(keyData);
+                //Thread th = new Thread(() => FourCommand(keyData));
+                //th.Start();
+                //th.Join();
             }
             else if (ReloadTwo)
             {
-                //TwoCommand(keyData);
-                Thread th = new Thread(() => TwoCommand(keyData));
-                th.Start();
-                th.Join();
+                TwoCommand(keyData);
+                //Thread th = new Thread(() => TwoCommand(keyData));
+                //th.Start();
+                //th.Join();
             }
         }
         /// <summary>
@@ -358,7 +368,10 @@ namespace AZOR
         private void OneCommand(Keys keyData)
         {
             lock (mpvPersonalized.MpvPlayer.MpvLock)
+            {
                 MpvPersonalized.MpvController(new KeyEventArgs(keyData));
+
+            }
         }
         /// <summary>
         /// Execute four command for mpv.
@@ -402,9 +415,11 @@ namespace AZOR
         {
             //stop
             this.mpvPersonalized.MpvPlayer.Stop();
+            MpvPersonalized.TimerReversePlay.Stop();
             foreach (MpvPersonalized m in fourMpv)
             {
                 m.MpvPlayer.Stop();
+                m.TimerReversePlay.Stop();
             }
             //hide it
             pictureBoxAzor1.Visible = false;
@@ -433,6 +448,7 @@ namespace AZOR
                     twoMainMpv[i].PlayingMedia = winForm.ChangeCameraUrl[numberPressed[i]] as string;
                     twoMainMpv[i].MpvPlayer.MediaLoaded += SetTime;
                     twoMainMpv[i].PlayingMedia = winForm.ChangeCameraUrl[numberPressed[i]] as string;
+                    CheckReversePlay(TwoMainMpv[i]);
                 }
             //set name
             SetLabelText(labelMainVideoOne, twoMainMpv[0].PlayingMedia);
@@ -465,9 +481,11 @@ namespace AZOR
         {
             //stop
             this.mpvPersonalized.MpvPlayer.Stop();
+            MpvPersonalized.TimerReversePlay.Stop();
             foreach (MpvPersonalized m in twoMainMpv)
             {
                 m.MpvPlayer.Stop();
+                m.TimerReversePlay.Stop();
             }
             //reset
             labelMainVideoOne.ResetText();
@@ -496,10 +514,26 @@ namespace AZOR
                     fourMpv[i].MpvPlayer.Load(winForm.ChangeCameraUrl[i] as string, winForm.CurrentTimeSpan.ToString());
                     fourMpv[i].PlayingMedia = winForm.ChangeCameraUrl[i] as string;
                     fourMpv[i].MpvPlayer.MediaLoaded += SetTime;
+                    CheckReversePlay(fourMpv[i]);
                 }
 
         }
-
+        /// <summary>
+        /// Check if mainform is reverse playing, if yes reverse play it.
+        /// </summary>
+        /// <param name="mpv"></param>
+        private void CheckReversePlay(MpvPersonalized mpv)
+        {
+            if (parentMpvPersonalized.ReversePlaying)
+            {
+                //set to true
+                mpv.ReversePlaying = true;
+                //set the same interval
+                mpv.TimerReversePlay.Interval = parentMpvPersonalized.TimerReversePlay.Interval;
+                //start it
+                mpv.TimerReversePlay.Start();
+            }
+        }
 
     }
 }

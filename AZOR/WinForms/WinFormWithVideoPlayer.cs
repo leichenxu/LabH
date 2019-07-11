@@ -1047,7 +1047,7 @@ namespace AZOR
                         //state play or pause
                         if (stopInFinal)
                             (sender as Mpv.NET.Player.MpvPlayer).Resume();
-                   
+
                 }
             //mpv unlock
             manualResetEventMpvUnlock.Set();
@@ -1271,10 +1271,10 @@ namespace AZOR
                     //sent the event to the controller
                     KeysUsed keyUsed = mpvPersonalized.MpvController(new KeyEventArgs(keyData));
                     //check reverse play
-                    if (wasReversePlaying||mpvPersonalized.ReversePlaying)
+                    if (wasReversePlaying || mpvPersonalized.ReversePlaying)
                     {
                         //set button visible
-                        if (keyUsed == KeysUsed.ReverseSpeed)
+                        if (keyUsed == KeysUsed.ReverseSpeed || keyUsed == KeysUsed.AddSpeed)
                         {
                             buttonPlay.Visible = false;
                             buttonPause.Visible = true;
