@@ -110,10 +110,11 @@ namespace AZOR
         /// <param name="e"></param>
         private void TimerReversePlay_Tick(object sender, EventArgs e)
         {
-            //check loaded
-            if (MpvPlayer.IsMediaLoaded)
-                //safe lock
-                lock (MpvPlayer.MpvLock)
+
+            //safe lock
+            lock (MpvPlayer.MpvLock)
+                //check loaded
+                if (MpvPlayer.IsMediaLoaded)
                 {
                     //pause it
                     MpvPlayer.Pause();
@@ -321,7 +322,7 @@ namespace AZOR
                 speed = 8;
             }
             //speed x16
-            else if (keyEventArgs.KeyData== Keys.N)
+            else if (keyEventArgs.KeyData == Keys.N)
             {
                 speed = 16;
             }
@@ -362,12 +363,12 @@ namespace AZOR
         {
             int interval = -1;
             //if x pressed, speed -2
-            if (k.KeyData== Keys.X)
+            if (k.KeyData == Keys.X)
             {
                 interval = 240;
             }
             //speed X-4
-            else if (k.KeyData== Keys.Z)
+            else if (k.KeyData == Keys.Z)
             {
                 interval = 120;
             }

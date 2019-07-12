@@ -447,44 +447,8 @@ namespace AZOR
                 this.buttonSync.Enabled = true;
             }
         }
-        /// <summary>
-        /// Crete or not the button.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CreateOrNotButtonTag(object sender, EventArgs e)
-        {
-            //when panel tag visible pause the layout
-            if (panelTag.Visible)
-            {
-                this.SuspendLayout();
-            }
-            else
-            {
-                this.ResumeLayout();
-            }
-            //check have information or not for create tag button
-            if (panelTag.HaveInformation)
-            {
-                CreateAutomaticOrManualTagButton(panelTag.NewTagInfo);
-            }
-        }
-        /// <summary>
-        /// Create the automatic button and return it for use if is necesary.
-        /// </summary>
-        private Button CreateAutomaticOrManualTagButton(Tag tag)
-        {
-            //create the button
-            Button tagButton = CreateButtonTag(tag);
-            //add to tag
-            AddTag(tag, tagButton);
-            //scroll it
-            panelTags.ScrollControlIntoView(tagButton);
-            //create=>information used=>not have information now
-            panelTag.HaveInformation = false;
-            //return it
-            return tagButton;
-        }
+
+
         /// <summary>
         /// Delete functions when the form is closing.
         /// </summary>
@@ -987,34 +951,7 @@ namespace AZOR
                 mpvPersonalized.MpvPlayer.AutoPlay = true;
             }
         }
-        /// <summary>
-        /// When tick then reload the video.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TimerReload_Tick(object sender, EventArgs e)
-        {
-            //if in zero then when reload dont put time
-            if (mpvPersonalized.MpvPlayer.Position == TimeSpan.Zero)
-            {
-                InZero = true;
-                CurrentTimeSpan = TimeSpan.Zero;
-            }
-            else
-            {
-                InZero = false;
-            }
-            //check reverse play
-            if (MpvPersonalized.ReversePlaying)
-            {
-                MpvPersonalized.MpvPlayer.AutoPlay = false;
-            }
-            else
-                //set it to analysis and current
-                this.SetPauseOrPlayWhenRelaod();
-
-            this.AddVideo();
-        }
+       
         /// <summary>
         /// When the video is loaded set the timespan.
         /// </summary>
@@ -1278,7 +1215,7 @@ namespace AZOR
                     if (wasReversePlaying || mpvPersonalized.ReversePlaying)
                     {
                         //set button visible
-                        if (keyUsed == KeysUsed.ReverseSpeed || keyUsed == KeysUsed.AddSpeed)
+                        if (keyUsed == KeysUsed.ReverseSpeed || keyUsed == KeysUsed.AddSpeed||KeysUsed.MoveToEndPoint==keyUsed)
                         {
                             buttonPlay.Visible = false;
                             buttonPause.Visible = true;
@@ -1554,6 +1491,894 @@ namespace AZOR
                 if (arrayListProcessForDownloadVideo.Count == 0 && convertVideo)
                     ConvertVideoEvent();
         }
+        
+        /// <summary>
+        /// Set the time to analysis windows if is openned.
+        /// </summary>
+        private void SetAnalysisTimeWithLabel(Label label)
+        {
+            //check analysis video
+            if (this.winFormAnalysis.ReloadOne)
+            {
+                this.LoadNewVideo(winFormAnalysis.MpvPersonalized);
+            }
+            else if (winFormAnalysis.ReloadFour)
+            {
+                //load videos
+                for (int i = 0; i < winFormAnalysis.FourMpv.Length; i++)
+                {
+                    winFormAnalysis.FourMpv[i].MpvPlayer.Load(ChangeCameraUrl[i] as string, currentTimeSpan.ToString());
+                }
+            }
+            else if (winFormAnalysis.ReloadTwo)
+            {
+                //load videos
+                for (int i = 0; i < winFormAnalysis.TwoMainMpv.Length; i++)
+                {
+                    winFormAnalysis.TwoMainMpv[i].MpvPlayer.Load(winFormAnalysis.TwoMainMpv[i].PlayingMedia, currentTimeSpan.ToString());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Create and store the waiting animation.
+        /// </summary>
+        /// <param name="b"></param>
+        private void CreateAndStoreAnimation(Button b)
+        {
+            //if this button dont have the animation create it
+            if (!mapAnimation.ContainsKey(b))
+            {
+                //create
+                CircularProgressBar.CircularProgressBar newAnimation = ConstructorCPB(b,
+                    b.FlatAppearance.BorderColor);
+                //store
+                mapAnimation.Add(b, newAnimation);
+                //add to button
+                b.Controls.Add(newAnimation);
+                //add event
+                newAnimation.Click += TagManualButtonEvent;
+            }
+            //change button style
+            b.ForeColor = b.FlatAppearance.BorderColor;
+            b.Controls.Add(mapAnimation[b]);
+            //add the position
+            manualTagMap.Add(b, mpvPersonalized.MpvPlayer.Position);
+        }
+        /// <summary>
+        /// Create and return the progress bar.
+        /// </summary>
+        /// <returns></returns>
+        private CircularProgressBar.CircularProgressBar ConstructorCPB(Button b, Color color)
+        {
+            //create it
+            CircularProgressBar.CircularProgressBar c = new CircularProgressBar.CircularProgressBar();
+            //adjust it
+            c.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.Liner;
+            c.AnimationSpeed = 500;
+            c.BackColor = System.Drawing.Color.Transparent;
+            c.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            c.InnerColor = System.Drawing.Color.Transparent;
+            c.InnerMargin = 1;
+            c.InnerWidth = 1;
+            c.Size = new System.Drawing.Size(24, 24);
+            c.Location = new System.Drawing.Point(b.Width - c.Size.Width - 2, (b.Height - c.Height) / 2);
+            c.MarqueeAnimationSpeed = 2000;
+            if (color == Color.Black)
+                c.OuterColor = System.Drawing.Color.White;
+            else
+                c.OuterColor = System.Drawing.Color.Black;
+            c.OuterMargin = -2;
+            c.OuterWidth = 3;
+            c.ProgressColor = color;
+            c.ProgressWidth = 5;
+            c.StartAngle = 270;
+            c.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            c.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            c.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
+            c.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            c.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
+            c.Value = 68;
+            //return it
+            return c;
+        }
+
+        /// <summary>
+        /// Pass the key, to do event.
+        /// </summary>
+        /// <param name="k"></param>
+        public void AnalisysFormEvent(KeyEventArgs k)
+        {
+            ChangeCameraEvent(null, k);
+        }
+
+        #region timer events
+        /// <summary>
+        /// Change the label every second.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TimerRecording_Tick(object sender, EventArgs e)
+        {
+            this.labelRecordTime.Text = stopwatchVideoRecording.Elapsed.ToString(@"hh\:mm\:ss");
+        }
+        /// <summary>
+        /// Timer tick for increment progress bar.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TimerLoadingVideo_Tick(object sender, EventArgs e)
+        {
+            //increment
+            this.IncrementProgressBar();
+            //check if finished
+            if (this.progressBarLoadingVideo.Value == this.progressBarLoadingVideo.Maximum)
+            {
+                //stop the timer
+                timerLoadingVideo.Stop();
+                //wait the animation finish
+                timerEndProgressBar.Start();
+            }
+        }
+        /// <summary>
+        /// Add the increment to the progress bar.
+        /// </summary>
+        private void IncrementProgressBar()
+        {
+            //increment 1 the progress bar
+            this.progressBarLoadingVideo.Increment(1);
+            //try to clean
+            Application.DoEvents();
+        }
+        /// <summary>
+        /// End the progress bar and show the video
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TimerEndProgressBar_Tick(object sender, EventArgs e)
+        {
+            //load the video(add video to the list for play)
+            this.AddVideo();
+            //stop the timer
+            timerEndProgressBar.Stop();
+            //cameras button have the same function
+            this.labelSignal1.Click += new System.EventHandler(CameraButton_Click);
+            this.labelSignal2.Click += new System.EventHandler(CameraButton_Click);
+            this.labelSignal3.Click += new System.EventHandler(CameraButton_Click);
+            this.labelSignal4.Click += new System.EventHandler(CameraButton_Click);
+            //controladores teclado de control
+            this.KeyDown += ChangeCameraEvent;
+            this.KeyDown += StoreTimeEvent;
+            labelForDesactivate = labelSignal1;
+            labelSignal1.Enabled = false;
+            this.timerReload.Start();
+
+            //desactivate visble
+            progressBarLoadingVideo.Visible = false;
+            labelProgressBarLoading.Visible = false;
+
+            //refresh it
+            this.Invalidate();
+            this.Refresh();
+
+            //bring to front
+            mpvPictureBox.BringToFront();
+            mpvPictureBox.Show();
+        }
+        /// <summary>
+        /// When tick then reload the video.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TimerReload_Tick(object sender, EventArgs e)
+        {
+            //if in zero then when reload dont put time
+            if (mpvPersonalized.MpvPlayer.Position == TimeSpan.Zero)
+            {
+                InZero = true;
+                CurrentTimeSpan = TimeSpan.Zero;
+            }
+            else
+            {
+                InZero = false;
+            }
+            //check reverse play
+            if (MpvPersonalized.ReversePlaying)
+            {
+                MpvPersonalized.MpvPlayer.AutoPlay = false;
+            }
+            else
+                //set it to analysis and current
+                this.SetPauseOrPlayWhenRelaod();
+
+            this.AddVideo();
+        }
+        #endregion
+
+        #region winform minimize or resize event
+        /// <summary>
+        /// Save all locations in tag, all have the margin.
+        /// </summary>
+        private void SetTag(Control cons)
+        {
+            foreach (Control con in cons.Controls)
+            {
+                //save location separate by ;
+                con.Tag = con.Width + ":" + con.Height + ":" + con.Left + ":" + con.Top + ":" + con.Font.Size;
+                //if this controls have controls save it
+                if (con.Controls.Count > 0)
+                    SetTag(con);
+            }
+
+        }
+        /// <summary>
+        /// Resize the controlls with current windows size.
+        /// </summary>
+        /// <param name="newx"></param>
+        /// <param name="newy"></param>
+        /// <param name="cons"></param>
+        private void SetControls(float newx, float newy, Control cons)
+        {
+            try
+            {
+                //check no minimize
+                if (!(this.WindowState == FormWindowState.Minimized))
+                    //run all controls
+                    foreach (Control con in cons.Controls)
+                    {
+                        //dock style fill, not need to change
+                        if (!tableLayoutPanelTags.Controls.Contains(con))
+                        {
+                            string[] mytag = con.Tag.ToString().Split(new char[] { ':' });//get the date
+                            float a = System.Convert.ToSingle(mytag[0]) * newx;//calculate width with winforw 
+                            con.Width = (int)a;
+                            a = System.Convert.ToSingle(mytag[1]) * newy;///calculate height with winforw 
+                            con.Height = (int)(a);
+                            a = System.Convert.ToSingle(mytag[2]) * newx;//calculate left margin with winforw 
+                            con.Left = (int)(a);
+                            a = System.Convert.ToSingle(mytag[3]) * newy;//calculate up margin with winforw 
+                            con.Top = (int)(a);
+                            Single currentSize = System.Convert.ToSingle(mytag[4]) * newy;//resize the text
+                            con.Font = new Font(con.Font.Name, currentSize, con.Font.Style, con.Font.Unit);
+                            //if have chill controls
+                            if (con.Controls.Count > 0)
+                            {
+                                SetControls(newx, newy, con);
+                            }
+                        }
+                    }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
+        /// <summary>
+        /// Event when the winform is loaded.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void WinFormWithVideoPlayer_Load(object sender, EventArgs e)
+        {
+            currentWidht = this.Width;
+            currentHeight = this.Height;
+            SetTag(this);//save tag
+            this.Resize += WinForm_Resize;
+        }
+        /// <summary>
+        /// Resize when screen size change.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void WinForm_Resize(object sender, EventArgs e)
+        {
+            //calculate the new proportion and then change the size
+            float newx = (this.Width) / currentWidht;
+            float newy = (this.Height) / currentHeight;
+            SetControls(newx, newy, this);
+        }
+        #endregion
+
+        #region tablelayoutpanelclip event
+        /// <summary>
+        /// Delete one clip in the table.
+        /// </summary>
+        /// <param name="control"></param>
+        private void DeleteClipRowOnTable(Control control)
+        {
+            //get the row
+            int row = tableLayoutPanelClips.Controls.IndexOf(control) / 5;
+            //remove from arraylist
+            mapFullClipName.Remove((tableLayoutPanelClips.Controls[row * 5 + 2]) as Label);
+            //remove from all clip
+            mapAllClip.Remove((tableLayoutPanelClips.Controls[row * 5]) as CheckBox);
+            //remove it
+            this.tableLayoutPanelClips.Controls.Remove(tableLayoutPanelClips.Controls[row * 5 + 4]);
+            this.tableLayoutPanelClips.Controls.Remove(tableLayoutPanelClips.Controls[row * 5 + 3]);
+            this.tableLayoutPanelClips.Controls.Remove(tableLayoutPanelClips.Controls[row * 5 + 2]);
+            this.tableLayoutPanelClips.Controls.Remove(tableLayoutPanelClips.Controls[row * 5 + 1]);
+            this.tableLayoutPanelClips.Controls.Remove(tableLayoutPanelClips.Controls[row * 5]);
+            this.tableLayoutPanelClips.RowCount--;
+        }
+        /// <summary>
+        /// Thread export video clip from table.
+        /// </summary>
+        /// <param name="control"></param>
+        /// <param name="cont"></param>
+        private void ExportClipRowOnTable(Control control, int cont)
+        {
+            //get row
+            int row = tableLayoutPanelClips.Controls.IndexOf(control) / 5;
+            //get clip name
+            string clipName = tableLayoutPanelClips.Controls[row * 5 + 2].Text;
+            //get the times
+            TimeSpan startTime = TimeSpan.Parse(tableLayoutPanelClips.Controls[row * 5 + 3].Text);
+            TimeSpan endTime = TimeSpan.Parse(tableLayoutPanelClips.Controls[row * 5 + 4].Text);
+            //check times
+            if (endTime < startTime)
+            {
+                startTime = endTime;
+                endTime = TimeSpan.Parse(tableLayoutPanelClips.Controls[row * 5 + 4].Text);
+            }
+            //create new thread for export
+            Thread th = new Thread(() => ExportVideo(startTime.ToString(), endTime.ToString(), clipName, cont));
+            th.Start();
+        }
+        /// <summary>
+        /// Create process for export all video.
+        /// </summary>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        private void ExportVideo(string startTime, string endTime, string clipName, int cont)
+        {
+            Process process;
+            ProcessStartInfo info;
+            string strArg;
+            //for all checked export it
+            foreach (string s in ChangeCameraUrl)
+            {
+                //check fist if file have been exported or not
+                if (File.Exists(this.path + "\\Sources\\exported\\" + clipName + Path.GetFileName(s)))
+                {
+                    MessageBox.Show("Ya ha sido exportado:" + Path.GetFileName(s));
+                }
+                else
+                {
+                    //if process is dowloading
+                    if (s.Contains("\\temp\\"))
+                    {
+                        //create a copy, for export, after finish delete it, in temp cannot directly export
+                        process = new Process();
+                        info = new ProcessStartInfo();
+                        //new name aux video
+                        strArg = "-y -hide_banner " +
+                            "-i " + " \"" + s + "\" " +
+                            " -c copy " +
+                            "-f mp4 " +
+                            "\"" + s.Substring(0, s.Length - 4) + cont + "aux.mp4\" ";
+                        info.FileName = ffmpegtool;
+                        info.UseShellExecute = false;
+                        info.CreateNoWindow = true;
+                        info.Arguments = strArg;
+                        process.StartInfo = info;
+
+                        process.Start();
+                        //wait complete then convert
+                        process.WaitForExit();
+
+                        process = new Process();
+                        //info = new ProcessStartInfo();
+
+                        //command create video
+                        strArg = "-i " + " \"" + s.Substring(0, s.Length - 4) + cont + "aux.mp4\"" +
+                                " -c copy " +
+                                "-f mp4 " + "-ss " + startTime + " -t " + endTime +
+                                " \"" + this.path + "\\Sources\\exported\\" + clipName + Path.GetFileName(s) + "\"";
+                        info.Arguments = strArg;
+                        process.StartInfo = info;
+                        //start the process
+                        process.Start();
+
+                        //wait for exit then delete
+                        process.WaitForExit();
+                        //check
+                        if (File.Exists(s.Substring(0, s.Length - 4) + cont + "aux.mp4"))
+                            File.Delete(s.Substring(0, s.Length - 4) + cont + "aux.mp4");
+                    }
+                    else//if process completed
+                    {
+                        process = new Process();
+                        info = new ProcessStartInfo();
+
+                        //command create video
+                        strArg = "-i " + " \"" + s + "\"" +
+                                " -c copy " +
+                                "-f mp4 " + "-ss " + startTime + " -t " + endTime +
+                                " \"" + this.path + "\\Sources\\exported\\" + clipName + Path.GetFileName(s) + "\"";
+                        info.FileName = ffmpegtool;
+                        info.UseShellExecute = false;
+                        info.CreateNoWindow = true;
+                        info.Arguments = strArg;
+                        process.StartInfo = info;
+                        //start the process
+                        process.Start();
+                    }
+                }
+
+            }
+
+        }
+        /// <summary>
+        /// Store the content in the table.
+        /// </summary>
+        /// <param name="clip"></param>
+        private void StoreInTableLayoutPanelClips(Clip clip)
+        {
+
+            //create the content in the table
+            CheckBox checkBoxClip = new CheckBox();
+            checkBoxClip.AutoSize = false;
+            checkBoxClip.Text = "";
+            checkBoxClip.Dock = DockStyle.Fill;
+            Label clipName = CreateClipText(clip.TagName);
+            //create and adjust round
+            RoundPictureBox round = new RoundPictureBox(clip.MyColor);
+            round.Size = roundSize;
+            round.Dock = DockStyle.Bottom;
+
+            //create current time label
+            Label previous = CreateTimeLabel(clip.PreviousTime);
+            Label after = CreateTimeLabel(clip.LaterTime);
+            //set it
+            //after.Dock = DockStyle.Bottom;
+            //previous.Dock = DockStyle.Bottom;
+            //clipName.Dock = DockStyle.Bottom;
+            clipName.Margin = new Padding(0, 5, 0, 0);
+            after.Margin = new Padding(0, 5, 0, 0);
+            previous.Margin = new Padding(0, 5, 0, 0);
+
+            tableLayoutPanelClips.Controls.Add(checkBoxClip);
+            tableLayoutPanelClips.Controls.Add(round);
+            tableLayoutPanelClips.Controls.Add(clipName);
+            tableLayoutPanelClips.Controls.Add(previous);
+            tableLayoutPanelClips.Controls.Add(after);
+            tableLayoutPanelClips.RowCount++;
+            this.tableLayoutPanelClips.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+
+            round.Location = new Point(tableLayoutPanelClips.Controls[1].Width, tableLayoutPanelClips.Controls[1].Height / 2);
+            //scrol down
+            panelClipsSaved.ScrollControlIntoView(after);
+
+            //add event
+            tableLayoutPanelClips.Click += RightClickOnClipPanel;
+            clipName.Click += ClickInClipNameEvent;
+            checkBoxClip.CheckedChanged += CheckedBoxEvent;
+            checkBoxClip.MouseDown += RightClickOnClipPanel;//use mouse down for check right click
+            previous.Click += RightClickOnClipPanel;
+            clipName.Click += RightClickOnClipPanel;
+            clipName.MouseEnter += MouseOnClipNameForShowFullNameEvent;
+            after.Click += RightClickOnClipPanel;
+            round.Click += RightClickOnClipPanel;
+            //store it
+            mapAllClip.Add(checkBoxClip, clip);
+        }
+        /// <summary>
+        /// When clip name clicked, move to the previuous time.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ClickInClipNameEvent(object sender, EventArgs e)
+        {
+            //get label
+            Label labelClicked = sender as Label;
+            //get row
+            int row = tableLayoutPanelClips.Controls.IndexOf(labelClicked) / 5;
+            //save label clicked
+            labelClicked = tableLayoutPanelClips.Controls[row * 5 + 3] as Label;
+            MouseEventArgs mouseEventArgs = e as MouseEventArgs;
+            if (labelClicked != null && mouseEventArgs.Button == MouseButtons.Left)
+            {
+                TimeSpan.TryParse(labelClicked.Text, out TimeSpan timeParsed);
+                if (timeParsed != null && timeParsed >= TimeSpan.Zero && timeParsed < mpvPersonalized.MpvPlayer.Duration)
+                {
+                    //if not right click and clicked, change current video time
+                    this.mpvPersonalized.MpvPlayer.Position = TimeSpan.Parse(labelClicked.Text);
+                    SetAnalysisTime();
+                }
+            }
+        }
+        /// <summary>
+        /// Show the full name when the mouse on the clip name.
+        /// </summary>
+        private void MouseOnClipNameForShowFullNameEvent(object sender, EventArgs e)
+        {
+            //if is label, show the tooltip
+            if (sender is Label label)
+                tip.SetToolTip(label, mapFullClipName[label]);
+        }
+        /// <summary>
+        /// When checked set all checkbox to check,else to not check.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckBoxAllClips_CheckedChanged(object sender, EventArgs e)
+        {
+            Boolean state = false;
+            //check
+            if (checkBoxAllClips.Checked)
+                state = true;
+            //run all controls
+            foreach (object o in tableLayoutPanelClips.Controls)
+            {
+                CheckBox c = o as CheckBox;
+                if (c != null)
+                    c.Checked = state;
+            }
+        }
+        /// <summary>
+        /// When right click show the menu.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RightClickOnClipPanel(object sender, EventArgs e)
+        {
+            MouseEventArgs mouseEventArgs = e as MouseEventArgs;
+            //Check right click 
+            if (mouseEventArgs.Button == MouseButtons.Right)
+            {
+                lastRowClicked = sender as Control;
+                this.contextMenuRightClickOnTime.Show(Cursor.Position);
+            }
+        }
+        /// <summary>
+        /// When opening, check if can delete or not.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ContextMenuRightClickOnTime_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //if have something to delete or export enable it
+            if (tableLayoutPanelClips.Controls.Count == 0)
+            {
+                eliminarToolStripMenuItem.Enabled = false;
+                exportarToolStripMenuItem.Enabled = false;
+            }
+            else
+            {
+                eliminarToolStripMenuItem.Enabled = true;
+                exportarToolStripMenuItem.Enabled = true;
+            }
+        }
+        /// <summary>
+        /// Store if checked, else remove.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckedBoxEvent(object sender, EventArgs e)
+        {
+            //add to arraylist when checked
+            CheckBox c = sender as CheckBox;
+            if (c.Checked)
+            {
+                checkedClipListBox.Add(c);
+            }
+            else
+                checkedClipListBox.Remove(c);
+        }
+        /// <summary>
+        /// Event when the label time is clicked, show short menu or move the time.
+        /// </summary>
+        /// <param name="sender">Label clicked.</param>
+        /// <param name="eventArgs">Event with arguments.</param>
+        private void ClickOnTimeLabel(object sender, EventArgs eventArgs)
+        {
+            Label labelClicked = sender as Label;
+            MouseEventArgs mouseEventArgs = eventArgs as MouseEventArgs;
+            //Check right click 
+            if (mouseEventArgs.Button == MouseButtons.Right)
+            {
+                // this.contextMenuRightClickOnTime.Show(Cursor.Position);
+                lastRowClicked = labelClicked;
+            }
+            else if (TimeSpan.Parse(labelClicked.Text) >= TimeSpan.Zero && TimeSpan.Parse(labelClicked.Text) < mpvPersonalized.MpvPlayer.Duration)
+            {
+                //if not right click and clicked, change current video time
+                this.mpvPersonalized.MpvPlayer.Position = TimeSpan.Parse(labelClicked.Text);
+                //SetAnalysisTimeWithLabel(labelClicked);
+                SetAnalysisTime();
+            }
+        }
+        #endregion
+
+        #region Tag and clip control methods
+        /// <summary>
+        /// Add tag to button.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="button"></param>
+        private void AddTag(Tag tag, Button button)
+        {
+            //save the tag
+            tagMap.Add(button, tag);
+            if (tag.TagMode.IsAutomatic)
+                //add click event
+                button.Click += TagAutomaticButtonEvent;
+            else
+            {
+                button.Click += TagManualButtonEvent;
+            }
+            //add the button
+            tableLayoutPanelTags.Controls.Add(button);
+            //check the size
+            if (tableLayoutPanelTags.Controls.Count % 2 == 0)
+            {
+                tableLayoutPanelTags.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
+                tableLayoutPanelTags.RowCount++;
+            }
+
+        }
+        /// <summary>
+        /// Manual tag button event.
+        /// </summary>
+        private void TagManualButtonEvent(object sender, EventArgs e)
+        {
+            //check media loaded
+            if (mpvPersonalized.MpvPlayer.IsMediaLoaded)
+            {
+                //get the button
+                Button b = sender as Button;
+                //get the progressbar
+                CircularProgressBar.CircularProgressBar c = sender as CircularProgressBar.CircularProgressBar;
+                Tag tag = null;
+                //maybe the clicked is progress bar, and not the button
+                //if is button
+                if (b != null && manualTagMap.ContainsKey(b))
+                    //get the tag
+                    tag = tagMap[b];
+                else if (c != null)//if is progress bar
+                {
+                    //get the tag
+                    b = c.Parent as Button;
+                    tag = tagMap[b];
+                }
+                if (tag != null)
+                {
+                    //crate new clip
+                    Clip clip = CreateManualClip(tag, mpvPersonalized.MpvPlayer.Position, b);
+                    clip.MyColor = b.FlatAppearance.BorderColor;
+                    StoreInTableLayoutPanelClips(clip);
+                    //clean it
+                    manualTagMap.Remove(b);
+                    //remove the animation
+                    b.Controls.Remove(mapAnimation[b]);
+                    //change the color and draw it 
+                    b.ForeColor = Color.White;
+                }
+                else if (b != null)
+                {
+                    CreateAndStoreAnimation(b);
+                }
+                //draw it                
+                b.Invalidate();
+            }
+
+        }
+        /// <summary>
+        /// Create the manual clip.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="postTimeSpan"></param>
+        /// <param name="b"></param>
+        /// <returns>Return the clip created.</returns>
+        private Clip CreateManualClip(Tag tag, TimeSpan postTimeSpan, Button b)
+        {
+            //tagcount+1
+            tag.TagCount++;
+            //return the clip
+            return new Clip(manualTagMap[b].ToString((@"hh\:mm\:ss\.ff")),
+                postTimeSpan.ToString((@"hh\:mm\:ss\.ff")), tag.TagName.ToString() + " " + tag.TagCount);
+        }
+        /// <summary>
+        /// Tag button event, when the tag is pressed create clip.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TagAutomaticButtonEvent(object sender, EventArgs e)
+        {
+            if (mpvPersonalized.MpvPlayer.IsMediaLoaded)
+            {
+                Button buttonTag = sender as Button;
+                //take the tag
+                Tag tag = tagMap[buttonTag];
+                //crate new clip
+                Clip clip = CreateAutomaticClip(tag);
+                //save color
+                clip.MyColor = buttonTag.FlatAppearance.BorderColor;
+                //store it
+                StoreInTableLayoutPanelClips(clip);
+            }
+        }
+        /// <summary>
+        /// Load tags from the path selected.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenFileDialogTagPath_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //try catch for check the information
+            try
+            {
+                List<Tag> listTags = JsonConvert.DeserializeObject<List<Tag>>
+                    (File.ReadAllText(openFileDialogTagPath.FileName));
+                foreach (Tag tag in listTags)
+                {
+                    //check it
+                    if (tag.CheckTag())
+                        CreateAutomaticOrManualTagButton(tag);
+                    else
+                        //throw exception
+                        throw new Exception();
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Not " + tagFileName + " file");
+            }
+
+        }
+        /// <summary>
+        /// Save tag in the path selected.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveFileDialogTag_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //if have tag to save, save it
+            if (tagMap.Count != 0)
+            {
+                //save only the tag, the button only have the event handler, tag have all the information
+                StreamWriter sw = File.CreateText(saveFileDialogTag.FileName);
+                sw.Write(JsonConvert.SerializeObject(tagMap.Values));
+                //close it
+                sw.Close();
+            }
+            else
+            {
+                //else show message
+                MessageBox.Show("No hay tags");
+            }
+        }
+        /// <summary>
+        /// Create the tag button.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        private Button CreateButtonTag(Tag tag)
+        {
+            //create new button
+            Button buttonTag = new Button();
+            //adjust it
+            buttonTag.Text = tag.TagName;//set the tag name
+            buttonTag.TextAlign = ContentAlignment.MiddleLeft;//text start in left
+            buttonTag.Padding = new Padding(0, 0, 40, 0);
+            buttonTag.FlatAppearance.BorderSize = 1;//border size
+            buttonTag.FlatStyle = System.Windows.Forms.FlatStyle.Flat;//transparent background
+            buttonTag.FlatAppearance.BorderColor = tag.TagColor;//border colour
+            buttonTag.Dock = DockStyle.Fill;//size
+
+            return buttonTag;
+
+        }
+        /// <summary>
+        /// Save tag in default path.
+        /// </summary>
+        private void SaveTagInDefaultPath()
+        {
+            if (tagMap.Count != 0)
+            {
+                //save only the tag, the button only have the event handler, tag have all the information
+                StreamWriter sw = File.CreateText(pathStoreTagAndClips + "\\data\\" + tagFileName);
+                //encrypt it and save it
+                sw.Write(AES128.Encrypt(JsonConvert.SerializeObject(tagMap.Values)));
+                //close it
+                sw.Close();
+            }
+        }
+        /// <summary>
+        /// Load tag from default path.
+        /// </summary>
+        private void LoadTagFromDefaultPath()
+        {
+            //if exist tags load it
+            if (File.Exists(pathStoreTagAndClips + "\\data\\" + tagFileName))
+            {
+                List<Tag> listTags = JsonConvert.DeserializeObject<List<Tag>>
+                    (AES128.Decrypt(File.ReadAllText(pathStoreTagAndClips + "\\data\\" + tagFileName)));
+                foreach (Tag tag in listTags)
+                {
+                    CreateAutomaticOrManualTagButton(tag);
+                }
+            }
+        }
+        /// <summary>
+        /// Crete or not the button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CreateOrNotButtonTag(object sender, EventArgs e)
+        {
+            //when panel tag visible pause the layout
+            if (panelTag.Visible)
+            {
+                this.SuspendLayout();
+            }
+            else
+            {
+                this.ResumeLayout();
+            }
+            //check have information or not for create tag button
+            if (panelTag.HaveInformation)
+            {
+                CreateAutomaticOrManualTagButton(panelTag.NewTagInfo);
+            }
+        }
+        /// <summary>
+        /// Create the automatic button and return it for use if is necesary.
+        /// </summary>
+        private Button CreateAutomaticOrManualTagButton(Tag tag)
+        {
+            //create the button
+            Button tagButton = CreateButtonTag(tag);
+            //add to tag
+            AddTag(tag, tagButton);
+            //scroll it
+            panelTags.ScrollControlIntoView(tagButton);
+            //create=>information used=>not have information now
+            panelTag.HaveInformation = false;
+            //return it
+            return tagButton;
+        }
+        /// <summary>
+        /// Create the label with the new clip name.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        private Label CreateClipText(string text)
+        {
+            Label newLabel = new Label();
+            newLabel.AutoSize = false;
+            String showText = "";
+            if (text.Length > LIMIT_CLIP_NAME)
+            {
+                //add ... for the text that not show
+                showText += text.Substring(0, 7) + "..." + text.Substring(text.Length - 7);
+            }
+            else
+                showText += text;
+            //set the text
+            newLabel.Text = showText;
+            mapFullClipName.Add(newLabel, text);
+            //add dock
+            newLabel.Dock = DockStyle.Bottom;
+            return newLabel;
+        }
+        /// <summary>
+        /// Create clip with tag information.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
+        private Clip CreateAutomaticClip(Tag tag)
+        {
+            TimeSpan currentTime = mpvPersonalized.MpvPlayer.Position;
+            //tagcount+1
+            tag.TagCount++;
+            //return the clip
+            return new Clip(currentTime.Subtract(tag.PreviousTime).ToString((@"hh\:mm\:ss\.ff")),
+                currentTime.Add(tag.LaterTimer).ToString((@"hh\:mm\:ss\.ff")), tag.TagName.ToString() + " " + tag.TagCount);
+        }
+        #endregion
+
+        #region general button click in form
         /// <summary>
         /// Save button click event.
         /// </summary>
@@ -1678,863 +2503,6 @@ namespace AZOR
             ProcessCmdKey(ref GlobalMessage, MpvPersonalized.NextFrame);
         }
         /// <summary>
-        /// Event when the label time is clicked, show short menu or move the time.
-        /// </summary>
-        /// <param name="sender">Label clicked.</param>
-        /// <param name="eventArgs">Event with arguments.</param>
-        private void ClickOnTimeLabel(object sender, EventArgs eventArgs)
-        {
-            Label labelClicked = sender as Label;
-            MouseEventArgs mouseEventArgs = eventArgs as MouseEventArgs;
-            //Check right click 
-            if (mouseEventArgs.Button == MouseButtons.Right)
-            {
-                // this.contextMenuRightClickOnTime.Show(Cursor.Position);
-                lastRowClicked = labelClicked;
-            }
-            else if (TimeSpan.Parse(labelClicked.Text) >= TimeSpan.Zero && TimeSpan.Parse(labelClicked.Text) < mpvPersonalized.MpvPlayer.Duration)
-            {
-                //if not right click and clicked, change current video time
-                this.mpvPersonalized.MpvPlayer.Position = TimeSpan.Parse(labelClicked.Text);
-                //SetAnalysisTimeWithLabel(labelClicked);
-                SetAnalysisTime();
-            }
-        }
-        /// <summary>
-        /// Set the time to analysis windows if is openned.
-        /// </summary>
-        private void SetAnalysisTimeWithLabel(Label label)
-        {
-            //check analysis video
-            if (this.winFormAnalysis.ReloadOne)
-            {
-                this.LoadNewVideo(winFormAnalysis.MpvPersonalized);
-            }
-            else if (winFormAnalysis.ReloadFour)
-            {
-                //load videos
-                for (int i = 0; i < winFormAnalysis.FourMpv.Length; i++)
-                {
-                    winFormAnalysis.FourMpv[i].MpvPlayer.Load(ChangeCameraUrl[i] as string, currentTimeSpan.ToString());
-                }
-            }
-            else if (winFormAnalysis.ReloadTwo)
-            {
-                //load videos
-                for (int i = 0; i < winFormAnalysis.TwoMainMpv.Length; i++)
-                {
-                    winFormAnalysis.TwoMainMpv[i].MpvPlayer.Load(winFormAnalysis.TwoMainMpv[i].PlayingMedia, currentTimeSpan.ToString());
-                }
-            }
-        }
-        /// <summary>
-        /// Delete the time if is clicked.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DeleteClipRowOnTable(lastRowClicked);
-            /*//if multiple selected
-            if (checkedClipListBox.Count != 0)
-            {
-                foreach (CheckBox c in checkedClipListBox)
-                {
-                    deleteClipRowOnTable(c);
-                }
-                checkedClipListBox.Clear();
-                checkBoxAllClips.Checked = false;
-            }
-            else//if only one selected
-            {
-                deleteClipRowOnTable(lastRowClicked);
-            }*/
-        }
-        /// <summary>
-        /// Delete one clip in the table.
-        /// </summary>
-        /// <param name="control"></param>
-        private void DeleteClipRowOnTable(Control control)
-        {
-            //get the row
-            int row = tableLayoutPanelClips.Controls.IndexOf(control) / 5;
-            //remove from arraylist
-            mapFullClipName.Remove((tableLayoutPanelClips.Controls[row * 5 + 2]) as Label);
-            //remove from all clip
-            mapAllClip.Remove((tableLayoutPanelClips.Controls[row * 5]) as CheckBox);
-            //remove it
-            this.tableLayoutPanelClips.Controls.Remove(tableLayoutPanelClips.Controls[row * 5 + 4]);
-            this.tableLayoutPanelClips.Controls.Remove(tableLayoutPanelClips.Controls[row * 5 + 3]);
-            this.tableLayoutPanelClips.Controls.Remove(tableLayoutPanelClips.Controls[row * 5 + 2]);
-            this.tableLayoutPanelClips.Controls.Remove(tableLayoutPanelClips.Controls[row * 5 + 1]);
-            this.tableLayoutPanelClips.Controls.Remove(tableLayoutPanelClips.Controls[row * 5]);
-            this.tableLayoutPanelClips.RowCount--;
-        }
-        /// <summary>
-        /// Move the video backward.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ButtonBackward_Click(object sender, EventArgs e)
-        {
-            ProcessCmdKey(ref GlobalMessage, MpvPersonalized.MoveBackwardKeys);
-        }
-        /// <summary>
-        /// Move forward the video whem cliked.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ButtonForward_Click(object sender, EventArgs e)
-        {
-            ProcessCmdKey(ref GlobalMessage, MpvPersonalized.MoveForwardKeys);
-        }
-        /// <summary>
-        /// Change the label every second.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TimerRecording_Tick(object sender, EventArgs e)
-        {
-            this.labelRecordTime.Text = stopwatchVideoRecording.Elapsed.ToString(@"hh\:mm\:ss");
-        }
-        /// <summary>
-        /// Timer tick for increment progress bar.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TimerLoadingVideo_Tick(object sender, EventArgs e)
-        {
-            //increment
-            this.IncrementProgressBar();
-            //check if finished
-            if (this.progressBarLoadingVideo.Value == this.progressBarLoadingVideo.Maximum)
-            {
-                //stop the timer
-                timerLoadingVideo.Stop();
-                //wait the animation finish
-                timerEndProgressBar.Start();
-            }
-        }
-        /// <summary>
-        /// Add the increment to the progress bar.
-        /// </summary>
-        private void IncrementProgressBar()
-        {
-            //increment 1 the progress bar
-            this.progressBarLoadingVideo.Increment(1);
-            //try to clean
-            Application.DoEvents();
-        }
-        /// <summary>
-        /// End the progress bar and show the video
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TimerEndProgressBar_Tick(object sender, EventArgs e)
-        {
-            //load the video(add video to the list for play)
-            this.AddVideo();
-            //stop the timer
-            timerEndProgressBar.Stop();
-            //cameras button have the same function
-            this.labelSignal1.Click += new System.EventHandler(CameraButton_Click);
-            this.labelSignal2.Click += new System.EventHandler(CameraButton_Click);
-            this.labelSignal3.Click += new System.EventHandler(CameraButton_Click);
-            this.labelSignal4.Click += new System.EventHandler(CameraButton_Click);
-            //controladores teclado de control
-            this.KeyDown += ChangeCameraEvent;
-            this.KeyDown += StoreTimeEvent;
-            labelForDesactivate = labelSignal1;
-            labelSignal1.Enabled = false;
-            this.timerReload.Start();
-
-            //desactivate visble
-            progressBarLoadingVideo.Visible = false;
-            labelProgressBarLoading.Visible = false;
-
-            //refresh it
-            this.Invalidate();
-            this.Refresh();
-
-            //bring to front
-            mpvPictureBox.BringToFront();
-            mpvPictureBox.Show();
-        }
-
-        /// <summary>
-        /// Save all locations in tag, all have the margin.
-        /// </summary>
-        private void SetTag(Control cons)
-        {
-            foreach (Control con in cons.Controls)
-            {
-                //save location separate by ;
-                con.Tag = con.Width + ":" + con.Height + ":" + con.Left + ":" + con.Top + ":" + con.Font.Size;
-                //if this controls have controls save it
-                if (con.Controls.Count > 0)
-                    SetTag(con);
-            }
-
-        }
-        /// <summary>
-        /// Resize the controlls with current windows size.
-        /// </summary>
-        /// <param name="newx"></param>
-        /// <param name="newy"></param>
-        /// <param name="cons"></param>
-        private void SetControls(float newx, float newy, Control cons)
-        {
-            try
-            {
-                //check no minimize
-                if (!(this.WindowState == FormWindowState.Minimized))
-                    //run all controls
-                    foreach (Control con in cons.Controls)
-                    {
-                        //dock style fill, not need to change
-                        if (!tableLayoutPanelTags.Controls.Contains(con))
-                        {
-                            string[] mytag = con.Tag.ToString().Split(new char[] { ':' });//get the date
-                            float a = System.Convert.ToSingle(mytag[0]) * newx;//calculate width with winforw 
-                            con.Width = (int)a;
-                            a = System.Convert.ToSingle(mytag[1]) * newy;///calculate height with winforw 
-                            con.Height = (int)(a);
-                            a = System.Convert.ToSingle(mytag[2]) * newx;//calculate left margin with winforw 
-                            con.Left = (int)(a);
-                            a = System.Convert.ToSingle(mytag[3]) * newy;//calculate up margin with winforw 
-                            con.Top = (int)(a);
-                            Single currentSize = System.Convert.ToSingle(mytag[4]) * newy;//resize the text
-                            con.Font = new Font(con.Font.Name, currentSize, con.Font.Style, con.Font.Unit);
-                            //if have chill controls
-                            if (con.Controls.Count > 0)
-                            {
-                                SetControls(newx, newy, con);
-                            }
-                        }
-                    }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-            }
-        }
-        /// <summary>
-        /// Event when the winform is loaded.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void WinFormWithVideoPlayer_Load(object sender, EventArgs e)
-        {
-            currentWidht = this.Width;
-            currentHeight = this.Height;
-            SetTag(this);//save tag
-            this.Resize += WinForm_Resize;
-        }
-        /// <summary>
-        /// Resize when screen size change.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void WinForm_Resize(object sender, EventArgs e)
-        {
-            //calculate the new proportion and then change the size
-            float newx = (this.Width) / currentWidht;
-            float newy = (this.Height) / currentHeight;
-            SetControls(newx, newy, this);
-        }
-        /// <summary>
-        /// Add tag to button.
-        /// </summary>
-        /// <param name="tag"></param>
-        /// <param name="button"></param>
-        private void AddTag(Tag tag, Button button)
-        {
-            //save the tag
-            tagMap.Add(button, tag);
-            if (tag.TagMode.IsAutomatic)
-                //add click event
-                button.Click += TagAutomaticButtonEvent;
-            else
-            {
-                button.Click += TagManualButtonEvent;
-            }
-            //add the button
-            tableLayoutPanelTags.Controls.Add(button);
-            //check the size
-            if (tableLayoutPanelTags.Controls.Count % 2 == 0)
-            {
-                tableLayoutPanelTags.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
-                tableLayoutPanelTags.RowCount++;
-            }
-
-        }
-        /// <summary>
-        /// Manual tag button event.
-        /// </summary>
-        private void TagManualButtonEvent(object sender, EventArgs e)
-        {
-            //check media loaded
-            if (mpvPersonalized.MpvPlayer.IsMediaLoaded)
-            {
-                //get the button
-                Button b = sender as Button;
-                //get the progressbar
-                CircularProgressBar.CircularProgressBar c = sender as CircularProgressBar.CircularProgressBar;
-                Tag tag = null;
-                //maybe the clicked is progress bar, and not the button
-                //if is button
-                if (b != null && manualTagMap.ContainsKey(b))
-                    //get the tag
-                    tag = tagMap[b];
-                else if (c != null)//if is progress bar
-                {
-                    //get the tag
-                    b = c.Parent as Button;
-                    tag = tagMap[b];
-                }
-                if (tag != null)
-                {
-                    //crate new clip
-                    Clip clip = CreateManualClip(tag, mpvPersonalized.MpvPlayer.Position, b);
-                    clip.MyColor = b.FlatAppearance.BorderColor;
-                    StoreInTableLayoutPanelClips(clip);
-                    //clean it
-                    manualTagMap.Remove(b);
-                    //remove the animation
-                    b.Controls.Remove(mapAnimation[b]);
-                    //change the color and draw it 
-                    b.ForeColor = Color.White;
-                }
-                else if (b != null)
-                {
-                    CreateAndStoreAnimation(b);
-                }
-                //draw it                
-                b.Invalidate();
-            }
-
-        }
-        /// <summary>
-        /// Create and store the waiting animation.
-        /// </summary>
-        /// <param name="b"></param>
-        private void CreateAndStoreAnimation(Button b)
-        {
-            //if this button dont have the animation create it
-            if (!mapAnimation.ContainsKey(b))
-            {
-                //create
-                CircularProgressBar.CircularProgressBar newAnimation = ConstructorCPB(b,
-                    b.FlatAppearance.BorderColor);
-                //store
-                mapAnimation.Add(b, newAnimation);
-                //add to button
-                b.Controls.Add(newAnimation);
-                //add event
-                newAnimation.Click += TagManualButtonEvent;
-            }
-            //change button style
-            b.ForeColor = b.FlatAppearance.BorderColor;
-            b.Controls.Add(mapAnimation[b]);
-            //add the position
-            manualTagMap.Add(b, mpvPersonalized.MpvPlayer.Position);
-        }
-        /// <summary>
-        /// Create and return the progress bar.
-        /// </summary>
-        /// <returns></returns>
-        private CircularProgressBar.CircularProgressBar ConstructorCPB(Button b, Color color)
-        {
-            //create it
-            CircularProgressBar.CircularProgressBar c = new CircularProgressBar.CircularProgressBar();
-            //adjust it
-            c.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.Liner;
-            c.AnimationSpeed = 500;
-            c.BackColor = System.Drawing.Color.Transparent;
-            c.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            c.InnerColor = System.Drawing.Color.Transparent;
-            c.InnerMargin = 1;
-            c.InnerWidth = 1;
-            c.Size = new System.Drawing.Size(24, 24);
-            c.Location = new System.Drawing.Point(b.Width - c.Size.Width - 2, (b.Height - c.Height) / 2);
-            c.MarqueeAnimationSpeed = 2000;
-            if (color == Color.Black)
-                c.OuterColor = System.Drawing.Color.White;
-            else
-                c.OuterColor = System.Drawing.Color.Black;
-            c.OuterMargin = -2;
-            c.OuterWidth = 3;
-            c.ProgressColor = color;
-            c.ProgressWidth = 5;
-            c.StartAngle = 270;
-            c.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            c.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
-            c.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
-            c.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
-            c.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
-            c.Value = 68;
-            //return it
-            return c;
-        }
-        /// <summary>
-        /// Create the manual clip.
-        /// </summary>
-        /// <param name="tag"></param>
-        /// <param name="postTimeSpan"></param>
-        /// <param name="b"></param>
-        /// <returns>Return the clip created.</returns>
-        private Clip CreateManualClip(Tag tag, TimeSpan postTimeSpan, Button b)
-        {
-            //tagcount+1
-            tag.TagCount++;
-            //return the clip
-            return new Clip(manualTagMap[b].ToString((@"hh\:mm\:ss\.ff")),
-                postTimeSpan.ToString((@"hh\:mm\:ss\.ff")), tag.TagName.ToString() + " " + tag.TagCount);
-        }
-        /// <summary>
-        /// Tag button event, when the tag is pressed create clip.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TagAutomaticButtonEvent(object sender, EventArgs e)
-        {
-            if (mpvPersonalized.MpvPlayer.IsMediaLoaded)
-            {
-                Button buttonTag = sender as Button;
-                //take the tag
-                Tag tag = tagMap[buttonTag];
-                //crate new clip
-                Clip clip = CreateAutomaticClip(tag);
-                //save color
-                clip.MyColor = buttonTag.FlatAppearance.BorderColor;
-                //store it
-                StoreInTableLayoutPanelClips(clip);
-            }
-        }
-        /// <summary>
-        /// Store the content in the table.
-        /// </summary>
-        /// <param name="clip"></param>
-        private void StoreInTableLayoutPanelClips(Clip clip)
-        {
-
-            //create the content in the table
-            CheckBox checkBoxClip = new CheckBox();
-            checkBoxClip.AutoSize = false;
-            checkBoxClip.Text = "";
-            checkBoxClip.Dock = DockStyle.Fill;
-            Label clipName = CreateClipText(clip.TagName);
-            //create and adjust round
-            RoundPictureBox round = new RoundPictureBox(clip.MyColor);
-            round.Size = roundSize;
-            round.Dock = DockStyle.Bottom;
-
-            //create current time label
-            Label previous = CreateTimeLabel(clip.PreviousTime);
-            Label after = CreateTimeLabel(clip.LaterTime);
-            //set it
-            //after.Dock = DockStyle.Bottom;
-            //previous.Dock = DockStyle.Bottom;
-            //clipName.Dock = DockStyle.Bottom;
-            clipName.Margin = new Padding(0, 5, 0, 0);
-            after.Margin = new Padding(0, 5, 0, 0);
-            previous.Margin = new Padding(0, 5, 0, 0);
-
-            tableLayoutPanelClips.Controls.Add(checkBoxClip);
-            tableLayoutPanelClips.Controls.Add(round);
-            tableLayoutPanelClips.Controls.Add(clipName);
-            tableLayoutPanelClips.Controls.Add(previous);
-            tableLayoutPanelClips.Controls.Add(after);
-            tableLayoutPanelClips.RowCount++;
-            this.tableLayoutPanelClips.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-
-            round.Location = new Point(tableLayoutPanelClips.Controls[1].Width, tableLayoutPanelClips.Controls[1].Height / 2);
-            //scrol down
-            panelClipsSaved.ScrollControlIntoView(after);
-
-            //add event
-            tableLayoutPanelClips.Click += RightClickOnClipPanel;
-            clipName.Click += ClickInClipNameEvent;
-            checkBoxClip.CheckedChanged += CheckedBoxEvent;
-            checkBoxClip.MouseDown += RightClickOnClipPanel;//use mouse down for check right click
-            previous.Click += RightClickOnClipPanel;
-            clipName.Click += RightClickOnClipPanel;
-            clipName.MouseEnter += MouseOnClipNameForShowFullNameEvent;
-            after.Click += RightClickOnClipPanel;
-            round.Click += RightClickOnClipPanel;
-            //store it
-            mapAllClip.Add(checkBoxClip, clip);
-        }
-        /// <summary>
-        /// When clip name clicked, move to the previuous time.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ClickInClipNameEvent(object sender, EventArgs e)
-        {
-            //get label
-            Label labelClicked = sender as Label;
-            //get row
-            int row = tableLayoutPanelClips.Controls.IndexOf(labelClicked) / 5;
-            //save label clicked
-            labelClicked = tableLayoutPanelClips.Controls[row * 5 + 3] as Label;
-            MouseEventArgs mouseEventArgs = e as MouseEventArgs;
-            if (labelClicked != null && mouseEventArgs.Button == MouseButtons.Left)
-            {
-                TimeSpan.TryParse(labelClicked.Text, out TimeSpan timeParsed);
-                if (timeParsed != null && timeParsed >= TimeSpan.Zero && timeParsed < mpvPersonalized.MpvPlayer.Duration)
-                {
-                    //if not right click and clicked, change current video time
-                    this.mpvPersonalized.MpvPlayer.Position = TimeSpan.Parse(labelClicked.Text);
-                    SetAnalysisTime();
-                }
-            }
-        }
-        /// <summary>
-        /// Show the full name when the mouse on the clip name.
-        /// </summary>
-        private void MouseOnClipNameForShowFullNameEvent(object sender, EventArgs e)
-        {
-            //if is label, show the tooltip
-            if (sender is Label label)
-                tip.SetToolTip(label, mapFullClipName[label]);
-        }
-        /// <summary>
-        /// Create the label with the new clip name.
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        private Label CreateClipText(string text)
-        {
-            Label newLabel = new Label();
-            newLabel.AutoSize = false;
-            String showText = "";
-            if (text.Length > LIMIT_CLIP_NAME)
-            {
-                //add ... for the text that not show
-                showText += text.Substring(0, 7) + "..." + text.Substring(text.Length - 7);
-            }
-            else
-                showText += text;
-            //set the text
-            newLabel.Text = showText;
-            mapFullClipName.Add(newLabel, text);
-            //add dock
-            newLabel.Dock = DockStyle.Bottom;
-            return newLabel;
-        }
-        /// <summary>
-        /// Create clip with tag information.
-        /// </summary>
-        /// <param name="tag"></param>
-        /// <returns></returns>
-        private Clip CreateAutomaticClip(Tag tag)
-        {
-            TimeSpan currentTime = mpvPersonalized.MpvPlayer.Position;
-            //tagcount+1
-            tag.TagCount++;
-            //return the clip
-            return new Clip(currentTime.Subtract(tag.PreviousTime).ToString((@"hh\:mm\:ss\.ff")),
-                currentTime.Add(tag.LaterTimer).ToString((@"hh\:mm\:ss\.ff")), tag.TagName.ToString() + " " + tag.TagCount);
-        }
-        /// <summary>
-        /// When checked set all checkbox to check,else to not check.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CheckBoxAllClips_CheckedChanged(object sender, EventArgs e)
-        {
-            Boolean state = false;
-            //check
-            if (checkBoxAllClips.Checked)
-                state = true;
-            //run all controls
-            foreach (object o in tableLayoutPanelClips.Controls)
-            {
-                CheckBox c = o as CheckBox;
-                if (c != null)
-                    c.Checked = state;
-            }
-        }
-        /// <summary>
-        /// When right click show the menu.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RightClickOnClipPanel(object sender, EventArgs e)
-        {
-            MouseEventArgs mouseEventArgs = e as MouseEventArgs;
-            //Check right click 
-            if (mouseEventArgs.Button == MouseButtons.Right)
-            {
-                lastRowClicked = sender as Control;
-                this.contextMenuRightClickOnTime.Show(Cursor.Position);
-            }
-        }
-        /// <summary>
-        /// When opening, check if can delete or not.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ContextMenuRightClickOnTime_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            //if have something to delete or export enable it
-            if (tableLayoutPanelClips.Controls.Count == 0)
-            {
-                eliminarToolStripMenuItem.Enabled = false;
-                exportarToolStripMenuItem.Enabled = false;
-            }
-            else
-            {
-                eliminarToolStripMenuItem.Enabled = true;
-                exportarToolStripMenuItem.Enabled = true;
-            }
-        }
-        /// <summary>
-        /// Store if checked, else remove.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CheckedBoxEvent(object sender, EventArgs e)
-        {
-            //add to arraylist when checked
-            CheckBox c = sender as CheckBox;
-            if (c.Checked)
-            {
-                checkedClipListBox.Add(c);
-            }
-            else
-                checkedClipListBox.Remove(c);
-        }
-        /// <summary>
-        /// Set visible the panel create tag.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ButtonNewTag_Click(object sender, EventArgs e)
-        {
-            //lock the panel and show it
-            lock (panelTag)
-            {
-                if (!panelTag.Visible)
-                {
-                    //adjust start position
-                    panelTag.StartPosition = FormStartPosition.Manual;
-                    panelTag.Location = new Point(this.Location.X + 300, this.Location.Y + 300);
-                    panelTag.BringToFront();
-                    //set parent
-                    panelTag.Show(this);
-                }
-                else
-                {
-                    //hide it
-                    panelTag.Visible = false;
-                }
-            }
-        }
-        /// <summary>
-        /// Create the tag button.
-        /// </summary>
-        /// <param name="tag"></param>
-        /// <returns></returns>
-        private Button CreateButtonTag(Tag tag)
-        {
-            //create new button
-            Button buttonTag = new Button();
-            //adjust it
-            buttonTag.Text = tag.TagName;//set the tag name
-            buttonTag.TextAlign = ContentAlignment.MiddleLeft;//text start in left
-            buttonTag.Padding = new Padding(0, 0, 40, 0);
-            buttonTag.FlatAppearance.BorderSize = 1;//border size
-            buttonTag.FlatStyle = System.Windows.Forms.FlatStyle.Flat;//transparent background
-            buttonTag.FlatAppearance.BorderColor = tag.TagColor;//border colour
-            buttonTag.Dock = DockStyle.Fill;//size
-
-            return buttonTag;
-
-        }
-        /// <summary>
-        /// Show the pause button.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ButtonPlay_Click(object sender, EventArgs e)
-        {
-            ProcessCmdKey(ref GlobalMessage, MpvPersonalized.PauseOrPlayVideo);
-        }
-        /// <summary>
-        /// Save all tags in JSON file.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ButtonSaveTags_Click(object sender, EventArgs e)
-        {
-            //show it for set the path to store tag
-            this.saveFileDialogTag.ShowDialog();
-        }
-        private void SaveTagInDefaultPath()
-        {
-            if (tagMap.Count != 0)
-            {
-                //save only the tag, the button only have the event handler, tag have all the information
-                StreamWriter sw = File.CreateText(pathStoreTagAndClips + "\\data\\" + tagFileName);
-                //encrypt it and save it
-                sw.Write(AES128.Encrypt(JsonConvert.SerializeObject(tagMap.Values)));
-                //close it
-                sw.Close();
-            }
-        }
-        /// <summary>
-        /// Check if the file exist, then load.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ButtonLoadTags_Click(object sender, EventArgs e)
-        {
-            //show it
-            openFileDialogTagPath.ShowDialog();
-        }
-        private void LoadTagFromDefaultPath()
-        {
-            //if exist tags load it
-            if (File.Exists(pathStoreTagAndClips + "\\data\\" + tagFileName))
-            {
-                List<Tag> listTags = JsonConvert.DeserializeObject<List<Tag>>
-                    (AES128.Decrypt(File.ReadAllText(pathStoreTagAndClips + "\\data\\" + tagFileName)));
-                foreach (Tag tag in listTags)
-                {
-                    CreateAutomaticOrManualTagButton(tag);
-                }
-            }
-        }
-        /// <summary>
-        /// Show the setting winform.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ButtonSetting_Click(object sender, EventArgs e)
-        {
-            settingForm.CenterShow();
-        }
-
-        /// <summary>
-        /// When clicked, export the video, with these time in /Sources/exported
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ExportToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ExportClipRowOnTable(lastRowClicked, 0);
-        }
-        /// <summary>
-        /// Thread export video clip from table.
-        /// </summary>
-        /// <param name="control"></param>
-        /// <param name="cont"></param>
-        private void ExportClipRowOnTable(Control control, int cont)
-        {
-            //get row
-            int row = tableLayoutPanelClips.Controls.IndexOf(control) / 5;
-            //get clip name
-            string clipName = tableLayoutPanelClips.Controls[row * 5 + 2].Text;
-            //get the times
-            TimeSpan startTime = TimeSpan.Parse(tableLayoutPanelClips.Controls[row * 5 + 3].Text);
-            TimeSpan endTime = TimeSpan.Parse(tableLayoutPanelClips.Controls[row * 5 + 4].Text);
-            //check times
-            if (endTime < startTime)
-            {
-                startTime = endTime;
-                endTime = TimeSpan.Parse(tableLayoutPanelClips.Controls[row * 5 + 4].Text);
-            }
-            //create new thread for export
-            Thread th = new Thread(() => ExportVideo(startTime.ToString(), endTime.ToString(), clipName, cont));
-            th.Start();
-        }
-        /// <summary>
-        /// Create process for export all video.
-        /// </summary>
-        /// <param name="startTime"></param>
-        /// <param name="endTime"></param>
-        private void ExportVideo(string startTime, string endTime, string clipName, int cont)
-        {
-            Process process;
-            ProcessStartInfo info;
-            string strArg;
-            //for all checked export it
-            foreach (string s in ChangeCameraUrl)
-            {
-                //check fist if file have been exported or not
-                if (File.Exists(this.path + "\\Sources\\exported\\" + clipName + Path.GetFileName(s)))
-                {
-                    MessageBox.Show("Ya ha sido exportado:" + Path.GetFileName(s));
-                }
-                else
-                {
-                    //if process is dowloading
-                    if (s.Contains("\\temp\\"))
-                    {
-                        //create a copy, for export, after finish delete it, in temp cannot directly export
-                        process = new Process();
-                        info = new ProcessStartInfo();
-                        //new name aux video
-                        strArg = "-y -hide_banner " +
-                            "-i " + " \"" + s + "\" " +
-                            " -c copy " +
-                            "-f mp4 " +
-                            "\"" + s.Substring(0, s.Length - 4) + cont + "aux.mp4\" ";
-                        info.FileName = ffmpegtool;
-                        info.UseShellExecute = false;
-                        info.CreateNoWindow = true;
-                        info.Arguments = strArg;
-                        process.StartInfo = info;
-
-                        process.Start();
-                        //wait complete then convert
-                        process.WaitForExit();
-
-                        process = new Process();
-                        //info = new ProcessStartInfo();
-
-                        //command create video
-                        strArg = "-i " + " \"" + s.Substring(0, s.Length - 4) + cont + "aux.mp4\"" +
-                                " -c copy " +
-                                "-f mp4 " + "-ss " + startTime + " -t " + endTime +
-                                " \"" + this.path + "\\Sources\\exported\\" + clipName + Path.GetFileName(s) + "\"";
-                        info.Arguments = strArg;
-                        process.StartInfo = info;
-                        //start the process
-                        process.Start();
-
-                        //wait for exit then delete
-                        process.WaitForExit();
-                        //check
-                        if (File.Exists(s.Substring(0, s.Length - 4) + cont + "aux.mp4"))
-                            File.Delete(s.Substring(0, s.Length - 4) + cont + "aux.mp4");
-                    }
-                    else//if process completed
-                    {
-                        process = new Process();
-                        info = new ProcessStartInfo();
-
-                        //command create video
-                        strArg = "-i " + " \"" + s + "\"" +
-                                " -c copy " +
-                                "-f mp4 " + "-ss " + startTime + " -t " + endTime +
-                                " \"" + this.path + "\\Sources\\exported\\" + clipName + Path.GetFileName(s) + "\"";
-                        info.FileName = ffmpegtool;
-                        info.UseShellExecute = false;
-                        info.CreateNoWindow = true;
-                        info.Arguments = strArg;
-                        process.StartInfo = info;
-                        //start the process
-                        process.Start();
-                    }
-                }
-
-            }
-
-        }
-        /// <summary>
         /// Export all video when clicked.
         /// </summary>
         /// <param name="sender"></param>
@@ -2607,14 +2575,6 @@ namespace AZOR
             }
         }
         /// <summary>
-        /// Pass the key, to do event.
-        /// </summary>
-        /// <param name="k"></param>
-        public void AnalisysFormEvent(KeyEventArgs k)
-        {
-            ChangeCameraEvent(null, k);
-        }
-        /// <summary>
         /// When clicked, show the sync form.
         /// </summary>
         /// <param name="sender"></param>
@@ -2633,55 +2593,119 @@ namespace AZOR
             }
         }
         /// <summary>
-        /// Load tags from the path selected.
+        /// Delete the time if is clicked.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OpenFileDialogTagPath_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //try catch for check the information
-            try
+            DeleteClipRowOnTable(lastRowClicked);
+            /*//if multiple selected
+            if (checkedClipListBox.Count != 0)
             {
-                List<Tag> listTags = JsonConvert.DeserializeObject<List<Tag>>
-                    (File.ReadAllText(openFileDialogTagPath.FileName));
-                foreach (Tag tag in listTags)
+                foreach (CheckBox c in checkedClipListBox)
                 {
-                    //check it
-                    if (tag.CheckTag())
-                        CreateAutomaticOrManualTagButton(tag);
-                    else
-                        //throw exception
-                        throw new Exception();
+                    deleteClipRowOnTable(c);
                 }
+                checkedClipListBox.Clear();
+                checkBoxAllClips.Checked = false;
             }
-            catch (Exception)
+            else//if only one selected
             {
-                MessageBox.Show("Not " + tagFileName + " file");
-            }
-
+                deleteClipRowOnTable(lastRowClicked);
+            }*/
         }
         /// <summary>
-        /// Save tag in the path selected.
+        /// Set visible the panel create tag.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SaveFileDialogTag_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        private void ButtonNewTag_Click(object sender, EventArgs e)
         {
-            //if have tag to save, save it
-            if (tagMap.Count != 0)
+            //lock the panel and show it
+            lock (panelTag)
             {
-                //save only the tag, the button only have the event handler, tag have all the information
-                StreamWriter sw = File.CreateText(saveFileDialogTag.FileName);
-                sw.Write(JsonConvert.SerializeObject(tagMap.Values));
-                //close it
-                sw.Close();
-            }
-            else
-            {
-                //else show message
-                MessageBox.Show("No hay tags");
+                if (!panelTag.Visible)
+                {
+                    //adjust start position
+                    panelTag.StartPosition = FormStartPosition.Manual;
+                    panelTag.Location = new Point(this.Location.X + 300, this.Location.Y + 300);
+                    panelTag.BringToFront();
+                    //set parent
+                    panelTag.Show(this);
+                }
+                else
+                {
+                    //hide it
+                    panelTag.Visible = false;
+                }
             }
         }
-
+        /// <summary>
+        /// Show the pause button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonPlay_Click(object sender, EventArgs e)
+        {
+            ProcessCmdKey(ref GlobalMessage, MpvPersonalized.PauseOrPlayVideo);
+        }
+        /// <summary>
+        /// Save all tags in JSON file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonSaveTags_Click(object sender, EventArgs e)
+        {
+            //show it for set the path to store tag
+            this.saveFileDialogTag.ShowDialog();
+        }
+        /// <summary>
+        /// Check if the file exist, then load.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonLoadTags_Click(object sender, EventArgs e)
+        {
+            //show it
+            openFileDialogTagPath.ShowDialog();
+        }
+        /// <summary>
+        /// Show the setting winform.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonSetting_Click(object sender, EventArgs e)
+        {
+            settingForm.CenterShow();
+        }
+        /// <summary>
+        /// When clicked, export the video, with these time in /Sources/exported
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportClipRowOnTable(lastRowClicked, 0);
+        }
+        /// <summary>
+        /// Move the video backward.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonBackward_Click(object sender, EventArgs e)
+        {
+            ProcessCmdKey(ref GlobalMessage, MpvPersonalized.MoveBackwardKeys);
+        }
+        /// <summary>
+        /// Move forward the video whem cliked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonForward_Click(object sender, EventArgs e)
+        {
+            ProcessCmdKey(ref GlobalMessage, MpvPersonalized.MoveForwardKeys);
+        }
+        #endregion
     }
 }
