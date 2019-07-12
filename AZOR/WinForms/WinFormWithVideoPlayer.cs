@@ -669,9 +669,9 @@ namespace AZOR
             //lock the mpv
             lock (mpvPersonalized.MpvPlayer.MpvLock)
             {
-                //this two lines for now set text when video is reloading
-                this.mpvPersonalized.MpvPlayer.MediaPaused -= VideoPaused;
-                this.mpvPersonalized.MpvPlayer.MediaResumed -= VideoResumed;
+                ////this two lines for now set text when video is reloading
+                //this.mpvPersonalized.MpvPlayer.MediaPaused -= VideoPaused;
+                //this.mpvPersonalized.MpvPlayer.MediaResumed -= VideoResumed;
                 //add the new video
                 this.AddVideo();
             }
@@ -1197,7 +1197,11 @@ namespace AZOR
             if (convertVideo)
                 this.ConvertVideoEvent();
             ChangeCameraUrlForAfterConvert();
-
+            //check button is pressed or method is called
+            if (sender != null && e != null)
+            {
+                CanInvoke = true;
+            }
         }
         /// <summary>
         /// Change the temp url to videos url.
