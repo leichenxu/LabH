@@ -881,6 +881,11 @@ namespace AZOR
                 changeCameraBool = true;
                 //set autoplay
                 SetPauseOrPlayWhenRelaod();
+                //check inZero
+                if (mpvPersonalized.MpvPlayer.Position == TimeSpan.Zero)
+                {
+                    InZero = true;
+                }
                 //if (mpvPersonalized.MpvPlayer.Position != TimeSpan.Zero)
                 //    //when change camera store current time span, and then when change set it.
                 //    this.CurrentTimeSpan = mpvPersonalized.MpvPlayer.Position;
@@ -951,7 +956,7 @@ namespace AZOR
                 mpvPersonalized.MpvPlayer.AutoPlay = true;
             }
         }
-       
+
         /// <summary>
         /// When the video is loaded set the timespan.
         /// </summary>
@@ -965,15 +970,11 @@ namespace AZOR
             //lock it for not use for other threads or process
             lock (mpvPersonalized.MpvPlayer.MpvLock)
                 //check it
-                if (!InZero && mpvPersonalized.MpvPlayer.IsMediaLoaded && CurrentTimeSpan > TimeSpan.Zero)
+                if (mpvPersonalized.MpvPlayer.IsMediaLoaded && CurrentTimeSpan > TimeSpan.Zero)
                 {
-
-                    //set time
-                    SetPlayerTime(this.mpvPersonalized);
-                    ////add events
-                    //this.mpvPersonalized.MpvPlayer.MediaPaused += videoPaused;
-                    //this.mpvPersonalized.MpvPlayer.MediaResumed += videoResumed;
-
+                    if (!InZero)
+                        //set time
+                        SetPlayerTime(this.mpvPersonalized);
                     //if reload one stop it
                     //if (winFormAnalysis.ReloadOne)
                     // winFormAnalysis.MpvPersonalized.MpvPlayer.Stop();
@@ -986,6 +987,8 @@ namespace AZOR
                             (sender as Mpv.NET.Player.MpvPlayer).Resume();
 
                 }
+            //set to false
+            InZero = false;
             //mpv unlock
             manualResetEventMpvUnlock.Set();
         }
@@ -1211,11 +1214,16 @@ namespace AZOR
                     bool wasReversePlaying = mpvPersonalized.ReversePlaying;
                     //sent the event to the controller
                     KeysUsed keyUsed = mpvPersonalized.MpvController(new KeyEventArgs(keyData));
+                    //check r input
+                    if (keyUsed == KeysUsed.MoveToStartPoint)
+                    {
+                        currentTimeSpan = TimeSpan.Zero;
+                    }
                     //check reverse play
                     if (wasReversePlaying || mpvPersonalized.ReversePlaying)
                     {
                         //set button visible
-                        if (keyUsed == KeysUsed.ReverseSpeed || keyUsed == KeysUsed.AddSpeed||KeysUsed.MoveToEndPoint==keyUsed)
+                        if (keyUsed == KeysUsed.ReverseSpeed || keyUsed == KeysUsed.AddSpeed || KeysUsed.MoveToEndPoint == keyUsed)
                         {
                             buttonPlay.Visible = false;
                             buttonPause.Visible = true;
@@ -1491,7 +1499,7 @@ namespace AZOR
                 if (arrayListProcessForDownloadVideo.Count == 0 && convertVideo)
                     ConvertVideoEvent();
         }
-        
+
         /// <summary>
         /// Set the time to analysis windows if is openned.
         /// </summary>
