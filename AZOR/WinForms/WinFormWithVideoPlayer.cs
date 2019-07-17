@@ -456,40 +456,49 @@ namespace AZOR
         /// <param name="e"></param>
         private void ClosingEvent(object sender, EventArgs e)
         {
-            DialogResult dialog = MessageBox.Show(CloseProgramMessage, CloseProgramDialogName,
-                MessageBoxButtons.YesNo);
-            if (dialog == DialogResult.Yes)
+            if (!WasClosed)
             {
-                //set to true
-                WasClosed = true;
-                //save tag in default path
-                this.SaveTagInDefaultPath();
-                //save all the clips
-                SaveClipsInDefaultPath();
-                //after kill all convert video
-                if (convertVideo)
+                DialogResult dialog = MessageBox.Show(CloseProgramMessage, CloseProgramDialogName,
+                    MessageBoxButtons.YesNo);
+                if (dialog == DialogResult.Yes)
                 {
-                    //same things
-                    this.StopButtonPressedEvent(null, null);
-                    //send to back
-                    mpvPictureBox.SendToBack();
+                    //set to true
+                    WasClosed = true;
+                    //save tag in default path
+                    this.SaveTagInDefaultPath();
+                    //save all the clips
+                    SaveClipsInDefaultPath();
+                    //after kill all convert video
+                    if (convertVideo)
+                    {
+                        //same things
+                        this.StopButtonPressedEvent(null, null);
+                        //send to back
+                        mpvPictureBox.SendToBack();
+                    }
+                    this.FormClosing -= ClosingEvent;
+                    lock (convertProcessMap)
+                        //if have process
+                        if (convertProcessMap.Count > 0)
+                            //dont close, wait complete                    
+                            (e as FormClosingEventArgs).Cancel = true;
+                    //save json
+                    settingForm.SaveJsonWithTheLastIndexFirst();
+                    //no invoke more
+                    CanInvoke = false;
+                    //remove it
+                    this.Controls.Remove(this.mpvPictureBox);
+                    //dispose it
+                    this.mpvPictureBox.Dispose();
+                    //refresh it for show animation
+                    this.Refresh();
+                    this.Invalidate();
                 }
-                this.FormClosing -= ClosingEvent;
-                lock (convertProcessMap)
-                    //if have process
-                    if (convertProcessMap.Count > 0)
-                        //dont close, wait complete                    
-                        (e as FormClosingEventArgs).Cancel = true;
             }
-            else
-            {
                 //Do nothing
                 (e as FormClosingEventArgs).Cancel = true;
-            }
-            //save json
-            settingForm.SaveJsonWithTheLastIndexFirst();
-            //no invoke more
-            CanInvoke = false;
+
+
 
         }
         /// <summary>
