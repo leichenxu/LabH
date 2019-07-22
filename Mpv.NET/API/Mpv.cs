@@ -444,11 +444,15 @@ namespace Mpv.NET.API
 				if (Functions is IDisposable disposableFunctions)
 					disposableFunctions.Dispose();
 			}
-
-			Functions.TerminateDestroy(Handle);
-
-			disposed = true;
-		}
+            ///try it, cause maybe the winform that are used is alredy disposed
+            try
+            {
+                Functions.TerminateDestroy(Handle);                
+            }catch (Exception)
+            {
+            }
+            disposed = true;
+        }
 
 		~Mpv()
 		{

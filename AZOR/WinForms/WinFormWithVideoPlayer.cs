@@ -493,10 +493,15 @@ namespace AZOR
                     //refresh it for show animation
                     this.Refresh();
                     this.Invalidate();
+                    //stop mpv
+                    mpvPersonalized.MpvPlayer.Stop();
                 }
             }
+            else
+            {
                 //Do nothing
                 (e as FormClosingEventArgs).Cancel = true;
+            }
 
 
 
@@ -2226,7 +2231,7 @@ namespace AZOR
             try
             {
                 List<Tag> listTags = JsonConvert.DeserializeObject<List<Tag>>
-                    (File.ReadAllText(openFileDialogTagPath.FileName));
+                    (AES128.Decrypt(File.ReadAllText(openFileDialogTagPath.FileName)));
                 foreach (Tag tag in listTags)
                 {
                     //check it
@@ -2255,7 +2260,7 @@ namespace AZOR
             {
                 //save only the tag, the button only have the event handler, tag have all the information
                 StreamWriter sw = File.CreateText(saveFileDialogTag.FileName);
-                sw.Write(JsonConvert.SerializeObject(tagMap.Values));
+                sw.Write(AES128.Encrypt(JsonConvert.SerializeObject(tagMap.Values)));
                 //close it
                 sw.Close();
             }

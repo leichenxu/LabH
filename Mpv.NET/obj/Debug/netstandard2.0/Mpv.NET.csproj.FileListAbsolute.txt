@@ -43,3 +43,12 @@ C:\Users\Developer Lee\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.AssemblyInf
 C:\Users\Developer Lee\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.dll
 C:\Users\Developer Lee\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.pdb
 C:\Users\Developer Lee\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.csprojAssemblyReference.cache
+C:\Users\lei_1\LabH\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.deps.json
+C:\Users\lei_1\LabH\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.dll
+C:\Users\lei_1\LabH\Mpv.NET\bin\Debug\netstandard2.0\Mpv.NET.pdb
+C:\Users\lei_1\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.csprojAssemblyReference.cache
+C:\Users\lei_1\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.csproj.CoreCompileInputs.cache
+C:\Users\lei_1\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.AssemblyInfoInputs.cache
+C:\Users\lei_1\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.AssemblyInfo.cs
+C:\Users\lei_1\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.dll
+C:\Users\lei_1\LabH\Mpv.NET\obj\Debug\netstandard2.0\Mpv.NET.pdb
