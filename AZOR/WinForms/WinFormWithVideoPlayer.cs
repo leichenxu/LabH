@@ -462,6 +462,18 @@ namespace AZOR
                     MessageBoxButtons.YesNo);
                 if (dialog == DialogResult.Yes)
                 {
+                    //check analysis visible
+                    if (winFormAnalysis.Visible)
+                    {
+                        //if visible close it
+                        winFormAnalysis.Close();
+                    }
+                    //check winformsync visible
+                    if (WinFormSync.Visible)
+                    {
+                        //if visible close it
+                        WinFormSync.Close();
+                    }
                     //set to true
                     WasClosed = true;
                     //save tag in default path
@@ -477,11 +489,7 @@ namespace AZOR
                         mpvPictureBox.SendToBack();
                     }
                     this.FormClosing -= ClosingEvent;
-                    lock (convertProcessMap)
-                        //if have process
-                        if (convertProcessMap.Count > 0)
-                            //dont close, wait complete                    
-                            (e as FormClosingEventArgs).Cancel = true;
+                    
                     //save json
                     settingForm.SaveJsonWithTheLastIndexFirst();
                     //no invoke more
@@ -495,6 +503,12 @@ namespace AZOR
                     this.Invalidate();
                     //stop mpv
                     mpvPersonalized.MpvPlayer.Stop();
+
+                    lock (convertProcessMap)
+                        //if have process
+                        if (convertProcessMap.Count > 0)
+                            //dont close, wait complete                    
+                            (e as FormClosingEventArgs).Cancel = true;
                 }
             }
             else
@@ -1294,6 +1308,9 @@ namespace AZOR
                 //create it
                 Control c = CreateCPBForConvert(cont);
                 c.BringToFront();
+                //refresh it
+                this.Refresh();
+                this.Invalidate();
                 //add it
                 try
                 {
@@ -1832,7 +1849,7 @@ namespace AZOR
             //get row
             int row = tableLayoutPanelClips.Controls.IndexOf(control) / 5;
             //get clip name
-            string clipName = tableLayoutPanelClips.Controls[row * 5 + 2].Text;
+            string clipName = mapFullClipName[tableLayoutPanelClips.Controls[row * 5 + 2]as Label];
             //get the times
             TimeSpan startTime = TimeSpan.Parse(tableLayoutPanelClips.Controls[row * 5 + 3].Text);
             TimeSpan endTime = TimeSpan.Parse(tableLayoutPanelClips.Controls[row * 5 + 4].Text);
