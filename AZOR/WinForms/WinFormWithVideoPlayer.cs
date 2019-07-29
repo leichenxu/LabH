@@ -1308,9 +1308,12 @@ namespace AZOR
                 //create it
                 Control c = CreateCPBForConvert(cont);
                 c.BringToFront();
-                //refresh it
-                this.Refresh();
-                this.Invalidate();
+                if (this.InvokeRequired)
+                {
+                    //create delegate
+                    DelegateControl d = new DelegateControl(MainControl);
+                    this.Invoke(d, new object[] { null, 5 });
+                }
                 //add it
                 try
                 {
@@ -1404,6 +1407,10 @@ namespace AZOR
                     break;
                 case 4:
                     (obj as Control).BringToFront();
+                    break;
+                case 5:
+                    this.Refresh();
+                    this.Invalidate();
                     break;
             }
 
