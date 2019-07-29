@@ -179,23 +179,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\lei_1\\.nuget\\packages\\": {},
+    "C:\\Users\\Developer Lee\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\lei_1\\LabH\\Mpv.NET\\Mpv.NET.csproj",
+      "projectUniqueName": "C:\\Users\\Developer Lee\\LabH\\Mpv.NET\\Mpv.NET.csproj",
       "projectName": "Mpv.NET",
-      "projectPath": "C:\\Users\\lei_1\\LabH\\Mpv.NET\\Mpv.NET.csproj",
-      "packagesPath": "C:\\Users\\lei_1\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\lei_1\\LabH\\Mpv.NET\\obj\\",
+      "projectPath": "C:\\Users\\Developer Lee\\LabH\\Mpv.NET\\Mpv.NET.csproj",
+      "packagesPath": "C:\\Users\\Developer Lee\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Developer Lee\\LabH\\Mpv.NET\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\lei_1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Developer Lee\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

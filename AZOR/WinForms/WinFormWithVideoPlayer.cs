@@ -18,6 +18,14 @@ namespace AZOR
     {
         #region Variables 
         /// <summary>
+        /// Check if live was pressed or not.
+        /// </summary>
+        private bool liveWasPressed = false;
+        /// <summary>
+        /// If process end, check the number of the process.
+        /// </summary>
+        private Dictionary<Process, int> mapProcessIfEndedCauseOtherFail = new Dictionary<Process, int>();
+        /// <summary>
         /// Lock for safe use stopInFinal.
         /// </summary>
         private object stopInFinalLock = new object();
@@ -84,7 +92,7 @@ namespace AZOR
         /// <summary>
         /// Store the process with control.
         /// </summary>
-        private Dictionary<Process, Control> convertProcessMap = new Dictionary<Process, Control>();
+        //private Dictionary<Process, Control> convertProcessMap = new Dictionary<Process, Control>();
         /// <summary>
         /// Can invoke or not.
         /// </summary>
@@ -489,26 +497,25 @@ namespace AZOR
                         mpvPictureBox.SendToBack();
                     }
                     this.FormClosing -= ClosingEvent;
-                    
+
                     //save json
                     settingForm.SaveJsonWithTheLastIndexFirst();
+                    //stop mpv
+                    mpvPersonalized.MpvPlayer.Stop();
                     //no invoke more
                     CanInvoke = false;
                     //remove it
                     this.Controls.Remove(this.mpvPictureBox);
-                    //dispose it
-                    this.mpvPictureBox.Dispose();
                     //refresh it for show animation
                     this.Refresh();
                     this.Invalidate();
-                    //stop mpv
-                    mpvPersonalized.MpvPlayer.Stop();
 
-                    lock (convertProcessMap)
-                        //if have process
-                        if (convertProcessMap.Count > 0)
-                            //dont close, wait complete                    
-                            (e as FormClosingEventArgs).Cancel = true;
+
+                    //lock (convertProcessMap)
+                    //    //if have process
+                    //    if (convertProcessMap.Count > 0)
+                    //        //dont close, wait complete                    
+                    //        (e as FormClosingEventArgs).Cancel = true;
                 }
             }
             else
@@ -1116,8 +1123,14 @@ namespace AZOR
                 }
                 else
                 {
-                    //time format hh:mm:ss ms
-                    labelTimePlaying.Text = mpvPersonalized.MpvPlayer.Position.ToString(@"hh\:mm\:ss\.ff");
+                    //check pressed or not
+                    if (liveWasPressed)
+                    {
+                        labelTimePlaying.Text = "      LIVE";
+                    }
+                    else
+                        //time format hh:mm:ss ms
+                        labelTimePlaying.Text = mpvPersonalized.MpvPlayer.Position.ToString(@"hh\:mm\:ss\.ff");
                 }
             }
         }
@@ -1242,10 +1255,25 @@ namespace AZOR
                     bool wasReversePlaying = mpvPersonalized.ReversePlaying;
                     //sent the event to the controller
                     KeysUsed keyUsed = mpvPersonalized.MpvController(new KeyEventArgs(keyData));
+                    //check if pause or not
+                    if (liveWasPressed && keyUsed == KeysUsed.Pause)
+                    {
+                        //put to false
+                        liveWasPressed = false;
+                        //call it
+                        ShowTimeChange(null, null);
+                    }
+                    else
+                        //put to false
+                        liveWasPressed = false;
                     //check r input
                     if (keyUsed == KeysUsed.MoveToStartPoint)
                     {
                         currentTimeSpan = TimeSpan.Zero;
+                    }
+                    else if (keyUsed == KeysUsed.MoveToEndPoint)//check live press
+                    {
+                        liveWasPressed = true;
                     }
                     //check reverse play
                     if (wasReversePlaying || mpvPersonalized.ReversePlaying)
@@ -1300,29 +1328,27 @@ namespace AZOR
             ProcessStartInfo info;
             //number of process, for set location
             int cont = 0;
+
+            //foreach all video
             foreach (string videoName in videoNames)
             {
                 cont++;
                 process = new Process();
                 info = new ProcessStartInfo();
-                //create it
-                Control c = CreateCPBForConvert(cont);
-                c.BringToFront();
+
+                ////create it
+                //Control c = CreateCPBForConvert(cont);
+                //c.BringToFront();
+
                 if (this.InvokeRequired)
                 {
                     //create delegate
                     DelegateControl d = new DelegateControl(MainControl);
                     this.Invoke(d, new object[] { null, 5 });
                 }
-                //add it
-                try
-                {
-                    convertProcessMap.Add(process, c);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
+                ////add it
+                //convertProcessMap.Add(process, c);
+
                 //nuevo comando
                 string strArg = "-y -hide_banner " +
                     "-i " + " \"" + this.path + "\\Sources\\temp" + videoName + "\" " +
@@ -1335,34 +1361,35 @@ namespace AZOR
                 info.Arguments = strArg;
                 process.StartInfo = info;
                 process.EnableRaisingEvents = true;
-                process.Exited += new EventHandler(WaitConvert);
-
+                //process.Exited += new EventHandler(WaitConvert);
                 process.Start();
+                process.WaitForExit();
+                progressBarConvertVideo.Increment(25);
             }
         }
-        /// <summary>
-        /// Wait convert process.
-        /// </summary>
-        private void WaitConvert(object sender, EventArgs e)
-        {
+        ///// <summary>
+        ///// Wait convert process.
+        ///// </summary>
+        //private void WaitConvert(object sender, EventArgs e)
+        //{
 
-            if (this.InvokeRequired)
-            {
-                //create delegate
-                DelegateControl d = new DelegateControl(MainControl);
+        //    if (this.InvokeRequired)
+        //    {
+        //        //create delegate
+        //        DelegateControl d = new DelegateControl(MainControl);
 
-                //invoke it
-                this.Invoke(d, new object[] { convertProcessMap[sender as Process], 0 });
-                //same
-                d = new DelegateControl(MainControl);
-                this.Invoke(d, new object[] { sender, 1 });
-            }
-            else
-            {
-                this.Controls.Remove(convertProcessMap[sender as Process]);
-                convertProcessMap.Remove(sender as Process);
-            }
-        }
+        //        ////invoke it
+        //        //this.Invoke(d, new object[] { convertProcessMap[sender as Process], 0 });
+        //        //same
+        //        d = new DelegateControl(MainControl);
+        //        this.Invoke(d, new object[] { sender, 1 });
+        //    }
+        //    else
+        //    {
+        //        //this.Controls.Remove(convertProcessMap[sender as Process]);
+        //        //convertProcessMap.Remove(sender as Process);
+        //    }
+        //}
         /// <summary>
         /// Delegate delete control.
         /// </summary>
@@ -1382,24 +1409,24 @@ namespace AZOR
                     break;
                 case 1:
                     //critical section
-                    lock (convertProcessMap)
-                    {
-                        //remove if from convert process map
-                        convertProcessMap.Remove(obj as Process);
-                        //check count
-                        if (convertProcessMap.Count == 0)
-                        {
-                            //show mpv, and play video
-                            //show it then play
-                            this.mpvPictureBox.Visible = true;
-                            this.ReloadVideo(null, null);
-                            //check if was closed or not
-                            if (WasClosed)
-                            {
-                                this.Close();
-                            }
-                        }
-                    }
+                    //lock (convertProcessMap)
+                    //{
+                    //    //remove if from convert process map
+                    //    convertProcessMap.Remove(obj as Process);
+                    //    //check count
+                    //    if (convertProcessMap.Count == 0)
+                    //    {
+                    //        //show mpv, and play video
+                    //        //show it then play
+                    //        this.mpvPictureBox.Visible = true;
+                    //        this.ReloadVideo(null, null);
+                    //        //check if was closed or not
+                    //        if (WasClosed)
+                    //        {
+                    //            this.Close();
+                    //        }
+                    //    }
+                    //}
                     break;
                 case 3:
                     //add to controls
@@ -1415,70 +1442,70 @@ namespace AZOR
             }
 
         }
-        /// <summary>
-        /// Create CPG and set it.
-        /// </summary>
-        /// <param name="i"></param>
-        /// <param name="all"></param>
-        private Control CreateCPBForConvert(int i)
-        {
-            //create new circular progress bar, for show progress
-            CircularProgressBar.CircularProgressBar c = new CircularProgressBar.CircularProgressBar();
-            //set it
-            c.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.Liner;
-            c.AnimationSpeed = 500;
-            c.BackColor = System.Drawing.Color.Transparent;
-            c.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            c.InnerColor = System.Drawing.Color.Transparent;
-            c.InnerMargin = 26;
-            c.InnerWidth = 25;
-            c.Size = new System.Drawing.Size(200, 200);
-            //one number one location
-            switch (i)
-            {
-                case 1:
-                    c.Location = this.mpvPictureBox.Location;
-                    break;
-                case 2:
-                    c.Location = new Point(this.mpvPictureBox.Location.X + this.mpvPictureBox.Size.Width / 2, this.mpvPictureBox.Location.Y);
-                    break;
-                case 3:
-                    c.Location = new Point(this.mpvPictureBox.Location.X, this.mpvPictureBox.Location.Y + this.mpvPictureBox.Size.Height / 2);
-                    break;
-                case 4:
-                    c.Location = new Point(this.mpvPictureBox.Location.X + this.mpvPictureBox.Size.Width / 2, this.mpvPictureBox.Location.Y + this.mpvPictureBox.Size.Height / 2);
-                    break;
-            }
-            c.MarqueeAnimationSpeed = 2000;
-            c.OuterColor = System.Drawing.Color.White;
-            c.OuterMargin = -25;
-            c.OuterWidth = 30;
-            c.ProgressColor = Color.Blue;
-            c.ProgressWidth = 5;
-            c.StartAngle = 270;
-            c.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            c.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
-            c.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
-            c.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
-            c.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
-            c.Value = 68;
-            if (this.InvokeRequired)
-            {
-                //AÑADIR DELEGETE CONTROL PARA INVOCAR Y CREAR LO DE ABAJO
-                //this.Controls.Add(c);
-                DelegateControl d = new DelegateControl(MainControl);
-                if (CanInvoke)
-                {
-                    this.Invoke(d, new object[] { c, 3 });
-                    this.Invoke(d, new object[] { c, 4 });
-                }
-            }
-            else
-            {
-                this.Controls.Add(c);
-            }
-            return c;
-        }
+        ///// <summary>
+        ///// Create CPG and set it.
+        ///// </summary>
+        ///// <param name="i"></param>
+        ///// <param name="all"></param>
+        //private Control CreateCPBForConvert(int i)
+        //{
+        //    //create new circular progress bar, for show progress
+        //    CircularProgressBar.CircularProgressBar c = new CircularProgressBar.CircularProgressBar();
+        //    //set it
+        //    c.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.Liner;
+        //    c.AnimationSpeed = 500;
+        //    c.BackColor = System.Drawing.Color.Transparent;
+        //    c.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+        //    c.InnerColor = System.Drawing.Color.Transparent;
+        //    c.InnerMargin = 26;
+        //    c.InnerWidth = 25;
+        //    c.Size = new System.Drawing.Size(200, 200);
+        //    //one number one location
+        //    switch (i)
+        //    {
+        //        case 1:
+        //            c.Location = this.mpvPictureBox.Location;
+        //            break;
+        //        case 2:
+        //            c.Location = new Point(this.mpvPictureBox.Location.X + this.mpvPictureBox.Size.Width / 2, this.mpvPictureBox.Location.Y);
+        //            break;
+        //        case 3:
+        //            c.Location = new Point(this.mpvPictureBox.Location.X, this.mpvPictureBox.Location.Y + this.mpvPictureBox.Size.Height / 2);
+        //            break;
+        //        case 4:
+        //            c.Location = new Point(this.mpvPictureBox.Location.X + this.mpvPictureBox.Size.Width / 2, this.mpvPictureBox.Location.Y + this.mpvPictureBox.Size.Height / 2);
+        //            break;
+        //    }
+        //    c.MarqueeAnimationSpeed = 2000;
+        //    c.OuterColor = System.Drawing.Color.White;
+        //    c.OuterMargin = -25;
+        //    c.OuterWidth = 30;
+        //    c.ProgressColor = Color.Blue;
+        //    c.ProgressWidth = 5;
+        //    c.StartAngle = 270;
+        //    c.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+        //    c.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+        //    c.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
+        //    c.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+        //    c.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
+        //    c.Value = 68;
+        //    if (this.InvokeRequired)
+        //    {
+        //        //AÑADIR DELEGETE CONTROL PARA INVOCAR Y CREAR LO DE ABAJO
+        //        //this.Controls.Add(c);
+        //        DelegateControl d = new DelegateControl(MainControl);
+        //        if (CanInvoke)
+        //        {
+        //            this.Invoke(d, new object[] { c, 3 });
+        //            this.Invoke(d, new object[] { c, 4 });
+        //        }
+        //    }
+        //    else
+        //    {
+        //        this.Controls.Add(c);
+        //    }
+        //    return c;
+        //}
         /// <summary>
         /// Start the download of the video.
         /// </summary>
@@ -1521,10 +1548,14 @@ namespace AZOR
         private void ProcessEnd(object source, EventArgs e)
         {
             Process process = source as Process;
+
+            //show when close
+            MessageBox.Show("El proceso " + mapProcessIfEndedCauseOtherFail[process] + " ha terminado");
             //when finish close
             process.Close();
             //remove from arraylist
             arrayListProcessForDownloadVideo.Remove(process);
+
             //when all process finish
             if (arrayListProcessForDownloadVideo.Count == 0)
             {
@@ -1532,10 +1563,9 @@ namespace AZOR
                 this.timerReload.Stop();
                 StopRecordTimerAndChangeButtonImage();
             }
-            lock (this)
-                //convert video when process end            
-                if (arrayListProcessForDownloadVideo.Count == 0 && convertVideo)
-                    ConvertVideoEvent();
+            //convert video when process end            
+            if (arrayListProcessForDownloadVideo.Count == 0 && convertVideo)
+                ConvertVideoEvent();
         }
 
         /// <summary>
@@ -1856,7 +1886,7 @@ namespace AZOR
             //get row
             int row = tableLayoutPanelClips.Controls.IndexOf(control) / 5;
             //get clip name
-            string clipName = mapFullClipName[tableLayoutPanelClips.Controls[row * 5 + 2]as Label];
+            string clipName = mapFullClipName[tableLayoutPanelClips.Controls[row * 5 + 2] as Label];
             //get the times
             TimeSpan startTime = TimeSpan.Parse(tableLayoutPanelClips.Controls[row * 5 + 3].Text);
             TimeSpan endTime = TimeSpan.Parse(tableLayoutPanelClips.Controls[row * 5 + 4].Text);
@@ -2444,6 +2474,8 @@ namespace AZOR
             {
                 Process p = new Process();
                 string nombreVideo = "\\Camera" + (i + 1) + "Main.mp4";
+                //add the number
+                mapProcessIfEndedCauseOtherFail.Add(p, i);
                 this.ProcessStart(nombreVideo, p, i);
                 arrayListProcessForDownloadVideo.Add(p);
                 //save once the path
