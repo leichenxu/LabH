@@ -1181,7 +1181,14 @@ namespace AZOR
             //check button is pressed or method is called
             if (sender != null && e != null)
             {
+                this.Controls.Remove(progressBarConvertVideo);
+                this.RefreshIt();
                 CanInvoke = true;
+                //load video
+                MpvPersonalized.MpvPlayer.Load(ChangeCameraUrl[0] as string,null);
+                //show it
+                mpvPictureBox.Show();
+                this.RefreshIt();
             }
         }
         /// <summary>
@@ -1329,6 +1336,9 @@ namespace AZOR
             //number of process, for set location
             int cont = 0;
 
+            //show it
+            progressBarConvertVideo.Show();
+
             //foreach all video
             foreach (string videoName in videoNames)
             {
@@ -1366,6 +1376,8 @@ namespace AZOR
                 process.WaitForExit();
                 progressBarConvertVideo.Increment(25);
             }
+            //hide it
+            progressBarConvertVideo.Hide();
         }
         ///// <summary>
         ///// Wait convert process.
@@ -2579,6 +2591,18 @@ namespace AZOR
         private void SigFrame_Click(object sender, EventArgs e)
         {
             ProcessCmdKey(ref GlobalMessage, MpvPersonalized.NextFrame);
+        }
+        /// <summary>
+        /// Refresh.
+        /// </summary>
+        private void RefreshIt()
+        {
+            if (this.InvokeRequired)
+            {
+                //create delegate
+                DelegateControl d = new DelegateControl(MainControl);
+                this.Invoke(d, new object[] { null, 5 });
+            }
         }
         /// <summary>
         /// Export all video when clicked.
