@@ -82,6 +82,7 @@
             this.buttonMarkIn = new System.Windows.Forms.Button();
             this.buttonMarkOut = new System.Windows.Forms.Button();
             this.progressBarConvertVideo = new System.Windows.Forms.ProgressBar();
+            this.editarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.mpvPictureBox)).BeginInit();
             this.contextMenuRightClickOnTime.SuspendLayout();
             this.panelClipsSaved.SuspendLayout();
@@ -216,9 +217,10 @@
             // 
             this.contextMenuRightClickOnTime.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.eliminarToolStripMenuItem,
-            this.exportarToolStripMenuItem});
+            this.exportarToolStripMenuItem,
+            this.editarToolStripMenuItem});
             this.contextMenuRightClickOnTime.Name = "contextMenuClickEnTiempo";
-            this.contextMenuRightClickOnTime.Size = new System.Drawing.Size(118, 48);
+            this.contextMenuRightClickOnTime.Size = new System.Drawing.Size(118, 70);
             this.contextMenuRightClickOnTime.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuRightClickOnTime_Opening);
             // 
             // eliminarToolStripMenuItem
@@ -673,23 +675,27 @@
             // 
             this.buttonMarkIn.BackColor = System.Drawing.Color.Transparent;
             this.buttonMarkIn.BackgroundImage = global::AZOR.Properties.Resources.markIn;
+            this.buttonMarkIn.Enabled = false;
             this.buttonMarkIn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonMarkIn.Location = new System.Drawing.Point(1272, 914);
             this.buttonMarkIn.Name = "buttonMarkIn";
             this.buttonMarkIn.Size = new System.Drawing.Size(30, 25);
             this.buttonMarkIn.TabIndex = 55;
             this.buttonMarkIn.UseVisualStyleBackColor = false;
+            this.buttonMarkIn.Click += new System.EventHandler(this.buttonMarkIn_Click);
             // 
             // buttonMarkOut
             // 
             this.buttonMarkOut.BackColor = System.Drawing.Color.Transparent;
             this.buttonMarkOut.BackgroundImage = global::AZOR.Properties.Resources.markOut;
+            this.buttonMarkOut.Enabled = false;
             this.buttonMarkOut.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonMarkOut.Location = new System.Drawing.Point(1311, 914);
             this.buttonMarkOut.Name = "buttonMarkOut";
             this.buttonMarkOut.Size = new System.Drawing.Size(30, 25);
             this.buttonMarkOut.TabIndex = 56;
             this.buttonMarkOut.UseVisualStyleBackColor = false;
+            this.buttonMarkOut.Click += new System.EventHandler(this.buttonMarkOut_Click);
             // 
             // progressBarConvertVideo
             // 
@@ -699,6 +705,13 @@
             this.progressBarConvertVideo.Size = new System.Drawing.Size(789, 31);
             this.progressBarConvertVideo.TabIndex = 57;
             this.progressBarConvertVideo.Visible = false;
+            // 
+            // editarToolStripMenuItem
+            // 
+            this.editarToolStripMenuItem.Name = "editarToolStripMenuItem";
+            this.editarToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.editarToolStripMenuItem.Text = "Editar";
+            this.editarToolStripMenuItem.Click += new System.EventHandler(this.editarToolStripMenuItem_Click);
             // 
             // WinFormWithVideoPlayer
             // 
@@ -752,7 +765,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "WinFormWithVideoPlayer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "WinFormWithVideoPlayer";
+            this.Text = "  ";
             this.Load += new System.EventHandler(this.WinFormWithVideoPlayer_Load);
             ((System.ComponentModel.ISupportInitialize)(this.mpvPictureBox)).EndInit();
             this.contextMenuRightClickOnTime.ResumeLayout(false);
@@ -818,5 +831,6 @@
         private System.Windows.Forms.Button buttonMarkIn;
         private System.Windows.Forms.Button buttonMarkOut;
         private System.Windows.Forms.ProgressBar progressBarConvertVideo;
+        private System.Windows.Forms.ToolStripMenuItem editarToolStripMenuItem;
     }
 }

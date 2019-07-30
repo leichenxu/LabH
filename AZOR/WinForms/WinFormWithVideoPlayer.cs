@@ -16,7 +16,16 @@ namespace AZOR
 {
     public partial class WinFormWithVideoPlayer : Form
     {
-        #region Variables 
+        #region Variables        
+        private Control editingRow;
+        /// <summary>
+        /// timer for end animation
+        /// </summary>
+        private System.Windows.Forms.Timer timerForEndAnimationProgressBar;
+        /// <summary>
+        /// Check if was stopped or not the record.
+        /// </summary>
+        private bool WasStopped = false;
         /// <summary>
         /// Check if live was pressed or not.
         /// </summary>
@@ -89,10 +98,6 @@ namespace AZOR
         /// Analysys window.
         /// </summary>
         private WinFormAnalysis winFormAnalysis;
-        /// <summary>
-        /// Store the process with control.
-        /// </summary>
-        //private Dictionary<Process, Control> convertProcessMap = new Dictionary<Process, Control>();
         /// <summary>
         /// Can invoke or not.
         /// </summary>
@@ -470,62 +475,64 @@ namespace AZOR
                     MessageBoxButtons.YesNo);
                 if (dialog == DialogResult.Yes)
                 {
-                    //check analysis visible
-                    if (winFormAnalysis.Visible)
+                    //if not stopped convert it
+                    if (!WasStopped)
                     {
-                        //if visible close it
-                        winFormAnalysis.Close();
-                    }
-                    //check winformsync visible
-                    if (WinFormSync.Visible)
-                    {
-                        //if visible close it
-                        WinFormSync.Close();
-                    }
-                    //set to true
-                    WasClosed = true;
-                    //save tag in default path
-                    this.SaveTagInDefaultPath();
-                    //save all the clips
-                    SaveClipsInDefaultPath();
-                    //after kill all convert video
-                    if (convertVideo)
-                    {
-                        //same things
-                        this.StopButtonPressedEvent(null, null);
-                        //send to back
-                        mpvPictureBox.SendToBack();
-                    }
-                    this.FormClosing -= ClosingEvent;
+                        //check analysis visible
+                        if (winFormAnalysis.Visible)
+                        {
+                            //if visible close it
+                            winFormAnalysis.Close();
+                        }
+                        //check winformsync visible
+                        if (WinFormSync.Visible)
+                        {
+                            //if visible close it
+                            WinFormSync.Close();
+                        }
+                        //set to true
+                        WasClosed = true;
+                        //save tag in default path
+                        this.SaveTagInDefaultPath();
+                        //save all the clips
+                        SaveClipsInDefaultPath();
+                        //after kill all convert video
+                        if (convertVideo)
+                        {
+                            //same things
+                            this.StopButtonPressedEvent(null, null);
+                            //send to back
+                            mpvPictureBox.SendToBack();
+                        }
+                        //this.FormClosing -= ClosingEvent;
 
-                    //save json
-                    settingForm.SaveJsonWithTheLastIndexFirst();
-                    //stop mpv
-                    mpvPersonalized.MpvPlayer.Stop();
-                    //no invoke more
-                    CanInvoke = false;
-                    //remove it
-                    this.Controls.Remove(this.mpvPictureBox);
-                    //refresh it for show animation
-                    this.Refresh();
-                    this.Invalidate();
-
-
-                    //lock (convertProcessMap)
-                    //    //if have process
-                    //    if (convertProcessMap.Count > 0)
-                    //        //dont close, wait complete                    
-                    //        (e as FormClosingEventArgs).Cancel = true;
+                        //save json
+                        settingForm.SaveJsonWithTheLastIndexFirst();
+                        //stop mpv
+                        mpvPersonalized.MpvPlayer.Stop();
+                        //no invoke more
+                        CanInvoke = false;
+                        //refresh it for show animation
+                        this.Refresh();
+                        this.Invalidate();
+                        //dont close, wait complete                    
+                        (e as FormClosingEventArgs).Cancel = true;
+                    }
+                    
                 }
-            }
+                else if (DialogResult.No == dialog)
+                {
+                    (e as FormClosingEventArgs).Cancel = true;
+                }                              
+            }//check animation
             else
             {
-                //Do nothing
-                (e as FormClosingEventArgs).Cancel = true;
+                //cancel it if video is converting
+                if (progressBarConvertVideo != null && progressBarConvertVideo.Visible)
+                {
+                    (e as FormClosingEventArgs).Cancel = true;
+                }
             }
-
-
-
         }
         /// <summary>
         /// Save all clips in default path.
@@ -1007,12 +1014,6 @@ namespace AZOR
                 //check it
                 if (mpvPersonalized.MpvPlayer.IsMediaLoaded && CurrentTimeSpan > TimeSpan.Zero)
                 {
-                    if (!InZero)
-                        //set time
-                        SetPlayerTime(this.mpvPersonalized);
-                    //if reload one stop it
-                    //if (winFormAnalysis.ReloadOne)
-                    // winFormAnalysis.MpvPersonalized.MpvPlayer.Stop();
                     //set time
                     SetAnalysisTime();
                     //safe lock
@@ -1020,7 +1021,6 @@ namespace AZOR
                         //state play or pause
                         if (stopInFinal)
                             (sender as Mpv.NET.Player.MpvPlayer).Resume();
-
                 }
             //set to false
             InZero = false;
@@ -1043,7 +1043,6 @@ namespace AZOR
                 for (int i = 0; i < winFormAnalysis.FourMpv.Length; i++)
                 {
                     LoadNewVideoAnalysis(winFormAnalysis.FourMpv[i], ChangeCameraUrl[i] as string, i);
-                    //winFormAnalysis.FourMpv[i].MpvPlayer.Load(ChangeCameraUrl[i] as string, currentTimeSpan.ToString());
                 }
             }
             else if (winFormAnalysis.ReloadTwo)
@@ -1053,7 +1052,6 @@ namespace AZOR
                 {
                     LoadNewVideoAnalysis(winFormAnalysis.TwoMainMpv[i],
                         changeCameraUrl[winFormAnalysis.NumberPressedStored[i]] as string, winFormAnalysis.NumberPressedStored[i]);
-                    //winFormAnalysis.TwoMainMpv[i].MpvPlayer.Load(winFormAnalysis.TwoMainMpv[i].PlayingMedia, currentTimeSpan.ToString());
                 }
             }
         }
@@ -1147,14 +1145,16 @@ namespace AZOR
         /// <param name="e"></param>
         private void StopButtonPressedEvent(object sender, EventArgs e)
         {
-
+            WasStopped = !(sender == null && e == null);
             //same code, so call this
             KillProcess(sender, e);
             //not reload again
             this.timerReload.Stop();
             timerLoadingVideo.Stop();
+
             //restart the video
             CurrentTimeSpan = TimeSpan.Zero;
+
             //critical section
             lock (arrayListProcessForDownloadVideo)
                 //clear the arraylist
@@ -1178,18 +1178,7 @@ namespace AZOR
             if (convertVideo)
                 this.ConvertVideoEvent();
             ChangeCameraUrlForAfterConvert();
-            //check button is pressed or method is called
-            if (sender != null && e != null)
-            {
-                this.Controls.Remove(progressBarConvertVideo);
-                this.RefreshIt();
-                CanInvoke = true;
-                //load video
-                MpvPersonalized.MpvPlayer.Load(ChangeCameraUrl[0] as string,null);
-                //show it
-                mpvPictureBox.Show();
-                this.RefreshIt();
-            }
+
         }
         /// <summary>
         /// Change the temp url to videos url.
@@ -1335,30 +1324,23 @@ namespace AZOR
             ProcessStartInfo info;
             //number of process, for set location
             int cont = 0;
-
             //show it
-            progressBarConvertVideo.Show();
-
+            if (this.InvokeRequired)
+            {
+                //create delegate
+                DelegateControl d = new DelegateControl(MainControl);
+                this.Invoke(d, new object[] { null, 6 });
+            }
+            else
+            {
+                progressBarConvertVideo.Show();
+            }
             //foreach all video
             foreach (string videoName in videoNames)
             {
                 cont++;
                 process = new Process();
                 info = new ProcessStartInfo();
-
-                ////create it
-                //Control c = CreateCPBForConvert(cont);
-                //c.BringToFront();
-
-                if (this.InvokeRequired)
-                {
-                    //create delegate
-                    DelegateControl d = new DelegateControl(MainControl);
-                    this.Invoke(d, new object[] { null, 5 });
-                }
-                ////add it
-                //convertProcessMap.Add(process, c);
-
                 //nuevo comando
                 string strArg = "-y -hide_banner " +
                     "-i " + " \"" + this.path + "\\Sources\\temp" + videoName + "\" " +
@@ -1374,34 +1356,60 @@ namespace AZOR
                 //process.Exited += new EventHandler(WaitConvert);
                 process.Start();
                 process.WaitForExit();
-                progressBarConvertVideo.Increment(25);
+                //add percentage
+                if (this.InvokeRequired)
+                {
+                    //create delegate
+                    DelegateControl d = new DelegateControl(MainControl);
+                    this.Invoke(d, new object[] { null, 7 });
+                }
+                else
+                {
+                    progressBarConvertVideo.Increment(25);
+                }
+
             }
-            //hide it
-            progressBarConvertVideo.Hide();
+            //timer for end animation
+            timerForEndAnimationProgressBar = new System.Windows.Forms.Timer();
+            timerForEndAnimationProgressBar.Interval = 2000;
+            timerForEndAnimationProgressBar.Tick += HideProgressBarTick;
+            timerForEndAnimationProgressBar.Start();
         }
-        ///// <summary>
-        ///// Wait convert process.
-        ///// </summary>
-        //private void WaitConvert(object sender, EventArgs e)
-        //{
-
-        //    if (this.InvokeRequired)
-        //    {
-        //        //create delegate
-        //        DelegateControl d = new DelegateControl(MainControl);
-
-        //        ////invoke it
-        //        //this.Invoke(d, new object[] { convertProcessMap[sender as Process], 0 });
-        //        //same
-        //        d = new DelegateControl(MainControl);
-        //        this.Invoke(d, new object[] { sender, 1 });
-        //    }
-        //    else
-        //    {
-        //        //this.Controls.Remove(convertProcessMap[sender as Process]);
-        //        //convertProcessMap.Remove(sender as Process);
-        //    }
-        //}
+        /// <summary>
+        /// Hide the progressbar when tick.
+        /// </summary>
+        private void HideProgressBarTick(object sender, EventArgs e)
+        {
+            
+            //hide it
+            if (this.InvokeRequired)
+            {
+                //create delegate
+                DelegateControl d = new DelegateControl(MainControl);
+                this.Invoke(d, new object[] { null, 6 });
+            }
+            else
+            {
+                progressBarConvertVideo.Hide();
+                //check button is pressed or method is called
+                if (WasStopped)
+                {
+                    this.Controls.Remove(progressBarConvertVideo);
+                    this.RefreshIt();
+                    CanInvoke = true;
+                    //load video
+                    MpvPersonalized.MpvPlayer.Load(ChangeCameraUrl[0] as string, null);
+                    //show it
+                    mpvPictureBox.Show();
+                    this.RefreshIt();
+                }
+                else
+                {
+                    this.Close();
+                }
+            }
+            (sender as System.Windows.Forms.Timer).Stop();
+        }
         /// <summary>
         /// Delegate delete control.
         /// </summary>
@@ -1451,73 +1459,41 @@ namespace AZOR
                     this.Refresh();
                     this.Invalidate();
                     break;
+                case 6:
+                    if (progressBarConvertVideo.Visible)
+                    {
+                        //hide it
+                        progressBarConvertVideo.Hide();
+                        if (WasStopped)
+                        {
+                            this.Controls.Remove(progressBarConvertVideo);
+                            this.RefreshIt();
+                            CanInvoke = true;
+                            //load video
+                            MpvPersonalized.MpvPlayer.Load(ChangeCameraUrl[0] as string, null);
+                            //show it
+                            mpvPictureBox.Show();
+                            this.RefreshIt();
+                        }
+                        else
+                        {
+                            this.Close();
+                        }
+                    }
+                    else
+                    {
+                        //show it
+                        progressBarConvertVideo.Show();
+                    }
+                    break;
+                case 7:
+                    progressBarConvertVideo.Increment(25);
+                    break;
+
             }
 
         }
-        ///// <summary>
-        ///// Create CPG and set it.
-        ///// </summary>
-        ///// <param name="i"></param>
-        ///// <param name="all"></param>
-        //private Control CreateCPBForConvert(int i)
-        //{
-        //    //create new circular progress bar, for show progress
-        //    CircularProgressBar.CircularProgressBar c = new CircularProgressBar.CircularProgressBar();
-        //    //set it
-        //    c.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.Liner;
-        //    c.AnimationSpeed = 500;
-        //    c.BackColor = System.Drawing.Color.Transparent;
-        //    c.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-        //    c.InnerColor = System.Drawing.Color.Transparent;
-        //    c.InnerMargin = 26;
-        //    c.InnerWidth = 25;
-        //    c.Size = new System.Drawing.Size(200, 200);
-        //    //one number one location
-        //    switch (i)
-        //    {
-        //        case 1:
-        //            c.Location = this.mpvPictureBox.Location;
-        //            break;
-        //        case 2:
-        //            c.Location = new Point(this.mpvPictureBox.Location.X + this.mpvPictureBox.Size.Width / 2, this.mpvPictureBox.Location.Y);
-        //            break;
-        //        case 3:
-        //            c.Location = new Point(this.mpvPictureBox.Location.X, this.mpvPictureBox.Location.Y + this.mpvPictureBox.Size.Height / 2);
-        //            break;
-        //        case 4:
-        //            c.Location = new Point(this.mpvPictureBox.Location.X + this.mpvPictureBox.Size.Width / 2, this.mpvPictureBox.Location.Y + this.mpvPictureBox.Size.Height / 2);
-        //            break;
-        //    }
-        //    c.MarqueeAnimationSpeed = 2000;
-        //    c.OuterColor = System.Drawing.Color.White;
-        //    c.OuterMargin = -25;
-        //    c.OuterWidth = 30;
-        //    c.ProgressColor = Color.Blue;
-        //    c.ProgressWidth = 5;
-        //    c.StartAngle = 270;
-        //    c.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-        //    c.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
-        //    c.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
-        //    c.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
-        //    c.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
-        //    c.Value = 68;
-        //    if (this.InvokeRequired)
-        //    {
-        //        //AÑADIR DELEGETE CONTROL PARA INVOCAR Y CREAR LO DE ABAJO
-        //        //this.Controls.Add(c);
-        //        DelegateControl d = new DelegateControl(MainControl);
-        //        if (CanInvoke)
-        //        {
-        //            this.Invoke(d, new object[] { c, 3 });
-        //            this.Invoke(d, new object[] { c, 4 });
-        //        }
-        //    }
-        //    else
-        //    {
-        //        this.Controls.Add(c);
-        //    }
-        //    return c;
-        //}
+
         /// <summary>
         /// Start the download of the video.
         /// </summary>
@@ -1560,9 +1536,11 @@ namespace AZOR
         private void ProcessEnd(object source, EventArgs e)
         {
             Process process = source as Process;
-
-            //show when close
-            MessageBox.Show("El proceso " + mapProcessIfEndedCauseOtherFail[process] + " ha terminado");
+            if (!WasStopped && !WasClosed)
+            {
+                //show when close
+                MessageBox.Show("El proceso " + mapProcessIfEndedCauseOtherFail[process] + " ha terminado");
+            }
             //when finish close
             process.Close();
             //remove from arraylist
@@ -1575,9 +1553,9 @@ namespace AZOR
                 this.timerReload.Stop();
                 StopRecordTimerAndChangeButtonImage();
             }
-            //convert video when process end            
-            if (arrayListProcessForDownloadVideo.Count == 0 && convertVideo)
-                ConvertVideoEvent();
+            ////convert video when process end            
+            //if (arrayListProcessForDownloadVideo.Count == 0 && convertVideo)
+            //    ConvertVideoEvent();
         }
 
         /// <summary>
@@ -1919,82 +1897,105 @@ namespace AZOR
         /// <param name="endTime"></param>
         private void ExportVideo(string startTime, string endTime, string clipName, int cont)
         {
-            Process process;
-            ProcessStartInfo info;
-            string strArg;
+
             //for all checked export it
             foreach (string s in ChangeCameraUrl)
             {
                 //check fist if file have been exported or not
                 if (File.Exists(this.path + "\\Sources\\exported\\" + clipName + Path.GetFileName(s)))
                 {
-                    MessageBox.Show("Ya ha sido exportado:" + Path.GetFileName(s));
+                    //ask for export or not 
+                    DialogResult dialog = MessageBox.Show("¿Desea sobreescribir " +
+                    Path.GetFileName(s) + "?", "Sobreescribir",
+                MessageBoxButtons.YesNo);
+                    //if yes export
+                    if (DialogResult.Yes == dialog)
+                    {
+                        ExportMethod(s, startTime, endTime, clipName, cont);
+                    }
                 }
                 else
                 {
-                    //if process is dowloading
-                    if (s.Contains("\\temp\\"))
-                    {
-                        //create a copy, for export, after finish delete it, in temp cannot directly export
-                        process = new Process();
-                        info = new ProcessStartInfo();
-                        //new name aux video
-                        strArg = "-y -hide_banner " +
-                            "-i " + " \"" + s + "\" " +
-                            " -c copy " +
-                            "-f mp4 " +
-                            "\"" + s.Substring(0, s.Length - 4) + cont + "aux.mp4\" ";
-                        info.FileName = ffmpegtool;
-                        info.UseShellExecute = false;
-                        info.CreateNoWindow = true;
-                        info.Arguments = strArg;
-                        process.StartInfo = info;
-
-                        process.Start();
-                        //wait complete then convert
-                        process.WaitForExit();
-
-                        process = new Process();
-                        //info = new ProcessStartInfo();
-
-                        //command create video
-                        strArg = "-i " + " \"" + s.Substring(0, s.Length - 4) + cont + "aux.mp4\"" +
-                                " -c copy " +
-                                "-f mp4 " + "-ss " + startTime + " -t " + endTime +
-                                " \"" + this.path + "\\Sources\\exported\\" + clipName + Path.GetFileName(s) + "\"";
-                        info.Arguments = strArg;
-                        process.StartInfo = info;
-                        //start the process
-                        process.Start();
-
-                        //wait for exit then delete
-                        process.WaitForExit();
-                        //check
-                        if (File.Exists(s.Substring(0, s.Length - 4) + cont + "aux.mp4"))
-                            File.Delete(s.Substring(0, s.Length - 4) + cont + "aux.mp4");
-                    }
-                    else//if process completed
-                    {
-                        process = new Process();
-                        info = new ProcessStartInfo();
-
-                        //command create video
-                        strArg = "-i " + " \"" + s + "\"" +
-                                " -c copy " +
-                                "-f mp4 " + "-ss " + startTime + " -t " + endTime +
-                                " \"" + this.path + "\\Sources\\exported\\" + clipName + Path.GetFileName(s) + "\"";
-                        info.FileName = ffmpegtool;
-                        info.UseShellExecute = false;
-                        info.CreateNoWindow = true;
-                        info.Arguments = strArg;
-                        process.StartInfo = info;
-                        //start the process
-                        process.Start();
-                    }
+                    //export it
+                    ExportMethod(s, startTime, endTime, clipName, cont);
                 }
-
             }
 
+        }
+        /// <summary>
+        /// Method for export video.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <param name="clipName"></param>
+        /// <param name="cont"></param>
+        private void ExportMethod(string s, string startTime, string endTime, string clipName, int cont)
+        {
+            Process process;
+            ProcessStartInfo info;
+            string strArg;
+            //if process is dowloading
+            if (s.Contains("\\temp\\"))
+            {
+                //create a copy, for export, after finish delete it, in temp cannot directly export
+                process = new Process();
+                info = new ProcessStartInfo();
+                //new name aux video
+                strArg = "-y -hide_banner " +
+                    "-i " + " \"" + s + "\" " +
+                    " -c copy " +
+                    "-f mp4 " +
+                    "\"" + s.Substring(0, s.Length - 4) + cont + "aux.mp4\" ";
+                info.FileName = ffmpegtool;
+                info.UseShellExecute = false;
+                info.CreateNoWindow = true;
+                info.Arguments = strArg;
+                process.StartInfo = info;
+
+                process.Start();
+                //wait complete then convert
+                process.WaitForExit();
+
+                process = new Process();
+                //info = new ProcessStartInfo();
+                //check for delete
+                if (File.Exists(this.path + "\\Sources\\exported\\" + clipName + Path.GetFileName(s)))
+                    File.Delete(this.path + "\\Sources\\exported\\" + clipName + Path.GetFileName(s));
+                //command create video
+                strArg = "-i " + " \"" + s.Substring(0, s.Length - 4) + cont + "aux.mp4\"" +
+                        " -c copy " +
+                        "-f mp4 " + "-ss " + startTime + " -t " + endTime +
+                        " \"" + this.path + "\\Sources\\exported\\" + clipName + Path.GetFileName(s) + "\"";
+                info.Arguments = strArg;
+                process.StartInfo = info;
+                //start the process
+                process.Start();
+
+                //wait for exit then delete
+                process.WaitForExit();
+                //check
+                if (File.Exists(s.Substring(0, s.Length - 4) + cont + "aux.mp4"))
+                    File.Delete(s.Substring(0, s.Length - 4) + cont + "aux.mp4");
+            }
+            else//if process completed
+            {
+                process = new Process();
+                info = new ProcessStartInfo();
+
+                //command create video
+                strArg = "-i " + " \"" + s + "\"" +
+                        " -c copy " +
+                        "-f mp4 " + "-ss " + startTime + " -t " + endTime +
+                        " \"" + this.path + "\\Sources\\exported\\" + clipName + Path.GetFileName(s) + "\"";
+                info.FileName = ffmpegtool;
+                info.UseShellExecute = false;
+                info.CreateNoWindow = true;
+                info.Arguments = strArg;
+                process.StartInfo = info;
+                //start the process
+                process.Start();
+            }
         }
         /// <summary>
         /// Store the content in the table.
@@ -2603,6 +2604,11 @@ namespace AZOR
                 DelegateControl d = new DelegateControl(MainControl);
                 this.Invoke(d, new object[] { null, 5 });
             }
+            else
+            {
+                this.Refresh();
+                this.Invalidate();
+            }
         }
         /// <summary>
         /// Export all video when clicked.
@@ -2809,5 +2815,83 @@ namespace AZOR
             ProcessCmdKey(ref GlobalMessage, MpvPersonalized.MoveForwardKeys);
         }
         #endregion
+        /// <summary>
+        /// Edit click event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void editarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //store it
+            editingRow = lastRowClicked;
+            //enable the button
+            buttonMarkIn.Enabled = true;
+            //get the row
+            int row = tableLayoutPanelClips.Controls.IndexOf(lastRowClicked) / 5;
+            //set bold
+            ((tableLayoutPanelClips.Controls[row * 5 + 2]) as Label).Font = new Font(((tableLayoutPanelClips.Controls[row * 5 + 2]) as Label).Font,
+                FontStyle.Bold);
+            ((tableLayoutPanelClips.Controls[row * 5 + 3]) as Label).Font = new Font(((tableLayoutPanelClips.Controls[row * 5 + 3]) as Label).Font,
+                FontStyle.Bold);
+            ((tableLayoutPanelClips.Controls[row * 5 + 4]) as Label).Font = new Font(((tableLayoutPanelClips.Controls[row * 5 + 4]) as Label).Font,
+                FontStyle.Bold);
+            //not enabled
+            editarToolStripMenuItem.Enabled = false;
+        }
+        /// <summary>
+        /// Set the left time.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonMarkIn_Click(object sender, EventArgs e)
+        {
+            //set enabled the button
+            buttonMarkOut.Enabled = true;
+
+            int row = tableLayoutPanelClips.Controls.IndexOf(editingRow) / 5;
+            // reset text
+            //set time
+            ((tableLayoutPanelClips.Controls[row * 5 + 3]) as Label).Text = mpvPersonalized.MpvPlayer.Position.ToString(@"hh\:mm\:ss\.ff");
+            //delete bold
+            ((tableLayoutPanelClips.Controls[row * 5 + 3]) as Label).Font = new Font(((tableLayoutPanelClips.Controls[row * 5 + 3]) as Label).Font,
+                FontStyle.Regular);
+            //set not enabled the button
+            buttonMarkIn.Enabled = false;
+
+            //change time in map
+            mapAllClip[((tableLayoutPanelClips.Controls[row * 5]) as CheckBox)].PreviousTime = ((tableLayoutPanelClips.Controls[row * 5 + 3]) as Label).Text;
+        }
+        /// <summary>
+        /// Set the right time.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonMarkOut_Click(object sender, EventArgs e)
+        {
+            //get row
+            int row = tableLayoutPanelClips.Controls.IndexOf(editingRow) / 5;
+            //check time
+            if (TimeSpan.Parse(((tableLayoutPanelClips.Controls[row * 5 + 3]) as Label).Text) > MpvPersonalized.MpvPlayer.Position)
+            {
+                MessageBox.Show("El tiempo debe de ser superior al anterior");
+            }
+            else
+            {
+                //set not enabled the button
+                buttonMarkOut.Enabled = false;
+                //set time
+                ((tableLayoutPanelClips.Controls[row * 5 + 4]) as Label).Text = mpvPersonalized.MpvPlayer.Position.ToString(@"hh\:mm\:ss\.ff");
+                //reset text
+                //delete bold
+                ((tableLayoutPanelClips.Controls[row * 5 + 2]) as Label).Font = new Font(((tableLayoutPanelClips.Controls[row * 5 + 2]) as Label).Font,
+                    FontStyle.Regular);
+                ((tableLayoutPanelClips.Controls[row * 5 + 4]) as Label).Font = new Font(((tableLayoutPanelClips.Controls[row * 5 + 4]) as Label).Font,
+                    FontStyle.Regular);
+                //enabled again
+                editarToolStripMenuItem.Enabled = true;
+
+                mapAllClip[((tableLayoutPanelClips.Controls[row * 5]) as CheckBox)].LaterTime = ((tableLayoutPanelClips.Controls[row * 5 + 4]) as Label).Text;
+            }
+        }
     }
 }

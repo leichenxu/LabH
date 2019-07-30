@@ -516,8 +516,9 @@ namespace Mpv.NET.Player
             lock (MpvLock)
             {
                 mpv.SetPropertyString("pause", AutoPlay ? "no" : "yes");
-                if (time != null)
-                    mpv.SetPropertyString("start", time);
+                if (time == null)
+                    time = TimeSpan.Zero.ToString();
+                mpv.SetPropertyString("start", time);
                 var loadMethod = LoadMethod.Replace;
                 // If there is media already playing, we append
                 // the desired video onto the playlist.
