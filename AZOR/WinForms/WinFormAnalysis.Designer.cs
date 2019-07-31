@@ -55,7 +55,7 @@
             // pictureBoxNameVideo1
             // 
             this.pictureBoxNameVideo1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(73)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.pictureBoxNameVideo1.Location = new System.Drawing.Point(200, 66);
+            this.pictureBoxNameVideo1.Location = new System.Drawing.Point(187, 57);
             this.pictureBoxNameVideo1.Name = "pictureBoxNameVideo1";
             this.pictureBoxNameVideo1.Size = new System.Drawing.Size(583, 190);
             this.pictureBoxNameVideo1.TabIndex = 0;
@@ -65,7 +65,7 @@
             // pictureBoxNameVideo2
             // 
             this.pictureBoxNameVideo2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(73)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.pictureBoxNameVideo2.Location = new System.Drawing.Point(1065, 91);
+            this.pictureBoxNameVideo2.Location = new System.Drawing.Point(1103, 82);
             this.pictureBoxNameVideo2.Name = "pictureBoxNameVideo2";
             this.pictureBoxNameVideo2.Size = new System.Drawing.Size(571, 165);
             this.pictureBoxNameVideo2.TabIndex = 1;
@@ -95,7 +95,7 @@
             // pictureBoxVideoOne
             // 
             this.pictureBoxVideoOne.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(73)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.pictureBoxVideoOne.Location = new System.Drawing.Point(12, 2);
+            this.pictureBoxVideoOne.Location = new System.Drawing.Point(12, 6);
             this.pictureBoxVideoOne.Name = "pictureBoxVideoOne";
             this.pictureBoxVideoOne.Size = new System.Drawing.Size(904, 508);
             this.pictureBoxVideoOne.TabIndex = 4;
@@ -156,7 +156,7 @@
             this.labelMainVideoOne.BackColor = System.Drawing.Color.Transparent;
             this.labelMainVideoOne.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelMainVideoOne.ForeColor = System.Drawing.SystemColors.Control;
-            this.labelMainVideoOne.Location = new System.Drawing.Point(361, 158);
+            this.labelMainVideoOne.Location = new System.Drawing.Point(425, 158);
             this.labelMainVideoOne.Name = "labelMainVideoOne";
             this.labelMainVideoOne.Size = new System.Drawing.Size(0, 20);
             this.labelMainVideoOne.TabIndex = 10;
@@ -167,7 +167,7 @@
             this.labelMainVideoTwo.BackColor = System.Drawing.Color.Transparent;
             this.labelMainVideoTwo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelMainVideoTwo.ForeColor = System.Drawing.SystemColors.Control;
-            this.labelMainVideoTwo.Location = new System.Drawing.Point(1278, 158);
+            this.labelMainVideoTwo.Location = new System.Drawing.Point(1342, 158);
             this.labelMainVideoTwo.Name = "labelMainVideoTwo";
             this.labelMainVideoTwo.Size = new System.Drawing.Size(0, 20);
             this.labelMainVideoTwo.TabIndex = 11;

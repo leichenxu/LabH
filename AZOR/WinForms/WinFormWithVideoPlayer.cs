@@ -1428,7 +1428,7 @@ namespace AZOR
                     this.Controls.Remove(obj as Control);
                     break;
                 case 1:
-                    StopButtonPressedEvent(new object(),null);
+                    StopButtonPressedEvent(new object(), null);
                     //critical section
                     //lock (convertProcessMap)
                     //{
@@ -1921,7 +1921,7 @@ namespace AZOR
                 {
                     //ask for export or not 
                     DialogResult dialog = MessageBox.Show("¿Desea sobreescribir \"" +
-                    clipName +Path.GetFileName(s) + "\" ?", "Sobreescribir",
+                    clipName + Path.GetFileName(s) + "\" ?", "Sobreescribir",
                 MessageBoxButtons.YesNo);
                     //if yes export
                     if (DialogResult.Yes == dialog)
@@ -2640,7 +2640,7 @@ namespace AZOR
                 //run it
                 th.Start();
                 //th.Join();
-                
+
             }
         }
         /// <summary>
@@ -2668,7 +2668,7 @@ namespace AZOR
                 checkedClipListBox.Clear();
                 checkBoxAllClips.Checked = false;
             }
-            
+
         }
         /// <summary>
         /// Delete all video when clicked.
@@ -2863,6 +2863,7 @@ namespace AZOR
             editingRow = lastRowClicked;
             //enable the button
             buttonMarkIn.Enabled = true;
+            buttonMarkOut.Enabled = true;
             //get the row
             int row = tableLayoutPanelClips.Controls.IndexOf(lastRowClicked) / 5;
             //set bold
@@ -2882,21 +2883,31 @@ namespace AZOR
         /// <param name="e"></param>
         private void ButtonMarkIn_Click(object sender, EventArgs e)
         {
-            //set enabled the button
-            buttonMarkOut.Enabled = true;
-
             int row = tableLayoutPanelClips.Controls.IndexOf(editingRow) / 5;
-            // reset text
-            //set time
-            ((tableLayoutPanelClips.Controls[row * 5 + 3]) as Label).Text = mpvPersonalized.MpvPlayer.Position.ToString(@"hh\:mm\:ss\.ff");
-            //delete bold
-            ((tableLayoutPanelClips.Controls[row * 5 + 3]) as Label).Font = new Font(((tableLayoutPanelClips.Controls[row * 5 + 3]) as Label).Font,
-                FontStyle.Regular);
-            //set not enabled the button
-            buttonMarkIn.Enabled = false;
+            //check time
+            if (TimeSpan.Parse(((tableLayoutPanelClips.Controls[row * 5 + 4]) as Label).Text) < MpvPersonalized.MpvPlayer.Position)
+            {
+                MessageBox.Show("El tiempo debe de ser inferior al siguiente");
+            }
+            else
+            {
+                // reset text
+                //set time
+                ((tableLayoutPanelClips.Controls[row * 5 + 3]) as Label).Text = mpvPersonalized.MpvPlayer.Position.ToString(@"hh\:mm\:ss\.ff");
 
-            //change time in map
-            mapAllClip[((tableLayoutPanelClips.Controls[row * 5]) as CheckBox)].PreviousTime = ((tableLayoutPanelClips.Controls[row * 5 + 3]) as Label).Text;
+                //set not enabled the button
+                buttonMarkIn.Enabled = false;
+                buttonMarkOut.Enabled = false;
+
+                //delete bold
+                DeleteBoldInClip(row);
+
+                //enabled again
+                editarToolStripMenuItem.Enabled = true;
+
+                //change time in map
+                mapAllClip[((tableLayoutPanelClips.Controls[row * 5]) as CheckBox)].PreviousTime = ((tableLayoutPanelClips.Controls[row * 5 + 3]) as Label).Text;
+            }
         }
         /// <summary>
         /// Set the right time.
@@ -2915,20 +2926,32 @@ namespace AZOR
             else
             {
                 //set not enabled the button
+                buttonMarkIn.Enabled = false;
                 buttonMarkOut.Enabled = false;
                 //set time
                 ((tableLayoutPanelClips.Controls[row * 5 + 4]) as Label).Text = mpvPersonalized.MpvPlayer.Position.ToString(@"hh\:mm\:ss\.ff");
-                //reset text
                 //delete bold
-                ((tableLayoutPanelClips.Controls[row * 5 + 2]) as Label).Font = new Font(((tableLayoutPanelClips.Controls[row * 5 + 2]) as Label).Font,
-                    FontStyle.Regular);
-                ((tableLayoutPanelClips.Controls[row * 5 + 4]) as Label).Font = new Font(((tableLayoutPanelClips.Controls[row * 5 + 4]) as Label).Font,
-                    FontStyle.Regular);
+                DeleteBoldInClip(row);
+
                 //enabled again
                 editarToolStripMenuItem.Enabled = true;
 
                 mapAllClip[((tableLayoutPanelClips.Controls[row * 5]) as CheckBox)].LaterTime = ((tableLayoutPanelClips.Controls[row * 5 + 4]) as Label).Text;
             }
+        }
+        /// <summary>
+        /// Delete bold in time clip.
+        /// </summary>
+        /// <param name="row"></param>
+        private void DeleteBoldInClip(int row)
+        {
+            //delete bold
+            ((tableLayoutPanelClips.Controls[row * 5 + 3]) as Label).Font = new Font(((tableLayoutPanelClips.Controls[row * 5 + 3]) as Label).Font,
+                FontStyle.Regular);
+            ((tableLayoutPanelClips.Controls[row * 5 + 2]) as Label).Font = new Font(((tableLayoutPanelClips.Controls[row * 5 + 2]) as Label).Font,
+                FontStyle.Regular);
+            ((tableLayoutPanelClips.Controls[row * 5 + 4]) as Label).Font = new Font(((tableLayoutPanelClips.Controls[row * 5 + 4]) as Label).Font,
+                FontStyle.Regular);
         }
     }
 }
