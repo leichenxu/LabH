@@ -682,7 +682,7 @@
             this.buttonMarkIn.Size = new System.Drawing.Size(30, 25);
             this.buttonMarkIn.TabIndex = 55;
             this.buttonMarkIn.UseVisualStyleBackColor = false;
-            this.buttonMarkIn.Click += new System.EventHandler(this.buttonMarkIn_Click);
+            this.buttonMarkIn.Click += new System.EventHandler(this.ButtonMarkIn_Click);
             // 
             // buttonMarkOut
             // 
@@ -695,7 +695,7 @@
             this.buttonMarkOut.Size = new System.Drawing.Size(30, 25);
             this.buttonMarkOut.TabIndex = 56;
             this.buttonMarkOut.UseVisualStyleBackColor = false;
-            this.buttonMarkOut.Click += new System.EventHandler(this.buttonMarkOut_Click);
+            this.buttonMarkOut.Click += new System.EventHandler(this.ButtonMarkOut_Click);
             // 
             // progressBarConvertVideo
             // 
@@ -711,7 +711,7 @@
             this.editarToolStripMenuItem.Name = "editarToolStripMenuItem";
             this.editarToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.editarToolStripMenuItem.Text = "Editar";
-            this.editarToolStripMenuItem.Click += new System.EventHandler(this.editarToolStripMenuItem_Click);
+            this.editarToolStripMenuItem.Click += new System.EventHandler(this.EditarToolStripMenuItem_Click);
             // 
             // WinFormWithVideoPlayer
             // 

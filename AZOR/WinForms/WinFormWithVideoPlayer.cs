@@ -1920,8 +1920,8 @@ namespace AZOR
                 if (File.Exists(this.path + "\\Sources\\exported\\" + clipName + Path.GetFileName(s)))
                 {
                     //ask for export or not 
-                    DialogResult dialog = MessageBox.Show("¿Desea sobreescribir " +
-                    Path.GetFileName(s) + "?", "Sobreescribir",
+                    DialogResult dialog = MessageBox.Show("¿Desea sobreescribir \"" +
+                    clipName +Path.GetFileName(s) + "\" ?", "Sobreescribir",
                 MessageBoxButtons.YesNo);
                     //if yes export
                     if (DialogResult.Yes == dialog)
@@ -2857,7 +2857,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void editarToolStripMenuItem_Click(object sender, EventArgs e)
+        private void EditarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //store it
             editingRow = lastRowClicked;
@@ -2880,7 +2880,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonMarkIn_Click(object sender, EventArgs e)
+        private void ButtonMarkIn_Click(object sender, EventArgs e)
         {
             //set enabled the button
             buttonMarkOut.Enabled = true;
@@ -2903,7 +2903,7 @@ namespace AZOR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonMarkOut_Click(object sender, EventArgs e)
+        private void ButtonMarkOut_Click(object sender, EventArgs e)
         {
             //get row
             int row = tableLayoutPanelClips.Controls.IndexOf(editingRow) / 5;
