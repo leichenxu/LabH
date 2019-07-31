@@ -1887,8 +1887,9 @@ namespace AZOR
                 endTime = TimeSpan.Parse(tableLayoutPanelClips.Controls[row * 5 + 4].Text);
             }
             //create new thread for export
-            Thread th = new Thread(() => ExportVideo(startTime.ToString(), endTime.ToString(), clipName, cont));
-            th.Start();
+            //Thread th = new Thread(() => ExportVideo(startTime.ToString(), endTime.ToString(), clipName, cont));
+            //th.Start();
+            ExportVideo(startTime.ToString(), endTime.ToString(), clipName, cont);
         }
         /// <summary>
         /// Create process for export all video.
@@ -2624,9 +2625,10 @@ namespace AZOR
                 int cont = 0;
                 foreach (CheckBox c in checkedClipListBox)
                 {
-                    Thread th = new Thread(() => ExportClipRowOnTable(c, cont));
-                    th.Start();
-                    th.Join();
+                    //Thread th = new Thread(() => ExportClipRowOnTable(c, cont));
+                    //th.Start();
+                    //th.Join();
+                    ExportClipRowOnTable(c, cont);
                     cont++;
                 }
                 checkedClipListBox.Clear();
