@@ -499,6 +499,8 @@ namespace AZOR
                         //after kill all convert video
                         if (convertVideo)
                         {
+                            //dont close, wait complete                    
+                            (e as FormClosingEventArgs).Cancel = true;
                             //same things
                             this.StopButtonPressedEvent(null, null);
                             //send to back
@@ -515,15 +517,13 @@ namespace AZOR
                         //refresh it for show animation
                         this.Refresh();
                         this.Invalidate();
-                        //dont close, wait complete                    
-                        (e as FormClosingEventArgs).Cancel = true;
                     }
-                    
+
                 }
                 else if (DialogResult.No == dialog)
                 {
                     (e as FormClosingEventArgs).Cancel = true;
-                }                              
+                }
             }//check animation
             else
             {
@@ -1380,7 +1380,7 @@ namespace AZOR
         /// </summary>
         private void HideProgressBarTick(object sender, EventArgs e)
         {
-            
+
             //hide it
             if (this.InvokeRequired)
             {
@@ -1428,6 +1428,7 @@ namespace AZOR
                     this.Controls.Remove(obj as Control);
                     break;
                 case 1:
+                    StopButtonPressedEvent(new object(),null);
                     //critical section
                     //lock (convertProcessMap)
                     //{
@@ -1488,6 +1489,11 @@ namespace AZOR
                     break;
                 case 7:
                     progressBarConvertVideo.Increment(25);
+                    break;
+                case 8:
+                    //clean it
+                    checkedClipListBox.Clear();
+                    checkBoxAllClips.Checked = false;
                     break;
 
             }
@@ -1551,7 +1557,15 @@ namespace AZOR
             {
                 //stop the reload timer
                 this.timerReload.Stop();
-                StopRecordTimerAndChangeButtonImage();
+                //click on stop button
+                if (this.InvokeRequired)
+                {
+                    //create delegate
+                    DelegateControl d = new DelegateControl(MainControl);
+                    this.Invoke(d, new object[] { null, 1 });
+                }
+                else
+                    StopButtonPressedEvent(new object(), null);
             }
             ////convert video when process end            
             //if (arrayListProcessForDownloadVideo.Count == 0 && convertVideo)
@@ -2621,19 +2635,40 @@ namespace AZOR
             //if have checked, export it
             if (checkedClipListBox.Count != 0)
             {
-                //cont number videos aux
-                int cont = 0;
-                foreach (CheckBox c in checkedClipListBox)
-                {
-                    //Thread th = new Thread(() => ExportClipRowOnTable(c, cont));
-                    //th.Start();
-                    //th.Join();
-                    ExportClipRowOnTable(c, cont);
-                    cont++;
-                }
+                //create thread
+                Thread th = new Thread(() => ExportEvent());
+                //run it
+                th.Start();
+                //th.Join();
+                
+            }
+        }
+        /// <summary>
+        /// Method for export checked video
+        /// </summary>
+        private void ExportEvent()
+        {
+            //cont number videos aux
+            int cont = 0;
+            //run all checked clip
+            foreach (CheckBox c in checkedClipListBox)
+            {
+                ExportClipRowOnTable(c, cont);
+                cont++;
+            }
+            if (this.InvokeRequired)
+            {
+                //create delegate
+                DelegateControl d = new DelegateControl(MainControl);
+                this.Invoke(d, new object[] { null, 8 });
+            }
+            else
+            {
+                //clean it
                 checkedClipListBox.Clear();
                 checkBoxAllClips.Checked = false;
             }
+            
         }
         /// <summary>
         /// Delete all video when clicked.
