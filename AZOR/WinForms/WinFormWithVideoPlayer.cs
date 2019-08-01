@@ -518,7 +518,6 @@ namespace AZOR
                         this.Refresh();
                         this.Invalidate();
                     }
-
                 }
                 else if (DialogResult.No == dialog)
                 {
@@ -1145,7 +1144,7 @@ namespace AZOR
         /// <param name="e"></param>
         private void StopButtonPressedEvent(object sender, EventArgs e)
         {
-            WasStopped = !(sender == null && e == null);
+            WasStopped = sender != null;
             //same code, so call this
             KillProcess(sender, e);
             //not reload again
@@ -1428,26 +1427,7 @@ namespace AZOR
                     this.Controls.Remove(obj as Control);
                     break;
                 case 1:
-                    StopButtonPressedEvent(new object(), null);
-                    //critical section
-                    //lock (convertProcessMap)
-                    //{
-                    //    //remove if from convert process map
-                    //    convertProcessMap.Remove(obj as Process);
-                    //    //check count
-                    //    if (convertProcessMap.Count == 0)
-                    //    {
-                    //        //show mpv, and play video
-                    //        //show it then play
-                    //        this.mpvPictureBox.Visible = true;
-                    //        this.ReloadVideo(null, null);
-                    //        //check if was closed or not
-                    //        if (WasClosed)
-                    //        {
-                    //            this.Close();
-                    //        }
-                    //    }
-                    //}
+                    StopButtonPressedEvent(null, null);
                     break;
                 case 3:
                     //add to controls
@@ -1557,19 +1537,16 @@ namespace AZOR
             {
                 //stop the reload timer
                 this.timerReload.Stop();
-                //click on stop button
-                if (this.InvokeRequired)
-                {
-                    //create delegate
-                    DelegateControl d = new DelegateControl(MainControl);
-                    this.Invoke(d, new object[] { null, 1 });
-                }
-                else
-                    StopButtonPressedEvent(new object(), null);
+                //click on stop button when all process finish, not controlled in totaly
+                //if (this.InvokeRequired)
+                //{
+                //    //create delegate
+                //    DelegateControl d = new DelegateControl(MainControl);
+                //    this.Invoke(d, new object[] { null, 1 });
+                //}
+                //else
+                //    StopButtonPressedEvent(null, null);
             }
-            ////convert video when process end            
-            //if (arrayListProcessForDownloadVideo.Count == 0 && convertVideo)
-            //    ConvertVideoEvent();
         }
 
         /// <summary>
