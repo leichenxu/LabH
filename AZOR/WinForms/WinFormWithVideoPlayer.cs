@@ -1400,6 +1400,7 @@ namespace AZOR
                     MpvPersonalized.MpvPlayer.Load(ChangeCameraUrl[0] as string, null);
                     //show it
                     mpvPictureBox.Show();
+                    ChangeCameraEvent(null,new KeyEventArgs(Keys.D1));
                     this.RefreshIt();
                 }
                 else
