@@ -40,6 +40,7 @@
             this.pictureBoxMainVideoTwo = new System.Windows.Forms.PictureBox();
             this.labelMainVideoOne = new System.Windows.Forms.Label();
             this.labelMainVideoTwo = new System.Windows.Forms.Label();
+            this.pictureBoxMultipleVideo = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxNameVideo1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxNameVideo2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAzor1)).BeginInit();
@@ -50,6 +51,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxVideoFour)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMainVideoOne)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMainVideoTwo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMultipleVideo)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBoxNameVideo1
@@ -172,6 +174,15 @@
             this.labelMainVideoTwo.Size = new System.Drawing.Size(0, 20);
             this.labelMainVideoTwo.TabIndex = 11;
             // 
+            // pictureBoxMultipleVideo
+            // 
+            this.pictureBoxMultipleVideo.Location = new System.Drawing.Point(-2, 6);
+            this.pictureBoxMultipleVideo.Name = "pictureBoxMultipleVideo";
+            this.pictureBoxMultipleVideo.Size = new System.Drawing.Size(1828, 1022);
+            this.pictureBoxMultipleVideo.TabIndex = 12;
+            this.pictureBoxMultipleVideo.TabStop = false;
+            this.pictureBoxMultipleVideo.Visible = false;
+            // 
             // WinFormAnalysis
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -180,6 +191,7 @@
             this.BackgroundImage = global::AZOR.Properties.Resources.Análisis_View4_2;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1826, 1032);
+            this.Controls.Add(this.pictureBoxMultipleVideo);
             this.Controls.Add(this.labelMainVideoTwo);
             this.Controls.Add(this.labelMainVideoOne);
             this.Controls.Add(this.pictureBoxVideoFour);
@@ -207,6 +219,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxVideoFour)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMainVideoOne)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMainVideoTwo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMultipleVideo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -226,5 +239,6 @@
         private System.Windows.Forms.PictureBox pictureBoxMainVideoTwo;
         private System.Windows.Forms.Label labelMainVideoOne;
         private System.Windows.Forms.Label labelMainVideoTwo;
+        private System.Windows.Forms.PictureBox pictureBoxMultipleVideo;
     }
 }

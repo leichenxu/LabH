@@ -17,6 +17,14 @@ namespace AZOR
     public partial class WinFormAnalysis : Form
     {
         #region variable
+        private MpvPersonalized mpvMultipleVideo;
+        /// <summary>
+        /// If multiple video are playing or not in the same mpv.
+        /// </summary>
+        private bool multipleVideo = false;
+            /// <summary>
+            /// This two variable for control.
+            /// </summary>
         private Dictionary<MpvPlayer, Boolean> mapLoaded = new Dictionary<MpvPlayer, bool>();
         private Dictionary<MpvPlayer, ManualResetEvent> mapLoadedEvent = new Dictionary<MpvPlayer, ManualResetEvent>();
         /// <summary>
@@ -115,6 +123,9 @@ namespace AZOR
             numberPressed[1] = -1;
             this.FormClosing += StopIt;
 
+            //set multiple video mpv
+            mpvMultipleVideo = new MpvPersonalized(pictureBoxMultipleVideo.Handle);
+            MapLoaded.Add(mpvMultipleVideo.MpvPlayer, false);
         }
         /// <summary>
         /// Hide it when close.
@@ -262,13 +273,15 @@ namespace AZOR
             else if (keyData == Keys.M)
             {
                 this.BackgroundImage = Properties.Resources.Análisis_View4_2;
-                //if current not show all
-                if (!reloadFour)
-                    ShowAll();
+                ////////if current not show all
+                //////if (!reloadFour)
+                //////    ShowAll();
                 //reload and control four video, not one
                 ReloadOne = false;
                 reloadTwo = false;
-                reloadFour = true;
+                //////reloadFour = true;
+                multipleVideo = true;
+                ShowMultipleVideoInOneMpv();
             }
             else if (keyData == Keys.A)
             {
@@ -361,6 +374,13 @@ namespace AZOR
                 //th.Start();
                 //th.Join();
             }
+        }
+        private void ShowMultipleVideoInOneMpv()
+        {
+            mpvMultipleVideo.MpvPlayer.LoadMultipleVideo(winForm.ChangeCameraUrl[0] as string, null);
+            //show it
+            pictureBoxMultipleVideo.Show();
+
         }
         /// <summary>
         /// Execute four command for mpv.

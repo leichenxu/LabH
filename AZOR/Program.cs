@@ -21,7 +21,7 @@ namespace AZOR
             //make text looks better
             Application.SetCompatibleTextRenderingDefault(false);
             WinFormSetting w = new WinFormSetting();
-            //w.CanShow = false;
+            w.CanShow = false;
             Application.Run(new WinFormWithVideoPlayer(@"C:\Users\Developer Lee\Desktop\pruebas", w));
             //Application.Run(new WinFormLoading());
 

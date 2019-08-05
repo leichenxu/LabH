@@ -534,6 +534,34 @@ namespace Mpv.NET.Player
 
 
         /// <summary>
+        /// Load multiple video.
+        /// </summary>
+        /// <param name="path">Path or URL to media source.</param>
+        /// <param name="force">If true, will force load the media replacing any currently playing media.</param>
+        public void LoadMultipleVideo(string path, string time, bool force = false)
+        {
+            Guard.AgainstNullOrEmptyOrWhiteSpaceString(path, nameof(path));
+            path += "\" " + path;
+            path += " --external-file \""+path + "\" --lavfi-complex '[vid1] [vid2] hstack [vo]' \"";
+            lock (MpvLock)
+            {
+                mpv.SetPropertyString("pause", AutoPlay ? "no" : "yes");
+                if (time == null)
+                    time = TimeSpan.Zero.ToString();
+                mpv.SetPropertyString("start", time);
+                //mpv.SetPropertyString("external-file", path);
+                //mpv.SetPropertyString("lavfi-complex", "'[vid1] [vid2] hstack [vo]'");
+                var loadMethod = LoadMethod.Replace;
+
+                var loadMethodString = LoadMethodHelper.ToString(loadMethod);
+                mpv.Command("loadfile", path, loadMethodString);
+                //mpv.Command("external file", path);
+                //mpv.Command("lavfi complex", "'[vid1] [vid2] hstack [vo]'");
+
+            }
+        }
+
+        /// <summary>
         /// Seek using the specified position. Seeking absolutely by default.
         /// </summary>
         /// <param name="position">Position in seconds.</param>

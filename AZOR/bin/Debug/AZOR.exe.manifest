@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AZOR.exe" size="869888">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AZOR.exe" size="870400">
       <assemblyIdentity name="AZOR" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>uM4dpDO12BUNp1zMChDeknVHRLikXLR4p40NXy3fH9A=</dsig:DigestValue>
+        <dsig:DigestValue>9jCZGFTDeby9S1Lb4eXnWjELrtNNAsqC81Dx9VLz644=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -78,14 +78,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Mpv.NET.dll" size="62976">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Mpv.NET.dll" size="63488">
       <assemblyIdentity name="Mpv.NET" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>tB9yE9RobvrykiO+rfMN1ht8RY71LQ1EYmiXkwogpA0=</dsig:DigestValue>
+        <dsig:DigestValue>9zu69PiEZING8Lhfb2WtZfOu1H5BTUkpQYYjxfAYXoI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

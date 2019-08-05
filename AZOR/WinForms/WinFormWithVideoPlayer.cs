@@ -306,6 +306,9 @@ namespace AZOR
                 timerReload.Stop();
             }
 
+
+            ////////////////////////auxcode
+            mpvPersonalized.MpvPlayer.LoadMultipleVideo(changeCameraUrl[0] as string,null);
         }
         /// <summary>
         /// Set the record time, then delete myself.
