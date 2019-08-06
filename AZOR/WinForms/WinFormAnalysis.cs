@@ -11,6 +11,8 @@ using System.Windows.Forms;
 using Mpv.NET.Player;
 using System.IO;
 using System.Threading;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace AZOR
 {
@@ -22,9 +24,9 @@ namespace AZOR
         /// If multiple video are playing or not in the same mpv.
         /// </summary>
         private bool multipleVideo = false;
-            /// <summary>
-            /// This two variable for control.
-            /// </summary>
+        /// <summary>
+        /// This two variable for control.
+        /// </summary>
         private Dictionary<MpvPlayer, Boolean> mapLoaded = new Dictionary<MpvPlayer, bool>();
         private Dictionary<MpvPlayer, ManualResetEvent> mapLoadedEvent = new Dictionary<MpvPlayer, ManualResetEvent>();
         /// <summary>
@@ -183,7 +185,7 @@ namespace AZOR
             //when openned set it
             reloadOne = true;
             //if mainform reverse playing,analysis too
-            CheckReversePlay(MpvPersonalized);         
+            CheckReversePlay(MpvPersonalized);
             //bg image to none
             this.BackgroundImage = null;
         }
@@ -206,7 +208,7 @@ namespace AZOR
             //    if (m.MpvPlayer == (sender as MpvPlayer))
             //        Console.WriteLine("video " + m.PlayingMedia + "sania enviado");
             //}
-            
+
             //get the player
             Mpv.NET.Player.MpvPlayer player = sender as MpvPlayer;
             //set same speed speed
@@ -256,7 +258,7 @@ namespace AZOR
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             //if is used then no move in interface, and not use in other panel
-            if ((mpvPersonalized.KeysThatIHaveUse(keyData) || MpvPersonalized.KeysSpeedUse(keyData)||
+            if ((mpvPersonalized.KeysThatIHaveUse(keyData) || MpvPersonalized.KeysSpeedUse(keyData) ||
                 keyData == Keys.Tab || keyData == Keys.Up ||
                 keyData == Keys.Down || keyData == Keys.Enter))
             {
@@ -377,11 +379,42 @@ namespace AZOR
         }
         private void ShowMultipleVideoInOneMpv()
         {
-            mpvMultipleVideo.MpvPlayer.LoadMultipleVideo(winForm.ChangeCameraUrl[0] as string, null);
+            //stop
+            this.mpvPersonalized.MpvPlayer.Stop();
+            MpvPersonalized.TimerReversePlay.Stop();
+            foreach (MpvPersonalized m in twoMainMpv)
+            {
+                m.MpvPlayer.Stop();
+                m.TimerReversePlay.Stop();
+            }
+            //reset
+            labelMainVideoOne.ResetText();
+            labelMainVideoTwo.ResetText();
+            //hide it
+            pictureBoxAzor1.Show();
+            pictureBoxAzor2.Show();
+            pictureBoxNameVideo1.Show();
+            pictureBoxNameVideo2.Show();
+            pictureBoxMainVideoOne.Visible = false;
+            pictureBoxMainVideoTwo.Visible = false;
+
+            mpvMultipleVideo.MpvPlayer.LoadMultipleVideo(winForm.ChangeCameraUrl, null, pictureBoxMultipleVideo.Handle);
             //show it
             pictureBoxMultipleVideo.Show();
 
+            //p = Process.GetProcessesByName("mpv").FirstOrDefault();
+            //if (p != null)
+            //{
+            //    IntPtr h = p.MainWindowHandle;
+            //    SetForegroundWindow(h);
+            //    SendKeys.SendWait("{RIGHT}");
+            //}
         }
+
+        //[DllImport ("User32.dll")]
+        //static extern int SetForegroundWindow(IntPtr point);
+
+        //Process p;
         /// <summary>
         /// Execute four command for mpv.
         /// </summary>
@@ -554,6 +587,7 @@ namespace AZOR
                 mpv.TimerReversePlay.Start();
             }
         }
+
 
     }
 }

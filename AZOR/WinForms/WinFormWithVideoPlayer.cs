@@ -253,6 +253,7 @@ namespace AZOR
         /// <param name="pathStoreVideos">Path received to store videos.</param>
         public WinFormWithVideoPlayer(string path, WinFormSetting settingForm)
         {
+
             InitializeComponent();
             //set win name as the same to the project name
             this.Text = Path.GetFileName(path);
@@ -274,6 +275,8 @@ namespace AZOR
             {
                 convertVideo = true;
             }
+                        Console.WriteLine(this.Handle);
+
         }
         /// <summary>
         /// If the project is openned, set id.
@@ -304,11 +307,7 @@ namespace AZOR
                 TimerEndProgressBar_Tick(null, null);
                 //stop the reload timer
                 timerReload.Stop();
-            }
-
-
-            ////////////////////////auxcode
-            mpvPersonalized.MpvPlayer.LoadMultipleVideo(changeCameraUrl[0] as string,null);
+            }            
         }
         /// <summary>
         /// Set the record time, then delete myself.

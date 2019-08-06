@@ -176,7 +176,7 @@
             // 
             // pictureBoxMultipleVideo
             // 
-            this.pictureBoxMultipleVideo.Location = new System.Drawing.Point(-2, 6);
+            this.pictureBoxMultipleVideo.Location = new System.Drawing.Point(-2, -2);
             this.pictureBoxMultipleVideo.Name = "pictureBoxMultipleVideo";
             this.pictureBoxMultipleVideo.Size = new System.Drawing.Size(1828, 1022);
             this.pictureBoxMultipleVideo.TabIndex = 12;

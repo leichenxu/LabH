@@ -49,7 +49,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>9jCZGFTDeby9S1Lb4eXnWjELrtNNAsqC81Dx9VLz644=</dsig:DigestValue>
+        <dsig:DigestValue>yCpMIAZrLqrvqm5N0rbiSszZGD5/S0zvDQuwr4GGUf0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -78,14 +78,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Mpv.NET.dll" size="63488">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Mpv.NET.dll" size="64000">
       <assemblyIdentity name="Mpv.NET" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>9zu69PiEZING8Lhfb2WtZfOu1H5BTUkpQYYjxfAYXoI=</dsig:DigestValue>
+        <dsig:DigestValue>wIxwFXLRgcigv1DpKLixfkSzC0iDJsXX6Jn9kDppVeE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

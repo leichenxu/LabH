@@ -1,9 +1,11 @@
 ﻿using Mpv.NET.API;
 using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Mpv.NET.Player
@@ -534,30 +536,50 @@ namespace Mpv.NET.Player
 
 
         /// <summary>
-        /// Load multiple video.
+        /// Load multiple video, create with process.
         /// </summary>
         /// <param name="path">Path or URL to media source.</param>
         /// <param name="force">If true, will force load the media replacing any currently playing media.</param>
-        public void LoadMultipleVideo(string path, string time, bool force = false)
+        public void LoadMultipleVideo(ArrayList path, string time, IntPtr hwnd)
         {
-            Guard.AgainstNullOrEmptyOrWhiteSpaceString(path, nameof(path));
-            path += "\" " + path;
-            path += " --external-file \""+path + "\" --lavfi-complex '[vid1] [vid2] hstack [vo]' \"";
+            //Guard.AgainstNullOrEmptyOrWhiteSpaceString(path, nameof(path));
+            //path += "\" " + path;
+            //path += " --external-file \""+path + "\" --lavfi-complex '[vid1] [vid2] hstack [vo]' \"";
             lock (MpvLock)
             {
-                mpv.SetPropertyString("pause", AutoPlay ? "no" : "yes");
-                if (time == null)
-                    time = TimeSpan.Zero.ToString();
-                mpv.SetPropertyString("start", time);
-                //mpv.SetPropertyString("external-file", path);
-                //mpv.SetPropertyString("lavfi-complex", "'[vid1] [vid2] hstack [vo]'");
-                var loadMethod = LoadMethod.Replace;
+                ////////////mpv.SetPropertyString("pause", AutoPlay ? "no" : "yes");
+                ////////////if (time == null)
+                ////////////    time = TimeSpan.Zero.ToString();
+                ////////////mpv.SetPropertyString("start", time);
+                ////////////mpv.SetPropertyString("external-files", path[0] as string);
+                //////////////mpv.SetOption("lavfi-complex", Encoding.ASCII.GetBytes("'[vid1] [vid2] vstack [vo]'"));
 
-                var loadMethodString = LoadMethodHelper.ToString(loadMethod);
-                mpv.Command("loadfile", path, loadMethodString);
-                //mpv.Command("external file", path);
-                //mpv.Command("lavfi complex", "'[vid1] [vid2] hstack [vo]'");
+                //////////////mpv.SetPropertyString("lavfi-complex", "\"[vid1] [vid2] vstack [vo]\"");
 
+                ////////////var loadMethod = LoadMethod.Replace;
+
+                ////////////var loadMethodString = LoadMethodHelper.ToString(loadMethod);
+                ////////////mpv.Command("loadfile", path[0] as string, loadMethodString);
+
+
+
+                Process process = new Process();
+                ProcessStartInfo info = new ProcessStartInfo();
+                //general parameters
+                string strArg = "--wid=" + hwnd + " \"" + path[0] as string + "\"" +
+                    " --external-file \"" + path[1] as string + "\" " +
+                    "--external-file \"" + path[2] as string + "\" " +
+                    "--external-file \"" + path[3] as string + "\" " +
+                    "--lavfi-complex \"[vid1][vid2] hstack[t1];[vid3] [vid4] hstack [t2];[t1] [t2] vstack [vo]\"";
+                info.FileName = @"C:\Users\Developer Lee\Downloads\mpv-x86_64-20181002\mpv.exe";
+                info.UseShellExecute = false;
+                info.CreateNoWindow = true;
+                //info.RedirectStandardInput = true;
+                //info.RedirectStandardOutput = true;
+                info.Arguments = strArg;
+                process.StartInfo = info;
+                process.Start();
+                ////////return process;
             }
         }
 
